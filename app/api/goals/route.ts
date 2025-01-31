@@ -33,7 +33,7 @@ const createGoalSchema = z.object({
     isAccomplished: z.boolean(),
     priority: z.number({ message: "Priority must be completed" })
         .int({ message: "Priority must be an int" })
-        .nonpositive({ message: "Priority must be positive" }),
+        .nonnegative({ message: "Priority must be positive" }),
     collectionId: z.string().nonempty({ message: "a Collection is required" }),
     categoryId: z.string().nonempty({ message: "a Category is required" }),
 });

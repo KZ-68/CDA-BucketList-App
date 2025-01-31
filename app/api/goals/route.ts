@@ -41,25 +41,8 @@ const createGoalSchema = z.object({
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { 
-            label, 
-            description, 
-            isAccomplished = false, 
-            priority,
-            collectionId,
-            categoryId,
-            userId = "123test"
-        } = body;
-
-        const goalData = { 
-            label, 
-            description, 
-            isAccomplished, 
-            priority,
-            collectionId,
-            categoryId,
-            userId 
-        };
+        const { label, description, isAccomplished, priority, collectionId, categoryId } = body;
+        const goalData = { label, description, isAccomplished, priority, collectionId, categoryId };
 
         createGoalSchema.parse(goalData);
 
@@ -70,38 +53,9 @@ export async function POST(request: NextRequest) {
                 isAccomplished: goalData.isAccomplished,
                 priority: goalData.priority,
                 collectionId: goalData.collectionId,
-                categoryId: goalData.categoryId,
+                categoryId: goalData.categoryId
             },
         });
-
-        const category = await db.category.update({
-            where: {
-                id: newGoal.categoryId
-            },
-            data: {
-                goals: {
-                    connect: {
-                        id: newGoal.id
-                    }
-                }
-            }
-        });
-        
-        const collection = await db.collection.update({
-            where: {
-                id: newGoal.collectionId
-            },
-            data: {
-                goals: {
-                    connect: {
-                        id: newGoal.id
-                    }
-                }
-            }
-        });
-
-        
-
 
         return NextResponse.json({
             success: true,
@@ -109,8 +63,7 @@ export async function POST(request: NextRequest) {
             data: newGoal,
         });
     } catch (error) {
-        // console.log("[CREATE COLLECTION]", error);
-
+        console.log("[CREATE GOAL]", error);
         if (error instanceof z.ZodError) {
             return NextResponse.json(
                 { error: error.errors[0].message },
@@ -121,34 +74,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             data: null,
             success: false,
-            message: `create collection: Internal Error:  ${error || "nothing"}`
+            message: `create goal: Internal Error:  ${error || "nothing"}`
         }, { status: 500 }
         )
     }
 }
-
-// export async function DELETE(request: NextRequest) {
-//     try {
-//         const body = await request.json();
-//         const { userId, cardId } = body;
-
-//         if (!userId || !cardId) {
-//             return NextResponse.json(
-//                 { error: "User ID and Card ID are required" },
-//                 { status: 400 }
-//             );
-//         }
-
-//         await db.learned.delete({
-//             where: { id_user_id_card: { id_user: userId, id_card: cardId } },
-//         });
-
-//         return NextResponse.json({
-//             success: true,
-//             message: "Card marked as unlearned",
-//         });
-//     } catch (error) {
-//         console.error("[UNMARK AS LEARNED]", error);
-//         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
-//     }
-// }

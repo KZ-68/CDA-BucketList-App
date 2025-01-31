@@ -39,8 +39,8 @@ const CollectionsPage = () => {
           {collections.length === 0 ? (
             <p>No collections found.</p>
           ) : (
-            collections.map((collection, index) => (
-              <div key={index} className='flex'>
+            collections.map((collection :Collection, index: number) => (
+              <div key={collection.label || index} className='flex'>
                 <h3>{collection.label} </h3>
                 <span> - {collection._count?.goals || 0} {collection._count?.goals === 1 || collection._count?.goals === 0   ? 'goal' : 'goals'}</span>
               </div>

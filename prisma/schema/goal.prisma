@@ -7,6 +7,7 @@ model Goal {
     isAccomplished Boolean @default(false)
     priority       Int? 
 
+
     collectionId String @db.ObjectId
     collection Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
     

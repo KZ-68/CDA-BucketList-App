@@ -1,4 +1,4 @@
-interface GoalType {
+export interface GoalType {
     id: string;
     label: string;
     collection: CollectionType
@@ -12,7 +12,7 @@ interface GoalType {
     categoryId: string;
 }
  
-interface CollectionType {
+export interface CollectionType {
     id: string;
     label: string
     isPrivate: boolean;

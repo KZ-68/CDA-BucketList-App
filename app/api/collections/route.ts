@@ -1,12 +1,14 @@
 import { db } from "@/lib/db";
-import { CollectionType } from "@/types/types";
-import { create } from "domain";
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
 
 export async function GET() {
     try {
-        const collections = await db.collection.findMany();
+        const collections = await db.collection.findMany({
+            orderBy: { 
+                createdAt: "desc" 
+            },
+        });
 
         return NextResponse.json({
             data: collections, //null si erreur
@@ -28,14 +30,15 @@ export async function GET() {
 const createCollectionSchema = z.object({
     label: z.string().nonempty({ message: "Label is required" }),
     isPrivate: z.boolean(),
+    userId: z.string().nonempty({ message: "a User is required" }),
 });
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { label, isPrivate } = body;
+        const { label, isPrivate, userId = "123test" } = body;
 
-        const collectionData = { label, isPrivate };
+        const collectionData = { label, isPrivate, userId };
 
         createCollectionSchema.parse(collectionData);
 
@@ -43,6 +46,7 @@ export async function POST(request: NextRequest) {
             data: {
                 label: collectionData.label,
                 isPrivate: collectionData.isPrivate,
+                userId: collectionData.userId,
             },
         });
 

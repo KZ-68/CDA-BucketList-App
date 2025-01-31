@@ -1,7 +1,11 @@
 model Goal {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     label String
-    isAccomplished String
+    description    String?
+    createdAt      DateTime @default(now()) 
+    updatedAt      DateTime @updatedAt
+    isAccomplished Boolean @default(false)
+    priority       Int? 
 
     collectionId String @db.ObjectId
     collection Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)

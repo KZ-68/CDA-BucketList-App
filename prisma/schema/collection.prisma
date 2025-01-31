@@ -1,7 +1,10 @@
 model Collection {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     label String
-    isPrivate String
+    isPrivate Boolean
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    userId     String 
 
     goals Goal[]
 }

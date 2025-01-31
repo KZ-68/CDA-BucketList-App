@@ -35,40 +35,29 @@ export async function GET(request: NextRequest, { params }: Props) {
     }
 }
 
-// export async function POST(request: NextRequest) {
-//     try {
-//         const body = await request.json();
-//         const { label, isPrivate, userId = "123test" } = body;
+export async function DELETE(request: NextRequest, { params }: Props) {
+    try {
+        const { collectionId } = await params;
+        const body = await request.json();
+        const { userId } = body;
 
-//         const categoryData = { label, isPrivate, userId };
+        if (!userId || !collectionId) {
+            return NextResponse.json(
+                { error: "User ID and collection ID are required" },
+                { status: 400 }
+            );
+        }
 
-//         createCategorySchema.parse(categoryData);
+        await db.collection.delete({
+            where: { id: collectionId },
+        });
 
-//         const newCategory = await db.category.create({
-//             data: {
-//                 label: categoryData.label,
-//             },
-//         });
-
-//         return NextResponse.json({
-//             success: true,
-//             message: "Created new category",
-//             data: newCategory,
-//         });
-//     } catch (error) {
-
-//         if (error instanceof z.ZodError) {
-//             return NextResponse.json(
-//                 { error: error.errors[0].message },
-//                 { status: 400 }
-//             );
-//         }
-
-//         return NextResponse.json({
-//             data: null,
-//             success: false,
-//             message: `create category: Internal Error:  ${error}`
-//         }, { status: 500 }
-//         )
-//     }
-// }
+        return NextResponse.json({
+            success: true,
+            message: "collection as been deleted ",
+        });
+    } catch (error) {
+        console.error("[collection DELETED]", error);
+        return NextResponse.json({ error: "Internal Error" }, { status: 500 });
+    }
+}

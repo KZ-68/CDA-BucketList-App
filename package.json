@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "type": "module",
   "dependencies": {
     "@clerk/nextjs": "^6.10.4",
     "@headlessui/react": "^2.2.0",

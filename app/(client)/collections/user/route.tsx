@@ -1,6 +1,16 @@
 import { CollectionType, GoalType } from "@/types/types";
+import { auth, currentUser } from '@clerk/nextjs/server'
 
 export default async function Page() {
+
+    const { userId } = await auth();
+
+    if (!userId) {
+        return <div>Sign in to view this page</div>
+    }
+
+    const user = await currentUser();
+
     const collection = await fetchUserCollection() as CollectionType;
     const goals = collection.goals as GoalType[];
 

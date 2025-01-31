@@ -6,16 +6,16 @@ export default async function Page() {
 
     return (
         <>
-        <h2>{collection.label}</h2>
-        <div>
-            {goals.map((goal) => (
-                <div key={goal.id}>
-                    <h3>{goal.label}</h3>
-                    <p>{goal.description}</p>
-                    <p>{goal.isAccomplished ? "Done !!" : "X"}</p>
-                </div>
-            ))}
-        </div>
+            <h2>{collection.label}</h2>
+            <div>
+                {goals.map((goal) => (
+                    <div key={goal.id}>
+                        <h3>{goal.label}</h3>
+                        <p>{goal.description}</p>
+                        <p>{goal.isAccomplished ? "Done !!" : "X"}</p>
+                    </div>
+                ))}
+            </div>
         </>
     )
 }

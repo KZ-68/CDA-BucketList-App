@@ -23,6 +23,6 @@ export interface CollectionType {
 }
 export interface CategoryType {
     id: string;
-    label: string
-    goals: GoalType[]
+    label: string;
+    goals: GoalType[];
 }

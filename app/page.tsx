@@ -12,7 +12,7 @@ const Home = () => {
     </div>
 
     <div>
-        <p>See what's on My List</p>
+        <p>See what&apos;s on My List</p>
         <p>Start a New Adventure</p>
         <p>Get inspired by Others</p>
         <p>Track My Progress</p>

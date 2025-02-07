@@ -37,3 +37,7 @@ body {
 .interactive-check-done:checked + label > div {
   background-color: var(--accent-01);
 }
+
+#single-goal-card:has(div > .interactive-goals:checked) > .details-goals {
+  display: block;
+}

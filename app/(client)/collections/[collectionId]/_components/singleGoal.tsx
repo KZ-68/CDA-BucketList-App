@@ -2,6 +2,7 @@ import { GoalType } from "@/types/types";
 import { Check } from "./Check";
 import Image from "next/image";
 import threeDot from "/public/three_dot.svg";
+import { Divider } from "./Divider";
 
 interface SingleGoalProps {
     goal: GoalType;
@@ -23,9 +24,12 @@ export function SingleGoal({ goal }: SingleGoalProps) {
 
     return (
         <div
+            id="single-goal-card"
             className={`
+                py-2 px-4 my-4 w-full
+                flex flex-col justify-center
                 bg-[rgba(7,20,39,0.5)] 
-                rounded-r-xl rounded-l-lg py-2 px-4 my-4 w-full h-20
+                rounded-r-xl rounded-l-lg
                 border-l-[2px] border-${getColorPriority(goal.priority || '0')}`
             }
         >
@@ -36,15 +40,21 @@ export function SingleGoal({ goal }: SingleGoalProps) {
                     <label htmlFor={goal.label}>{goal.label}</label>
                 </div>
 
-                <Image
-                    src={threeDot}
-                    alt="three dot icon"
-                    height={18.99}
-                    className='select-none'
-                />
+                <input type="checkbox" id={`${goal.id}-details`} className="hidden interactive-goals" />
+                <label htmlFor={`${goal.id}-details`} className="cursor-pointer">
+                    <Image
+                        src={threeDot}
+                        alt="three dot icon"
+                        height={18.99}
+                        className='select-none'
+                    />
+                </label>
             </div>
-            {/* divider */}
-            {/* <div>
+
+
+            <div className="hidden details-goals">
+                <Divider />
+
                 <div className="flex flex-row justify-between items-center my-4">
                     <h2 className="text-blue-400">{goal.category.label}</h2>
                     <p className={`
@@ -59,7 +69,7 @@ export function SingleGoal({ goal }: SingleGoalProps) {
                 </div>
 
                 <p>{goal.description}</p>
-            </div> */}
+            </div>
         </div>
     )
 }

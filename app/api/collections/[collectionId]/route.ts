@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 type Props = {
     params: Promise<{ collectionId: string }>
@@ -18,11 +19,19 @@ export async function GET(request: NextRequest, { params }: Props) {
             }
         });
 
-        return NextResponse.json({
-            data: collection, //null si erreur
-            message: "Successfully got the collection", // msg d'erreur si erreur
-            success: true, // false si erreur 
-        })
+        if(collection !== null) {
+            return NextResponse.json({
+                data: collection,
+                message: "Successfully got the collection",
+                success: true, 
+            })
+        } else {
+            return NextResponse.json({
+                data: null,
+                message: "Collection not found",
+                success: false,
+            }, { status: 404 })
+        }
 
     } catch (error) {
         console.log("[category]", error)
@@ -30,6 +39,55 @@ export async function GET(request: NextRequest, { params }: Props) {
             data: null,
             success: false,
             message: `category: Internal Error:  ${error}`
+        }, { status: 500 }
+        )
+    }
+}
+
+const editCollectionSchema = z.object({
+    label: z.string().nonempty({ message: "Label is required" }),
+    isPrivate: z.boolean(),
+});
+
+export async function POST(request: NextRequest, { params }: Props) {
+    try {
+        const { collectionId } = await params;
+        const body = await request.json();
+        const { label, isPrivate, userId } = body;
+
+        const collectionData = { label, isPrivate, userId };
+
+        editCollectionSchema.parse(collectionData);
+
+        const newCollection = await db.collection.update({
+            where: {
+                id: collectionId,
+            },
+            data: {
+                label: collectionData.label,
+                isPrivate: collectionData.isPrivate,
+                userId: collectionData.userId,
+            },
+        });
+
+        return NextResponse.json({
+            success: true,
+            message: "Collection Edited !",
+            data: newCollection,
+        });
+    } catch (error) {
+        console.log("[EDIT COLLECTION]", error);
+        if (error instanceof z.ZodError) {
+            return NextResponse.json(
+                { error: error.errors[0].message },
+                { status: 400 }
+            );
+        }
+
+        return NextResponse.json({
+            data: null,
+            success: false,
+            message: `edit collection: Internal Error:  ${error || "nothing"}`
         }, { status: 500 }
         )
     }

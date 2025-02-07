@@ -33,3 +33,7 @@ body {
   background-color: var(--dark-grey);
   color: var(--accent-02);
 }
+
+.interactive-check-done:checked + label > div {
+  background-color: var(--accent-01);
+}

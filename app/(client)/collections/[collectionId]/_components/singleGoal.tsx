@@ -25,11 +25,12 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         <div
             className={`
                 bg-[rgba(7,20,39,0.5)] 
-                rounded-r-xl rounded-l-lg py-2 px-4 my-4 w-full 
-                border-l-[2px] border-${getColorPriority(goal.priority || '0')}`}
+                rounded-r-xl rounded-l-lg py-2 px-4 my-4 w-full h-20
+                border-l-[2px] border-${getColorPriority(goal.priority || '0')}`
+            }
         >
-                    
-            <div className="flex flex-row justify-between items-center">
+
+            <div className="flex flex-row justify-between items-center h-full">
                 <div className="flex items-center">
                     <Check state={goal.isAccomplished} label={goal.label} />
                     <label htmlFor={goal.label}>{goal.label}</label>

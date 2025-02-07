@@ -73,29 +73,3 @@ export async function POST(request: NextRequest) {
         )
     }
 }
-
-// export async function DELETE(request: NextRequest) {
-//     try {
-//         const body = await request.json();
-//         const { userId, cardId } = body;
-
-//         if (!userId || !cardId) {
-//             return NextResponse.json(
-//                 { error: "User ID and Card ID are required" },
-//                 { status: 400 }
-//             );
-//         }
-
-//         await db.learned.delete({
-//             where: { id_user_id_card: { id_user: userId, id_card: cardId } },
-//         });
-
-//         return NextResponse.json({
-//             success: true,
-//             message: "Card marked as unlearned",
-//         });
-//     } catch (error) {
-//         console.error("[UNMARK AS LEARNED]", error);
-//         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
-//     }
-// }

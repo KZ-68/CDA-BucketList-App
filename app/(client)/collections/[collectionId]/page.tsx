@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { SingleGoal } from "./_components/SingleGoal";
 import RoundPlus from "/public/add.svg";
 import Image from "next/image";
+import { Divider } from "./_components/Divider";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -79,14 +80,16 @@ const Page = async ({ params }: {
                     <p className="text-[rgba(255,255,255,0.7)]">New goal</p>
                 </div>
 
-                <div className="flex flex-row items-end gap-4 p-4">
-                    <p className="font-bold">
+                <div className="flex flex-row items-end gap-4 px-4 pt-4">
+                    <p className="font-bold text-xl">
                         {accomplishedGoals}/
                         <span className="text-[#C6E8AA]">{goals.length}</span>
                     </p>
                     <p>Goals</p>
                 </div>
             </div>
+
+            <Divider color="#ffffff" />
 
             <div className="flex flex-row w-36 justify-center items-center text-center my-4 rounded-md bg-slate-800 border-[#071427] border-2">
                 <input type="radio" defaultChecked={collection.isPrivate} value="private" name="privacy" id="private" className="hidden interactive-input-grey" />

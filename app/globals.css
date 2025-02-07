@@ -41,3 +41,8 @@ body {
 #single-goal-card:has(div > .interactive-goals:checked) > .details-goals {
   display: block;
 }
+
+#single-goal-card:has(div > .interactive-goals:checked) {
+  border-left-width: 0px;
+  border-bottom-width: 2px;
+}

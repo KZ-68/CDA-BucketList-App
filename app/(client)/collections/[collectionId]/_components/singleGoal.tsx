@@ -19,21 +19,17 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         }[priority] || "gray-500";
     }
 
-    console.log("Acoompp:", goal.isAccomplished);
-    console.log("Label:", goal.label);
-
     return (
         <div
             id="single-goal-card"
             className={`
-                py-2 px-4 my-4 w-full
+                py-2 px-4 my-2 w-full
                 flex flex-col justify-center
                 bg-[rgba(7,20,39,0.5)] 
                 rounded-r-xl rounded-l-lg
                 border-l-[2px] border-${getColorPriority(goal.priority || '0')}`
             }
         >
-
             <div className="flex flex-row justify-between items-center h-full">
                 <div className="flex items-center">
                     <Check state={goal.isAccomplished} label={goal.label} />
@@ -52,11 +48,11 @@ export function SingleGoal({ goal }: SingleGoalProps) {
             </div>
 
 
-            <div className="hidden details-goals">
+            <div className="hidden details-goals mt-4">
                 <Divider />
 
                 <div className="flex flex-row justify-between items-center my-4">
-                    <h2 className="text-blue-400">{goal.category.label}</h2>
+                    <h2 className="text-[#2CC7E1]">{goal.category.label}</h2>
                     <p className={`
                         border-2 rounded-full size-7 
                         border-${getColorPriority(goal.priority || '0')}

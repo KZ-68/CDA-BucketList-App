@@ -27,6 +27,7 @@ export default {
     'bg-green-300',
     'bg-green-500',
     'bg-gray-500',
+    'bg-[#2CC7E1]'
   ],
   plugins: [],
 } satisfies Config;

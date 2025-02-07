@@ -9,9 +9,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        // background: "var(--background)",
+        // foreground: "var(--foreground)",
+        accentColor: 'var(--accentColor)',
+        secondaryColor: 'var(--secondColor)', 
+        thirdColor: 'var(--thirdColor)', 
+
+        darkGrey: 'var(--darkGrey)',
+        mediumGrey: 'var(--mediumGrey)',
+        lightGrey: 'var(--lightGrey)',
+        neutralWhite: 'var(--whiteColor)',
       },
+      fontFamily: {
+        staatliches: ['var(--font-staatliches)'],
+        exo2: ['var(--font-exo2)'],
+      }
     },
   },
   plugins: [],

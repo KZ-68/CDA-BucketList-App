@@ -1,6 +1,8 @@
 import { CollectionType, GoalType } from "@/types/types";
 import { db } from "@/lib/db";
 import { SingleGoal } from "./_components/SingleGoal";
+import RoundPlus from "/public/add.svg";
+import Image from "next/image";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -31,7 +33,8 @@ const Page = async ({ params }: {
 
             <div
                 className="
-                    w-28 my-4 
+                    w-32 h-8
+                    my-4 
                     flex flex-row justify-center items-center text-center
                     bg-slate-800 
                     border-[#C6E8AA] rounded-md border-2"
@@ -41,7 +44,7 @@ const Page = async ({ params }: {
                 />
                 <label
                     htmlFor="toDo"
-                    className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
+                    className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all text-lg"
                 >
                     To do
                 </label>
@@ -51,7 +54,7 @@ const Page = async ({ params }: {
                 />
                 <label
                     htmlFor="done"
-                    className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
+                    className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all text-lg"
                 >
                     Done
                 </label>
@@ -60,20 +63,27 @@ const Page = async ({ params }: {
             <div className="flex flex-row gap-4 justify-center items-center">
                 <p>Sort by : </p>
                 <select className="bg-[#506382] outline-none p-1">
-                    <option value="date">Date</option>
+                    <option value="date">Priority</option>
                     <option value="label">Label</option>
                 </select>
             </div>
 
             <div className="flex flex-row gap-4">
-                <div className="flex flex-row gap-4 p-4">
-                    <i className="border-white border-2 rounded-full h-5 w-5 flex justify-center items-center">+</i>
-                    <p>New goal</p>
+                <div className="flex flex-row items-center gap-4 p-4">
+                    <Image
+                        src={RoundPlus}
+                        alt="Round plus icon"
+                        height={33}
+                        className='select-none'
+                    />
+                    <p className="text-[rgba(255,255,255,0.7)]">New goal</p>
                 </div>
 
-                <div className="flex flex-row gap-4 p-4">
-                    {accomplishedGoals} /
-                    {goals.length}
+                <div className="flex flex-row items-end gap-4 p-4">
+                    <p className="font-bold">
+                        {accomplishedGoals}/
+                        <span className="text-[#C6E8AA]">{goals.length}</span>
+                    </p>
                     <p>Goals</p>
                 </div>
             </div>

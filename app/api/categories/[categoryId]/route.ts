@@ -19,11 +19,19 @@ export async function GET(request: NextRequest, { params }: Props) {
             }
         });
 
-        return NextResponse.json({
-            data: category, //null si erreur
-            message: "Successfully got the category", // msg d'erreur si erreur
-            success: true, // false si erreur 
-        })
+        if(category !== null) {
+            return NextResponse.json({
+                data: category,
+                message: "Successfully got the category",
+                success: true, 
+            })
+        } else {
+            return NextResponse.json({
+                data: null,
+                message: "Category not found",
+                success: false,
+            }, { status: 404 })
+        }
 
     } catch (error) {
         console.log("[category]", error)

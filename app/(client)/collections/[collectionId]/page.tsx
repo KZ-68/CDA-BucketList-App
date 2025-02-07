@@ -7,11 +7,9 @@ interface fetchResponse {
     goals: GoalType[]
 }
 
-export default async function Page({
-    params,
-}: {
+const Page = async ({ params }: {
     params: { collectionId: string };
-}) {
+}) => {
 
     // const { userId } = await auth();
 
@@ -31,28 +29,28 @@ export default async function Page({
         <div className="p-2 flex flex-col justify-center items-center bg-[#22324C]">
             <h1 className="text-5xl text-center">{collection.label}</h1>
 
-            <div 
+            <div
                 className="
                     w-28 my-4 
                     flex flex-row justify-center items-center text-center
                     bg-slate-800 
                     border-[#C6E8AA] rounded-md border-2"
             >
-                <input type="radio" defaultChecked value={"toDo"} name="hasAccomplish" id="toDo" 
-                    className="hidden interactive-input-color" 
+                <input type="radio" defaultChecked value={"toDo"} name="hasAccomplish" id="toDo"
+                    className="hidden interactive-input-color"
                 />
-                <label 
-                    htmlFor="toDo" 
+                <label
+                    htmlFor="toDo"
                     className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
                 >
                     To do
                 </label>
 
-                <input type="radio" value={"done"} name="hasAccomplish" id="done" 
-                    className="hidden interactive-input-color" 
+                <input type="radio" value={"done"} name="hasAccomplish" id="done"
+                    className="hidden interactive-input-color"
                 />
-                <label 
-                    htmlFor="done" 
+                <label
+                    htmlFor="done"
                     className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
                 >
                     Done
@@ -82,15 +80,15 @@ export default async function Page({
 
             <div className="flex flex-row w-36 justify-center items-center text-center my-4 rounded-md bg-slate-800 border-[#071427] border-2">
                 <input type="radio" defaultChecked={collection.isPrivate} value="private" name="privacy" id="private" className="hidden interactive-input-grey" />
-                <label 
-                    htmlFor="private" 
+                <label
+                    htmlFor="private"
                     className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
                 >
                     Private
                 </label>
 
                 <input type="radio" defaultChecked={!collection.isPrivate} value="public" name="privacy" id="public" className="hidden interactive-input-grey" />
-                <label 
+                <label
                     htmlFor="public"
                     className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
                 >
@@ -98,10 +96,14 @@ export default async function Page({
                 </label>
             </div>
 
-            {goals.map((goal) => SingleGoal(goal))}
+            {goals.map((goal) =>
+                <SingleGoal goal={goal} key={goal.id} />
+            )}
         </div>
     )
 }
+
+export default Page;
 
 async function fetchUserCollection(collectionId: string) {
     const response = await fetch(`http://localhost:3000/api/collections/${collectionId}`);
@@ -113,6 +115,9 @@ async function fetchUserCollection(collectionId: string) {
         },
         include: {
             category: true
+        },
+        orderBy: {
+            priority: 'desc'
         }
     });
 

@@ -19,11 +19,19 @@ export async function GET(request: NextRequest, { params }: Props) {
             }
         });
 
-        return NextResponse.json({
-            data: collection, //null si erreur
-            message: "Successfully got the collection", // msg d'erreur si erreur
-            success: true, // false si erreur 
-        })
+        if(collection !== null) {
+            return NextResponse.json({
+                data: collection,
+                message: "Successfully got the collection",
+                success: true, 
+            })
+        } else {
+            return NextResponse.json({
+                data: null,
+                message: "Collection not found",
+                success: false,
+            }, { status: 404 })
+        }
 
     } catch (error) {
         console.log("[category]", error)
@@ -64,12 +72,11 @@ export async function POST(request: NextRequest, { params }: Props) {
 
         return NextResponse.json({
             success: true,
-            message: "Created new collection",
+            message: "Collection Edited !",
             data: newCollection,
         });
     } catch (error) {
-        // console.log("[CREATE COLLECTION]", error);
-
+        console.log("[EDIT COLLECTION]", error);
         if (error instanceof z.ZodError) {
             return NextResponse.json(
                 { error: error.errors[0].message },
@@ -80,7 +87,7 @@ export async function POST(request: NextRequest, { params }: Props) {
         return NextResponse.json({
             data: null,
             success: false,
-            message: `create collection: Internal Error:  ${error || "nothing"}`
+            message: `edit collection: Internal Error:  ${error || "nothing"}`
         }, { status: 500 }
         )
     }

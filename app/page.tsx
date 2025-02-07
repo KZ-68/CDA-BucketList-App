@@ -1,21 +1,42 @@
 
-// import Image from "next/image";
-import React from 'react'
+
+import React from 'react';
+import MenuItem from "@/components/MenuItem";
+import { HiOutlineChartBarSquare } from "react-icons/hi2";
+import { RiLightbulbFill, RiCompass3Fill } from "react-icons/ri";
+import { LuLayoutList } from "react-icons/lu";
+
 
 const Home = () => {
   return (
     <>
     <div className='flex flex-col items-center justify-center'>
-      <h1 className='text-5xl'>Bucket list ✨</h1>
-      <p className='text-xl'>Things to do before you die 💀 </p>
-      <p className='text-xs'>Hurry up</p>
+      <h1 className='text-5xl'>WELCOME</h1>
+      <p className='text-xl'>Username </p>
     </div>
 
-    <div>
-        <p>See what&apos;s on My List</p>
-        <p>Start a New Adventure</p>
-        <p>Get inspired by Others</p>
-        <p>Track My Progress</p>
+    <div> </div>
+    <div className='flex flex-col gap-5'>
+      <MenuItem
+        text="See What's on My List"
+        color="accentColor"
+        icon={LuLayoutList}
+      />
+      <MenuItem
+        text="Start a New Adventure"
+        color="secondColor"
+        icon={RiCompass3Fill}
+      />
+      <MenuItem
+        text="Get Inspired by Others"
+        color="thirdColor"
+        icon={RiLightbulbFill}
+      />
+      <MenuItem
+        text="Track My Progress"
+        color="neutralWhite"
+        icon={HiOutlineChartBarSquare}
+      />
     </div>
     
     </>

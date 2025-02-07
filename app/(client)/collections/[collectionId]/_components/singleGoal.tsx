@@ -1,34 +1,55 @@
 import { GoalType } from "@/types/types";
+import { Check } from "./Check";
+import Image from "next/image";
+import threeDot from "/public/three_dot.svg";
 
-export function SingleGoal(goal: GoalType) {
+interface SingleGoalProps {
+    goal: GoalType;
+}
+
+export function SingleGoal({ goal }: SingleGoalProps) {
     const getColorPriority = (priority: number | string) => {
         return {
-            1: "bg-red-500 border-red-500",
-            2: "bg-orange-500 border-orange-500",
-            3: "bg-yellow-500 border-yellow-500",
-            4: "bg-green-300 border-green-300",
-            5: "bg-green-500 border-green-500",
-        }[priority] || "bg-gray-500 border-gray-500";
+            1: "red-500",
+            2: "orange-500",
+            3: "yellow-500",
+            4: "green-300",
+            5: "green-500",
+        }[priority] || "gray-500";
     }
 
+    console.log("Acoompp:", goal.isAccomplished);
+    console.log("Label:", goal.label);
 
     return (
-        <div className="bg-gray-900 rounded-xl py-2 px-4 my-4 w-full">
+        <div
+            className={`
+                bg-[rgba(7,20,39,0.5)] 
+                rounded-r-xl rounded-l-lg py-2 px-4 my-4 w-full 
+                border-l-[2px] border-${getColorPriority(goal.priority || '0')}`}
+        >
+                    
             <div className="flex flex-row justify-between items-center">
-                <div className="flex gap-2 items-center justify-start">
-                    <input type="checkbox" defaultChecked={goal.isAccomplished} value="done" id={goal.label} />
+                <div className="flex items-center">
+                    <Check state={goal.isAccomplished} label={goal.label} />
                     <label htmlFor={goal.label}>{goal.label}</label>
                 </div>
 
-                <i>...</i>
+                <Image
+                    src={threeDot}
+                    alt="three dot icon"
+                    height={18.99}
+                    className='select-none'
+                />
             </div>
             {/* divider */}
-            <div>
+            {/* <div>
                 <div className="flex flex-row justify-between items-center my-4">
                     <h2 className="text-blue-400">{goal.category.label}</h2>
                     <p className={`
-                        border-2 rounded-full 
-                        size-7 ${getColorPriority(goal.priority || "0")}
+                        border-2 rounded-full size-7 
+                        border-${getColorPriority(goal.priority || '0')}
+                        bg-${getColorPriority(goal.priority || "0")}
                         flex justify-center items-center 
                         text-black`}
                     >
@@ -37,7 +58,7 @@ export function SingleGoal(goal: GoalType) {
                 </div>
 
                 <p>{goal.description}</p>
-            </div>
+            </div> */}
         </div>
     )
 }

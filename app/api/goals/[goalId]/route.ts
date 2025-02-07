@@ -6,6 +6,41 @@ type Props = {
     params: Promise<{ goalId: string }>
 }
 
+export async function GET(request: NextRequest, { params }: Props) {
+    try {
+        const { goalId } = await params;
+
+        const goal = await db.goal.findUnique({
+            where: {
+                id: goalId
+            },
+        });
+
+        if(goal !== null) {
+            return NextResponse.json({
+                data: goal,
+                message: "Successfully got the goal",
+                success: true, 
+            })
+        } else {
+            return NextResponse.json({
+                data: null,
+                message: "Goal not found",
+                success: false,
+            }, { status: 404 })
+        }
+
+    } catch (error) {
+        console.log("[goal]", error)
+        return NextResponse.json({
+            data: null,
+            success: false,
+            message: `goal: Internal Error:  ${error}`
+        }, { status: 500 }
+        )
+    }
+}
+
 const editGoalSchema = z.object({
     label: z.string().nonempty({ message: "Label is required" }),
     description: z.string().optional(),

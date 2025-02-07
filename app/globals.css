@@ -5,6 +5,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --dark-grey: #071427;
+  --accent-01 : #C6E8AA;
+  --accent-02 : #2CC7E1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,4 +22,14 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.interactive-input-color:checked + label {
+  background-color: var(--accent-01);
+  color: var(--dark-grey);
+}
+
+.interactive-input-grey:checked + label {
+  background-color: var(--dark-grey);
+  color: var(--accent-02);
 }

@@ -12,7 +12,7 @@ export default {
         // background: "var(--background)",
         // foreground: "var(--foreground)",
         accentColor: 'var(--accentColor)',
-        secondaryColor: 'var(--secondColor)', 
+        secondColor: 'var(--secondColor)', 
         thirdColor: 'var(--thirdColor)', 
 
         darkGrey: 'var(--darkGrey)',

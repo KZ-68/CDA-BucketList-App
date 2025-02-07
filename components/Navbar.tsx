@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { GoHomeFill,  } from "react-icons/go"
-import { CiViewList } from "react-icons/ci";
+// import { CiViewList } from "react-icons/ci";
 import { HiOutlineChartBarSquare } from "react-icons/hi2";
 import { LuPlus } from "react-icons/lu";
+import { LuLayoutList } from "react-icons/lu";
 
 export default function Navbar() {
     return (
@@ -14,7 +15,7 @@ export default function Navbar() {
                 <GoHomeFill />
             </Link>
             <Link href="/collections/user" className="text-2xl hover:text-accentColor">
-                <CiViewList />
+                <LuLayoutList />
             </Link>
             <Link href="#" className="text-2xl bg-accentColor text-darkGrey rounded-[50%] p-3 hover:bg-thirdColor">
                 <LuPlus />

@@ -1,6 +1,6 @@
 import { CollectionType, GoalType } from "@/types/types";
-import { singleGoal } from "./_components/singleGoal";
 import { db } from "@/lib/db";
+import { SingleGoal } from "./_components/singleGoal";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -24,21 +24,30 @@ export default async function Page({
     const { collectionId } = await params;
 
     const { collection, goals } = await fetchUserCollection(collectionId) as fetchResponse;
+
+    const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
+
     return (
-        <div className="p-2">
-            <h2>{`${collection.label} :`}</h2>
+        <div className="p-2 flex flex-col justify-center items-center">
+            <h1 className="text-5xl text-center">{collection.label}</h1>
 
-            <div>
-                <input type="radio" value={"toDo"} name="hasAccomplish" id="toDo" />
-                <label htmlFor="toDo">To do</label>
+            <div 
+                className="
+                    w-28 my-4 
+                    flex flex-row justify-center items-center text-center
+                    bg-slate-800 
+                    border-[#C6E8AA] rounded-md border-2"
+            >
+                <input type="radio" value={"toDo"} name="hasAccomplish" id="toDo" className="hidden interactive-input-color" />
+                <label htmlFor="toDo" className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all">To do</label>
 
-                <input type="radio" value={"done"} name="hasAccomplish" id="done" />
-                <label htmlFor="done">Done</label>
+                <input type="radio" value={"done"} name="hasAccomplish" id="done" className="hidden interactive-input-color" />
+                <label htmlFor="done" className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all">Done</label>
             </div>
 
-            <div>
+            <div className="flex flex-row gap-4 justify-center items-center">
                 <p>Sort by : </p>
-                <select>
+                <select className="bg-slate-800 outline-none p-1">
                     <option value="date">Date</option>
                     <option value="label">Label</option>
                 </select>
@@ -51,23 +60,21 @@ export default async function Page({
                 </div>
 
                 <div className="flex flex-row gap-4 p-4">
-                    {goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0)} /
+                    {accomplishedGoals} /
                     {goals.length}
                     <p>Goals</p>
                 </div>
-
             </div>
 
+            <div className="flex flex-row w-36 justify-center items-center text-center my-4 rounded-md bg-slate-800 border-[#071427] border-2">
+                <input type="radio" value="private" name="privacy" id="private" className="hidden interactive-input-grey" />
+                <label htmlFor="private" className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all">Private</label>
 
-            <div>
-                <input type="radio" value="private" name="privacy" id="private" />
-                <label htmlFor="private">Private</label>
-
-                <input type="radio" value="public" name="privacy" id="public" />
-                <label htmlFor="public">Public</label>
+                <input type="radio" value="public" name="privacy" id="public" className="hidden interactive-input-grey" />
+                <label htmlFor="public" className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all">Public</label>
             </div>
 
-            {goals.map((goal) => singleGoal(goal))}
+            {goals.map((goal) => SingleGoal(goal))}
         </div>
     )
 }

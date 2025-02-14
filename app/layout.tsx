@@ -32,11 +32,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${mainFont} ${secondaryFont} antialiased`}
+
       >
         <header>
           <Navbar />
         </header>
-        <main className="py-12 px-8  tracking-wide">
+        <main className="py-12 px-8  tracking-wide md:pt-[150px]">
           {children}
         </main>
       </body>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth, useUser } from "@clerk/nextjs";
 import CollectionItem from "@/components/CollectionItem";
+import PageTitle from "@/components/PageTitle";
 
 interface Collection {
     label: string;
@@ -34,7 +35,7 @@ const CollectionsPage = () => {
     return (
       <>
         {/* <h1>Hello {user?.username || 'User'}</h1> */}
-        <h2>MY COLLECTIONS </h2>
+        <PageTitle title=' my collections' />
 
         <div className='text-lg'>
           <div className='flex flex-col gap-3 mb-6 '>
@@ -55,7 +56,7 @@ const CollectionsPage = () => {
           </div>
         </div>
 
-        <h2>EXEMPLE COMPONENT</h2>
+        <h2 className=''>EXEMPLE COMPONENT</h2>
         <div>
           <CollectionItem />
         </div>

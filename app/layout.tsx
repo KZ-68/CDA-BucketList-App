@@ -31,7 +31,7 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en">
       <body
-        className={`h-full  ${mainFont} ${secondaryFont} antialiased`}
+        className={`h-screen  ${mainFont} ${secondaryFont} antialiased`}
       >
         <header>
           <Navbar />

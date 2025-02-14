@@ -10,10 +10,10 @@ const NewCollectionPage = () => {
     return (
     <>
         {formState?.success === true && (
-            <p id="success" className='bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><CheckCircle2 className='flex flex-row gap-2 text-white bg-green-700 rounded-full'/>{formState?.message}</p>
+            <p id="success" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><CheckCircle2 className='flex flex-row gap-2 text-white bg-green-700 rounded-full'/>{formState?.message}</p>
         )}
         {formState?.success === false && (
-            <p id="error" className='bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><XCircleIcon className='text-white bg-red-600 rounded-full'/>{formState?.message}</p>
+            <p id="error" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><XCircleIcon className='text-white bg-red-600 rounded-full'/>{formState?.message}</p>
         )}
         <h1 className='text-2xl my-3 text-white'>New Collection</h1>
         <div className='flex flex-col my-6 py-8 px-6 mx-80 rounded-lg bg-slate-800'>

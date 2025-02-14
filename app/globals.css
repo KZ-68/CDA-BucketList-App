@@ -9,13 +9,30 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* --background: #0a0a0a;
+    --foreground: #ededed; */
+
+    --accentColor: #C6E8AA ;
+    --secondColor: #2CC7E1; 
+    --thirdColor: #CCBED7 ; 
+
+    --darkGrey: #071427 ;
+    --mediumGrey: #22324C;
+    --lightGrey: #7B889D ;
+    --neutralWhite: #EDFAFF;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--neutralWhite);
+  background: var(--mediumGrey);
+  font-family: var(--font-main);
+}
+
+.main-font {
+  font-family: var(--font-main);
+}
+
+.secondary-font {
+  font-family: var(--font-secondary);
 }

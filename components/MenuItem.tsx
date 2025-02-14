@@ -16,7 +16,7 @@ interface MenuItemProps {
         >
           <Icon />
         </div>
-        <div className="w-full flex items-center justify-end pr-24 text-lg">
+        <div className="w-full flex items-center justify-end pr-24 text-lg pl-4">
           <p>{text}</p>
         </div>
       </div>

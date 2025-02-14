@@ -21,7 +21,7 @@ export default function Navbar() {
             <Link href="#" className="text-2xl bg-accentColor text-darkGrey rounded-[50%] p-3 hover:bg-thirdColor">
                 <LuPlus />
             </Link>
-            <Link href="#" className="text-2xl hover:text-accentColor">
+            <Link href="/progress" className="text-2xl hover:text-accentColor">
                 <HiOutlineChartBarSquare />
             </Link>
             <div className="flex flex-row-reverse items-center">
@@ -55,7 +55,7 @@ export default function Navbar() {
                     <p>My collections </p>
                 </Link>
 
-                <Link href="#" className="text-2xl hover:text-accentColor">
+                <Link href="/progress" className="text-2xl hover:text-accentColor">
                     My Progress
                 </Link>
                 <div className="flex flex-row-reverse items-center">

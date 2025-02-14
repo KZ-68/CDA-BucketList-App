@@ -31,13 +31,12 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en">
       <body
-        className={`${mainFont} ${secondaryFont} antialiased`}
-
+        className={`h-full  ${mainFont} ${secondaryFont} antialiased`}
       >
         <header>
           <Navbar />
         </header>
-        <main className="py-12 px-8  tracking-wide md:pt-[150px]">
+        <main className="py-12 pb-44 px-8  tracking-wide md:pt-24 md:w-3/4 m-auto">
           {children}
         </main>
       </body>

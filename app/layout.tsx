@@ -32,6 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${mainFont} ${secondaryFont} antialiased`}
+
       >
         <header>
           <Navbar />

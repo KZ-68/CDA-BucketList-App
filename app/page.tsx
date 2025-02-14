@@ -52,7 +52,7 @@ const Home = () => {
     <>
     <div className='flex flex-col justify-center text-6xl tracking-wider mb-10'>
       <h1 className='text-6xl font-secondary mb-2'>WELCOME,</h1>
-      <p className='text-xl text-[40px] text-thirdColor capitalize font-medium'>{user?.username || 'User'}</p>
+      <p className='text-[40px] text-thirdColor capitalize font-medium'>{user?.username || 'User'}</p>
     </div>
 
     <div className='h-64 w-full mb-16 flex gap-4'>
@@ -87,7 +87,7 @@ const Home = () => {
     </div>
 
     <div> </div>
-    <div className='flex flex-col gap-5'>
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
       <MenuItem
         text="See What's on My List"
         color="accentColor"

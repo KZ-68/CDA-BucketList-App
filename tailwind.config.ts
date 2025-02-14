@@ -9,8 +9,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        // background: "var(--background)",
-        // foreground: "var(--foreground)",
         accentColor: 'var(--accentColor)',
         secondColor: 'var(--secondColor)', 
         thirdColor: 'var(--thirdColor)', 
@@ -19,6 +17,8 @@ export default {
         mediumGrey: 'var(--mediumGrey)',
         lightGrey: 'var(--lightGrey)',
         neutralWhite: 'var(--whiteColor)',
+
+        gradientBg : 'var(--gradientBg)',
       },
       fontFamily: {
         main: ['var(--font-main)'], // Exo 2

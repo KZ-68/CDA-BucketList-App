@@ -21,8 +21,8 @@ export default {
         neutralWhite: 'var(--whiteColor)',
       },
       fontFamily: {
-        staatliches: ['var(--font-staatliches)'],
-        exo2: ['var(--font-exo2)'],
+        main: ['var(--font-main)'], // Exo 2
+        secondary: ['var(--font-secondary)'], // Staatliches
       }
     },
   },

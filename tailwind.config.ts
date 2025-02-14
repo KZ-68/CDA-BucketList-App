@@ -14,6 +14,7 @@ export default {
         thirdColor: 'var(--thirdColor)', 
 
         darkGrey: 'var(--darkGrey)',
+        darkGreylowOpacity: 'var(--darkGreyLowOpacity)',
         mediumGrey: 'var(--mediumGrey)',
         lightGrey: 'var(--lightGrey)',
         neutralWhite: 'var(--whiteColor)',

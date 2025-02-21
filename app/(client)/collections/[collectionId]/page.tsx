@@ -47,7 +47,7 @@ async function isOwnerLogged(collecId: string) {
     const loggedUserId = Auth.userId;
     console.log("loggedUSer : ", loggedUserId);
 
-    if (!loggedUserId) return false;
+    if (!loggedUserId) return redirect("/login");
 
     const isOwner = collection.userId === loggedUserId;
 

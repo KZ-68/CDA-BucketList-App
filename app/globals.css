@@ -13,8 +13,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --background: #0a0a0a;
-    --foreground: #ededed; */
+    --background: #22324C;
+    --foreground: #ededed;
 
     --accentColor: #C6E8AA ;
     --secondColor: #2CC7E1; 
@@ -47,10 +47,6 @@ body {
 .interactive-input-grey:checked + label {
   background-color: var(--dark-grey);
   color: var(--accent-02);
-
-  color: var(--neutralWhite);
-  background: var(--gradientBg);
-  font-family: var(--font-main);
 }
 
 .main-font {

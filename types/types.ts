@@ -1,18 +1,28 @@
-interface GoalType {
+export interface GoalType {
     id: string;
     label: string;
     collection: CollectionType
     category: CategoryType
+    description?: string;
+    createdAt: Date;
+    updatedAt: Date;
+    isAccomplished: boolean;
+    priority?: number;
+    collectionId: string;
+    categoryId: string;
 }
  
-interface CollectionType {
+export interface CollectionType {
     id: string;
     label: string
-    goals: GoalType[]
+    isPrivate: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+    goals: GoalType[];
 }
- 
-interface CategoryType {
+export interface CategoryType {
     id: string;
-    label: string
-    goals: GoalType[]
+    label: string;
+    goals: GoalType[];
 }

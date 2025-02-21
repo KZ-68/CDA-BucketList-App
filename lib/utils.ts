@@ -15,3 +15,20 @@ export const slugify = (str: string) => {
 export const pageLocation = () => {
     return window.location;
 }
+
+import { Exo, Staatliches } from "next/font/google";
+
+const exo2_init = Exo({ 
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-main',
+});
+
+const staatliches_init = Staatliches({ 
+  subsets: ["latin"],
+  weight: ['400'],
+  variable: '--font-secondary',
+});
+
+export const mainFont = exo2_init.variable; 
+export const secondaryFont = staatliches_init.variable;

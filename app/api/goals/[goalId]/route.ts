@@ -79,8 +79,16 @@ export async function POST(request: NextRequest, { params }: Props) {
                 description: goalData.description,
                 isAccomplished: goalData.isAccomplished,
                 priority: goalData.priority,
-                collectionId: goalData.collectionId,
-                categoryId: goalData.categoryId
+                collection: {
+                    connect: {
+                      id: goalData.collectionId,
+                    },
+                },
+                category: {
+                    connect: {
+                        id: goalData.categoryId
+                    }
+                }
             },
         });
 
@@ -90,8 +98,12 @@ export async function POST(request: NextRequest, { params }: Props) {
             data: newGoal,
         });
     } catch (error) {
-        console.log("[EDIT GOAL]", error);
+        if (error instanceof Error) {
+            console.log("[GOAL]", error.stack);
+        }
+        
         if (error instanceof z.ZodError) {
+            console.log("[GOAL]", error.stack);
             return NextResponse.json(
                 { error: error.errors[0].message },
                 { status: 400 }

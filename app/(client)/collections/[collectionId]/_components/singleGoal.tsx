@@ -3,6 +3,7 @@ import { Check } from "./Check";
 import Image from "next/image";
 import threeDot from "/public/three_dot.svg";
 import { Divider } from "./Divider";
+import { db } from "@/lib/db";
 
 interface SingleGoalProps {
     goal: GoalType;
@@ -19,6 +20,12 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         }[priority] || "gray-500";
     }
 
+    async function changeState() {
+        "use server";
+        await fetchToggleGoal(goal.id);
+        return;
+    }
+
     return (
         <div
             id="single-goal-card"
@@ -32,7 +39,7 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         >
             <div className="flex flex-row justify-between items-center h-full">
                 <div className="flex items-center">
-                    <Check state={goal.isAccomplished} label={goal.label} />
+                    <Check state={goal.isAccomplished} label={goal.label} changeState={changeState} />
                     <label htmlFor={goal.label}>{goal.label}</label>
                 </div>
 
@@ -68,4 +75,25 @@ export function SingleGoal({ goal }: SingleGoalProps) {
             </div>
         </div>
     )
+}
+
+async function fetchToggleGoal(goalId: string) {
+    const currentGoal = await db.goal.findUnique({
+        where: {
+            id: goalId
+        }
+    });
+
+    if (!currentGoal) return null;
+
+    const goal = await db.goal.update({
+        where: {
+            id: goalId
+        },
+        data: {
+            isAccomplished: !currentGoal.isAccomplished
+        }
+    });
+
+    return goal;
 }

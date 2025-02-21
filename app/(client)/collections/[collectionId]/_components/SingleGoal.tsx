@@ -3,14 +3,15 @@ import { Check } from "./Check";
 import Image from "next/image";
 import threeDot from "/public/three_dot.svg";
 import { Divider } from "./Divider";
-import { db } from "@/lib/db";
 
 
 interface SingleGoalProps {
     goal: GoalType;
+    isOwner: boolean;
+    fetchToggleGoal: (goalId: string) => Promise<void>;
 }
 
-export function SingleGoal({ goal }: SingleGoalProps) {
+export function SingleGoal({ goal, isOwner, fetchToggleGoal }: SingleGoalProps) {
     const getColorPriority = (priority: number | string) => {
         return {
             1: "red-500",
@@ -39,7 +40,7 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         >
             <div className="flex flex-row justify-between items-center h-full">
                 <div className="flex items-center">
-                    <Check state={goal.isAccomplished} label={goal.label} changeState={changeState} />
+                    <Check state={goal.isAccomplished} isOwner={isOwner} label={goal.label} changeState={changeState} />
                     <label htmlFor={goal.label}>{goal.label}</label>
                 </div>
 
@@ -78,23 +79,4 @@ export function SingleGoal({ goal }: SingleGoalProps) {
 }
 
 
-async function fetchToggleGoal(goalId: string) {
-    const currentGoal = await db.goal.findUnique({
-        where: {
-            id: goalId
-        }
-    });
 
-    if (!currentGoal) return null;
-
-    const goal = await db.goal.update({
-        where: {
-            id: goalId
-        },
-        data: {
-            isAccomplished: !currentGoal.isAccomplished
-        }
-    });
-
-    return goal;
-}

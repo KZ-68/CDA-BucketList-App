@@ -7,7 +7,6 @@ import { Divider } from "./_components/Divider";
 import { TogglePrivacy } from "./_components/TogglePrivacy";
 import { redirect } from "next/navigation";
 import { SortElement } from "./_components/SortElement";
-import { Suspense } from "react";
 import { headers } from "next/headers";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
 

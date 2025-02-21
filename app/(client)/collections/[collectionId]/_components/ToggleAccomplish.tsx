@@ -13,7 +13,7 @@ interface Props {
     ) => void;
 }
 
-export function ToggleAccomplish({ isAccomplished, ToggleCollection }: Props) {
+export function ToggleAccomplish({ ToggleCollection }: Props) {
     const currentSearchParams = {
         pathname: usePathname(),
         searchParams: useSearchParams()

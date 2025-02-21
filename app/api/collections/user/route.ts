@@ -23,15 +23,27 @@ export async function GET(request: NextRequest) {
             include: {
                 _count: {
                     select: { goals: true }
+                },
+                goals : {
+                    select : {isAccomplished: true}
                 }
             }
         });
-        // return NextResponse.json(cards);
+        
+        const collectionsWithAccomplishedGoals = collections.map(collection => {
+            const accomplishedGoals = collection.goals.filter(goal => goal.isAccomplished).length;
+            return {
+                ...collection,
+                accomplishedGoals
+            }
+        });
+           
         return NextResponse.json({
-            data: collections, 
+            data: collectionsWithAccomplishedGoals, 
             message: "Succesfully send the collections", 
             success: true, 
         })
+
         
     } catch (error) {
         console.log("[MY_COLLECTIONS]", error)

@@ -26,9 +26,18 @@ export async function GET(request: NextRequest, { params }: Props) {
             include: {
                 _count: {
                     select: { goals: true }
-                }
+                },
             }
         });
+
+        const lastGoalAccomplished = await db.goal.findMany({
+            where: {
+                collection: {
+                    userId: userId
+                },
+                isAccomplished:true
+            }
+        })
 
         const totalAccomplishedGoals = await db.goal.count({
             where: {
@@ -39,6 +48,60 @@ export async function GET(request: NextRequest, { params }: Props) {
             }
         });
 
+        const notAccomplished = await db.goal.count({
+            where: {
+                collection: {
+                    userId: userId
+                },
+                isAccomplished: false,
+            },
+        })
+
+        const skip = Math.floor((notAccomplished) * Math.random());
+
+        const goalSuggestion = await db.goal.findMany({
+            where: {
+                collection: {
+                    userId: userId
+                },
+                isAccomplished: false,
+            },
+            "take": 1,
+            "skip": skip
+        })
+
+        const collectionsNotStarted = await db.collection.count({  
+            where : {
+                userId: userId,
+                goals: {
+                    every: {
+                        isAccomplished:false
+                    }
+                }
+            }
+        });
+
+        const collectionsCompleted = await db.collection.count({  
+            where : {
+                userId: userId,
+                goals: {
+                    every: {
+                        isAccomplished:true
+                    }
+                }
+            }
+        });
+
+        const collectionsInProgress = await db.collection.count({
+            where: {
+                userId: userId,
+                goals: {
+                    some: {
+                        isAccomplished:true
+                    }
+                }
+            }
+        })
 
         // calcul du nb de collections
         const totalCollections = collections.length || 0;
@@ -46,12 +109,20 @@ export async function GET(request: NextRequest, { params }: Props) {
         // calcul du total des goals (somme de tous les `_count.goals`)
         const totalGoals = collections.reduce((sum, collection) => sum + (collection._count?.goals || 0), 0);
 
+        const goalsGlobalProgression = totalGoals - totalAccomplishedGoals;
+
         // return NextResponse.json(cards);
         return NextResponse.json({
             data: collections, 
             totalCollections,
             totalGoals,
             totalAccomplishedGoals,
+            lastGoalAccomplished,
+            goalsGlobalProgression,
+            goalSuggestion,
+            collectionsNotStarted,
+            collectionsCompleted,
+            collectionsInProgress,
             message: "Succesfully send the collections", 
             success: true, 
         })

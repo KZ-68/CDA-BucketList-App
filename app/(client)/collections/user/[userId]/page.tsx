@@ -1,4 +1,6 @@
 'use client';
+import { useUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface Collection {
@@ -12,6 +14,10 @@ type Props = {
 }
 
 const CollectionsPage = ({ params }: Props)  => {
+  const { user } = useUser();
+  if(!user) {
+      redirect("/login");
+  }
   const [collections, setCollections] = useState<Collection[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
 

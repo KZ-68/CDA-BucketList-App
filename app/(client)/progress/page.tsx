@@ -7,10 +7,11 @@ import {  useUser } from "@clerk/nextjs";
 import { TbStarsFilled } from "react-icons/tb";
 import { ImStatsBars2 } from "react-icons/im";
 import GlobalProgress from '@/components/GlobalProgress';
+import { redirect } from 'next/navigation';
 
 const ProgressPage = () => {
   const { user } = useUser();
-  const userId = user?.id;
+  const userId = user ? user.id : redirect("/login");
 
   const [lastGoalAccomplishedLabel, setLastGoalAccomplishedLabel] = useState("");
   const [totalGoals, setTotalGoals] = useState(0);

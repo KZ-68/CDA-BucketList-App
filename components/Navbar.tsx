@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         <>
         {/* // Navbar mobile */}
-        <nav className=" fixed md:hidden bottom-0 w-full h-[75px] flex items-center justify-between py-5 px-10 bg-darkGrey text-neutralWhite rounded-[20px_20px_0_0]">
+        <nav className=" z-50 fixed md:hidden bottom-0 w-full h-[75px] flex items-center justify-between py-5 px-10 bg-darkGrey text-neutralWhite rounded-[20px_20px_0_0]">
             
             <Link href="/" className="text-2xl hover:text-accentColor">
                 <GoHomeFill />

@@ -8,9 +8,10 @@ interface CollectionItemProps {
    totalGoal: number;
    achievedGoal: number;
    isPrivate: boolean;
+   id:string
   }
 
-   const CollectionItem = ( { label, achievedGoal, totalGoal, isPrivate }: CollectionItemProps) => {
+   const CollectionItem = ( { label, achievedGoal, totalGoal, isPrivate, id }: CollectionItemProps) => {
 
    let collectionState = "";
    let progression = 0;
@@ -83,7 +84,7 @@ interface CollectionItemProps {
             </div>
             {!isPrivate && (
                <div className="absolute bottom-[5px] right-[10px] text-2xl" style={{color: `var(--${goalTextColor})`}}>
-                  <MdRemoveRedEye />
+                  <a href={`${id}`}><MdRemoveRedEye /></a>
                </div>
             )}
         </div>

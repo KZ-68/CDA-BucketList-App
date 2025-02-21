@@ -13,6 +13,7 @@ interface Collection {
     _count?: {
       goals: number;
     };
+    id: string;
 }
 
 const CollectionsPage = () => {
@@ -72,7 +73,9 @@ const CollectionsPage = () => {
                   label = {collection.label}
                   totalGoal = {collection._count?.goals || 0}
                   achievedGoal= {collection.accomplishedGoals}
-                  isPrivate = {collection.isPrivate} />
+                  isPrivate = {collection.isPrivate} 
+                  id= {collection.id}
+                />
               </div>
             ))
           )}

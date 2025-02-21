@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { SortElement } from "./_components/SortElement";
 import { headers } from "next/headers";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
+import { Metadata, ResolvingMetadata } from "next";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -21,7 +22,31 @@ interface PageProps {
     searchParams: Promise<{ sortBy: string, byAccomplished: string }>
 }
 
+interface DynamicProps {
+    params: Promise<{ collectionId: string }>
+}
 
+
+export async function generateMetadata(
+    { params }: DynamicProps,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    // read route params
+    const collectionId = (await params).collectionId
+
+    // fetch data
+    const product = await fetch(`https://.../${id}`).then((res) => res.json())
+
+    // optionally access and extend (rather than replace) parent metadata
+    const previousImages = (await parent).openGraph?.images || []
+
+    return {
+        title: product.title,
+        openGraph: {
+            images: ['/some-specific-page-image.jpg', ...previousImages],
+        },
+    }
+}
 
 const Page = async ({ params, searchParams }: PageProps) => {
     // const { userId } = await auth();

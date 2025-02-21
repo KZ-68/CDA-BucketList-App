@@ -43,7 +43,7 @@ const EditGoalPage = () => {
     };
 
     const handleChangePriority = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPriority(e.target.valueAsNumber);
+        setPriority(parseInt(e.target.value));
     };
     
     const handler = async (formData:FormData) => {
@@ -70,8 +70,8 @@ const EditGoalPage = () => {
                 <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={description ? description : ""} onChange={handleChangeDescription} type='text-area' name="goal-description" id="goal-description" placeholder="Add a description..." />
                 <label className='text-white text-2xl' htmlFor="label">Priority : </label>
                 <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={priority} onChange={handleChangePriority} type='number' min={0} max={255} name="goal-priority" id="goal-priority" placeholder="0" />
-                <SelectCategory categoryId={categoryId} />
-                <SelectCollection collectionId={collectionId} />
+                <SelectCategory categoryId={categoryId} setCategoryId={setCategoryId} />
+                <SelectCollection collectionId={collectionId} setCollectionId={setCollectionId} />
                 <button className='py-2 px-2 rounded-lg bg-lime-200 text-black font-bold' type='submit'>Update</button>
             </form>
         </div>

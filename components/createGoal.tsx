@@ -2,8 +2,7 @@
 import { auth } from '@clerk/nextjs/server'
 
 export async function createGoal(
-    formData:FormData,
-    collectionId: string | string[] | undefined
+    formData:FormData
 ) {
     const { userId } = await auth()
 
@@ -13,6 +12,7 @@ export async function createGoal(
     const goalDescription = formData.get("goal-description") as string;
     const goalPriority = parseInt((formData.get('goal-priority') as string));
     const goalCategory = formData.get("goal-category") as string;
+    const goalCollection = formData.get("goal-collection") as string;
 
     const bodyForm = ({
         label: goalLabel,
@@ -20,7 +20,7 @@ export async function createGoal(
         priority : goalPriority,
         isAccomplished: false,
         categoryId: goalCategory,
-        collectionId: collectionId,
+        collectionId: goalCollection,
         userId: userId
     })
     

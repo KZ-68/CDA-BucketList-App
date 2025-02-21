@@ -9,6 +9,8 @@ import { redirect } from "next/navigation";
 import { SortElement } from "./_components/SortElement";
 import { headers } from "next/headers";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
+import { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -21,7 +23,37 @@ interface PageProps {
     searchParams: Promise<{ sortBy: string, byAccomplished: string }>
 }
 
+interface DynamicProps {
+    params: Promise<{ collectionId: string }>
+}
 
+
+export async function generateMetadata(
+    { params }: DynamicProps
+): Promise<Metadata> {
+    // read route params
+    const collectionId = (await params).collectionId
+
+    // fetch data
+    const { collection } = await fetchUserCollection(collectionId);
+
+    return { title: collection.label }
+}
+
+async function isOwnerLogged(collecId: string) {
+    const Auth = await auth();
+    const { collection } = await fetchUserCollection(collecId) as fetchResponse;
+
+    const loggedUserId = Auth.userId;
+    console.log("loggedUSer : ", loggedUserId);
+
+    if (!loggedUserId) return false;
+
+    const isOwner = collection.userId === loggedUserId;
+
+    console.log("isOwner : ", isOwner);
+    return isOwner;
+}
 
 const Page = async ({ params, searchParams }: PageProps) => {
     // const { userId } = await auth();
@@ -32,6 +64,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
     // const user = await currentUser();
 
+
     const { collectionId } = await params;
     const { byAccomplished, sortBy } = await searchParams;
 
@@ -39,8 +72,19 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
     const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
 
+    const isOwner = await isOwnerLogged(collectionId);
+    console.log("isOwner : ", isOwner);
+
     return (
-        <div className="p-2 flex flex-col justify-center items-center bg-[#22324C]">
+        <div className=" flex flex-col justify-center items-center bg-[#22324C]">
+            <div>
+                {
+                    !isOwner &&
+                    <p className="text-[#ffaa29] pb-12">
+                        Warning ! Your are not the owner of this collection no edit can be made
+                    </p>
+                }
+            </div>
             <h1 className="text-5xl text-center">{collection.label}</h1>
 
             <div
@@ -87,7 +131,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
             </div>
 
             {goals.map((goal) =>
-                <SingleGoal goal={goal} key={goal.id} />
+                <SingleGoal goal={goal} isOwner={isOwner} key={goal.id} fetchToggleGoal={fetchToggleGoal} />
             )}
         </div>
     )
@@ -97,10 +141,15 @@ export default Page;
 
 async function fetchUserCollection(
     collectionId: string,
-    byAccomplished: string | undefined,
-    sortBy: string | undefined
+    byAccomplished?: string,
+    sortBy?: string
 ) {
-    const response = await fetch(`http://localhost:3000/api/collections/${collectionId}`);
+    const baseUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://cda-bucket-list-app.vercel.app';
+
+    const response = await fetch(`${baseUrl}/api/collections/${collectionId}`);
+
     const data = await response.json();
 
     // Get total goals count for the collection
@@ -128,6 +177,11 @@ async function fetchUserCollection(
 
 async function FetchTogglePrivacy(privacy: string, collectionId: string) {
     "use server";
+
+    const isOwner = await isOwnerLogged(collectionId);
+
+    if (!isOwner) return;
+
     await db.collection.update({
         where: {
             id: collectionId
@@ -178,4 +232,32 @@ async function ToggleCollection(
     const fullPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
     console.log("fullpath : ", fullPath);
     redirect(`${currentSearchParams.pathname}?${searchParams.toString()}`);
+}
+
+async function fetchToggleGoal(goalId: string) {
+    "use server"
+
+    const isOwner = await isOwnerLogged(goalId);
+
+    if (!isOwner) return;
+
+    const currentGoal = await db.goal.findUnique({
+        where: {
+            id: goalId
+        }
+    });
+
+    if (!currentGoal) return;
+
+
+    await db.goal.update({
+        where: {
+            id: goalId
+        },
+        data: {
+            isAccomplished: !currentGoal.isAccomplished
+        }
+    });
+
+    return;
 }

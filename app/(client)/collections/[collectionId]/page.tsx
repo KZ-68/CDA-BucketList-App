@@ -48,9 +48,9 @@ async function isOwnerLogged(collecId: string) {
     console.log("loggedUSer : ", loggedUserId);
 
     if (!loggedUserId) return false;
-    
+
     const isOwner = collection.userId === loggedUserId;
-    
+
     console.log("isOwner : ", isOwner);
     return isOwner;
 }
@@ -74,9 +74,9 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
     const isOwner = await isOwnerLogged(collectionId);
     console.log("isOwner : ", isOwner);
-    
+
     return (
-        <div className=" flex flex-col justify-center items-center bg-[#22324C]">            
+        <div className=" flex flex-col justify-center items-center bg-[#22324C]">
             <div>
                 {
                     !isOwner &&
@@ -236,7 +236,7 @@ async function ToggleCollection(
 
 async function fetchToggleGoal(goalId: string) {
     "use server"
-    
+
     const isOwner = await isOwnerLogged(goalId);
 
     if (!isOwner) return;
@@ -250,7 +250,7 @@ async function fetchToggleGoal(goalId: string) {
     if (!currentGoal) return;
 
 
-    const goal = await db.goal.update({
+    await db.goal.update({
         where: {
             id: goalId
         },

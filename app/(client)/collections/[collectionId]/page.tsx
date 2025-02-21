@@ -28,24 +28,15 @@ interface DynamicProps {
 
 
 export async function generateMetadata(
-    { params }: DynamicProps,
-    parent: ResolvingMetadata
+    { params }: DynamicProps
 ): Promise<Metadata> {
     // read route params
     const collectionId = (await params).collectionId
 
     // fetch data
-    const product = await fetch(`https://.../${id}`).then((res) => res.json())
+    const { collection } = await fetchUserCollection(collectionId);
 
-    // optionally access and extend (rather than replace) parent metadata
-    const previousImages = (await parent).openGraph?.images || []
-
-    return {
-        title: product.title,
-        openGraph: {
-            images: ['/some-specific-page-image.jpg', ...previousImages],
-        },
-    }
+    return { title: collection.label }
 }
 
 const Page = async ({ params, searchParams }: PageProps) => {
@@ -122,10 +113,15 @@ export default Page;
 
 async function fetchUserCollection(
     collectionId: string,
-    byAccomplished: string | undefined,
-    sortBy: string | undefined
+    byAccomplished?: string,
+    sortBy?: string
 ) {
-    const response = await fetch(`http://localhost:3000/api/collections/${collectionId}`);
+    const baseUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://cda-bucket-list-app.vercel.app';
+
+    const response = await fetch(`${baseUrl}/api/collections/${collectionId}`);
+
     const data = await response.json();
 
     // Get total goals count for the collection

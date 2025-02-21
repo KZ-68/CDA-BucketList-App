@@ -9,9 +9,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        accentColor: 'var(--accentColor)',
+        secondColor: 'var(--secondColor)', 
+        thirdColor: 'var(--thirdColor)', 
+
+        darkGrey: 'var(--darkGrey)',
+        darkGreylowOpacity: 'var(--darkGreyLowOpacity)',
+        mediumGrey: 'var(--mediumGrey)',
+        lightGrey: 'var(--lightGrey)',
+        neutralWhite: 'var(--whiteColor)',
+
+        gradientBg : 'var(--gradientBg)',
       },
+      fontFamily: {
+        main: ['var(--font-main)'], // Exo 2
+        secondary: ['var(--font-secondary)'], // Staatliches
+      }
     },
   },
   safelist: [

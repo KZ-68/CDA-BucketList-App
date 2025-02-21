@@ -1,6 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useAuth, useUser } from "@clerk/nextjs";
+import CollectionItem from "@/components/CollectionItem";
+import PageTitle from "@/components/PageTitle";
+import ProgressSection from '@/components/ProgressSection';
+import { PiRocketFill } from "react-icons/pi";
 
 interface Collection {
     label: string;
@@ -12,7 +16,7 @@ interface Collection {
 const CollectionsPage = () => {
     const [collections, setCollections] = useState<Collection[]>([]);
     const { userId } = useAuth(); 
-    const { user } = useUser();
+    // const { user } = useUser();
   
     useEffect(() => {
       if (!userId) return;
@@ -32,8 +36,32 @@ const CollectionsPage = () => {
   
     return (
       <>
-        <h1>Hello {user?.username || 'User'}</h1>
-        <h2>MY COLLECTIONS: </h2>
+        {/* <h1>Hello {user?.username || 'User'}</h1> */}
+        <PageTitle title=' my collections' />
+
+        <div className='text-lg'>
+          <div className='flex flex-col gap-3 mb-6 '>
+            <p>State :</p>
+            <div className='flex gap-2 flex-wrap'>
+              <p className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor'>Completed</p>
+              <p className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor'>In Progress</p>
+              <p className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor'>Not Started</p>
+            </div>
+          </div>
+          <div className='flex flex-col gap-3 mb-14 '>
+            <p>Sort by :</p>
+            <div className='flex gap-2 flex-wrap'>
+              <p className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'>Date</p>
+              <p className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'>Goals</p>
+              <p className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'>Completion</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 className=''>EXEMPLE COMPONENT</h2>
+        <div>
+          <CollectionItem />
+        </div>
   
         <div>
           {collections.length === 0 ? (

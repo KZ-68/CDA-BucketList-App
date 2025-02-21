@@ -4,14 +4,18 @@ import { SingleGoal } from "./_components/SingleGoal";
 import RoundPlus from "/public/add.svg";
 import Image from "next/image";
 import { Divider } from "./_components/Divider";
+import { TogglePrivacy } from "./_components/TogglePrivacy";
+import { redirect } from "next/navigation";
+import { SortElement } from "./_components/SortElement";
 
 interface fetchResponse {
     collection: CollectionType,
     goals: GoalType[]
 }
 
-const Page = async ({ params }: {
+const Page = async ({ params, searchParams }: {
     params: { collectionId: string };
+    searchParams: { isAccomplished?: string; sortBy?: string };
 }) => {
 
     // const { userId } = await auth();
@@ -23,8 +27,9 @@ const Page = async ({ params }: {
     // const user = await currentUser();
 
     const { collectionId } = await params;
+    const { isAccomplished, sortBy } = await searchParams;
 
-    const { collection, goals } = await fetchUserCollection(collectionId) as fetchResponse;
+    const { collection, goals } = await fetchUserCollection(collectionId, isAccomplished, sortBy) as fetchResponse;
 
     const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
 
@@ -40,17 +45,17 @@ const Page = async ({ params }: {
                     bg-slate-800 
                     border-[#C6E8AA] rounded-md border-2"
             >
-                <input type="radio" defaultChecked value={"toDo"} name="hasAccomplish" id="toDo"
+                <input type="radio" defaultChecked={isAccomplished === "todo"} value={"todo"} name="hasAccomplish" id="todo"
                     className="hidden interactive-input-color"
                 />
                 <label
-                    htmlFor="toDo"
+                    htmlFor="todo"
                     className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all text-lg"
                 >
                     To do
                 </label>
 
-                <input type="radio" value={"done"} name="hasAccomplish" id="done"
+                <input type="radio" value={"done"} defaultChecked={isAccomplished === "done"} name="hasAccomplish" id="done"
                     className="hidden interactive-input-color"
                 />
                 <label
@@ -62,11 +67,7 @@ const Page = async ({ params }: {
             </div>
 
             <div className="flex flex-row gap-4 justify-center items-center">
-                <p>Sort by : </p>
-                <select className="bg-[#506382] outline-none p-1">
-                    <option value="date">Priority</option>
-                    <option value="label">Label</option>
-                </select>
+                <SortElement toggleSort={toggleSort} />
             </div>
 
             <div className="flex flex-row gap-4">
@@ -92,21 +93,7 @@ const Page = async ({ params }: {
             <Divider color="#ffffff" />
 
             <div className="flex flex-row w-36 justify-center items-center text-center my-4 rounded-md bg-slate-800 border-[#071427] border-2">
-                <input type="radio" defaultChecked={collection.isPrivate} value="private" name="privacy" id="private" className="hidden interactive-input-grey" />
-                <label
-                    htmlFor="private"
-                    className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
-                >
-                    Private
-                </label>
-
-                <input type="radio" defaultChecked={!collection.isPrivate} value="public" name="privacy" id="public" className="hidden interactive-input-grey" />
-                <label
-                    htmlFor="public"
-                    className="cursor-pointer bg-slate-800 flex-1 rounded-sm transition-all"
-                >
-                    Public
-                </label>
+                <TogglePrivacy collection={collection} togglePrivacy={FetchTogglePrivacy} />
             </div>
 
             {goals.map((goal) =>
@@ -118,21 +105,48 @@ const Page = async ({ params }: {
 
 export default Page;
 
-async function fetchUserCollection(collectionId: string) {
+async function fetchUserCollection(
+    collectionId: string,
+    isAccomplished: string | undefined,
+    sortBy: string | undefined
+) {
     const response = await fetch(`http://localhost:3000/api/collections/${collectionId}`);
     const data = await response.json();
 
     const goals = await db.goal.findMany({
         where: {
-            collectionId: collectionId
+            collectionId: collectionId,
+            isAccomplished: isAccomplished === 'done' ? true : false
         },
         include: {
             category: true
         },
         orderBy: {
-            priority: 'desc'
+            [typeof sortBy === "string" ? sortBy : "priority"]: 'desc'
         }
     });
 
     return { collection: data.data, goals };
+}
+
+async function FetchTogglePrivacy(privacy: string, collectionId: string) {
+    "use server";
+    await db.collection.update({
+        where: {
+            id: collectionId
+        },
+        data: {
+            isPrivate: privacy === 'private' ? true : false
+        }
+    });
+
+    return;
+}
+
+async function toggleSort(sortType: string, currentSearchParams: URLSearchParams) {
+    "use server";
+    const searchParams = new URLSearchParams(currentSearchParams);
+    searchParams.set('sortBy', sortType);
+
+    redirect(`?${searchParams.toString()}`);
 }

@@ -16,6 +16,7 @@ interface fetchResponse {
     totalGoalsCount: number
 }
 
+
 const Page = async ({ params, searchParams }: {
     params: { collectionId: string };
     searchParams: { byAccomplished?: string; sortBy?: string };

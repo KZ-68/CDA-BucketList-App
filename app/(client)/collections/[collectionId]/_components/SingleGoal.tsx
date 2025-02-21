@@ -5,6 +5,7 @@ import threeDot from "/public/three_dot.svg";
 import { Divider } from "./Divider";
 import { db } from "@/lib/db";
 
+
 interface SingleGoalProps {
     goal: GoalType;
 }
@@ -19,7 +20,6 @@ export function SingleGoal({ goal }: SingleGoalProps) {
             5: "green-500",
         }[priority] || "gray-500";
     }
-
     async function changeState() {
         "use server";
         await fetchToggleGoal(goal.id);
@@ -76,6 +76,7 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         </div>
     )
 }
+
 
 async function fetchToggleGoal(goalId: string) {
     const currentGoal = await db.goal.findUnique({

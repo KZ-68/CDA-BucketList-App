@@ -5,12 +5,28 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --dark-grey: #071427;
+  --accent-01 : #C6E8AA;
+  --accent-02 : #2CC7E1;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #22324C;
     --foreground: #ededed;
+
+    --accentColor: #C6E8AA ;
+    --secondColor: #2CC7E1; 
+    --thirdColor: #CCBED7 ; 
+
+    --darkGrey: hsl(216, 70%, 9%) ;
+    --darkGreyLowOpacity: hsl(216, 70%, 9%, 0.7) ;
+    --mediumGrey: #22324C;
+    --lightGrey: #7B889D ;
+    --neutralWhite: #EDFAFF;
+
+    --gradientBg: linear-gradient(180deg, var(--darkGrey) 0%, var(--mediumGrey) 40%);
   }
 }
 
@@ -18,4 +34,42 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.interactive-input-color:checked + label {
+  background-color: var(--accent-01);
+  color: var(--dark-grey);
+}
+
+.interactive-input-grey:checked + label {
+  background-color: var(--dark-grey);
+  color: var(--accent-02);
+
+  color: var(--neutralWhite);
+  background: var(--gradientBg);
+  font-family: var(--font-main);
+}
+
+.main-font {
+  font-family: var(--font-main);
+}
+
+.secondary-font {
+  font-family: var(--font-secondary);
+}
+
+.interactive-check-done:checked + label > div {
+  background-color: var(--accent-01);
+}
+
+#single-goal-card:has(div > .interactive-goals:checked) > .details-goals {
+  display: block;
+}
+
+#single-goal-card:has(div > .interactive-goals:checked) {
+  border-left-width: 0px;
+  border-bottom-width: 2px;
 }

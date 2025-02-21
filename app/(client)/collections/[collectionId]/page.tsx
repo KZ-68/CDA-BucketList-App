@@ -16,12 +16,14 @@ interface fetchResponse {
     totalGoalsCount: number
 }
 
+interface PageProps {
+    params: Promise<{ collectionId: string }>
+    searchParams: Promise<{ sortBy: string, byAccomplished: string }>
+}
 
-const Page = async ({ params, searchParams }: {
-    params: { collectionId: string };
-    searchParams: { byAccomplished?: string; sortBy?: string };
-}) => {
 
+
+const Page = async ({ params, searchParams }: PageProps) => {
     // const { userId } = await auth();
 
     // if (!userId) {

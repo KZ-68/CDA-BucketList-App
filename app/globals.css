@@ -5,6 +5,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --dark-grey: #071427;
+  --accent-01 : #C6E8AA;
+  --accent-02 : #2CC7E1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +31,23 @@
 }
 
 body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.interactive-input-color:checked + label {
+  background-color: var(--accent-01);
+  color: var(--dark-grey);
+}
+
+.interactive-input-grey:checked + label {
+  background-color: var(--dark-grey);
+  color: var(--accent-02);
+
   color: var(--neutralWhite);
   background: var(--gradientBg);
   font-family: var(--font-main);
@@ -38,4 +59,17 @@ body {
 
 .secondary-font {
   font-family: var(--font-secondary);
+}
+
+.interactive-check-done:checked + label > div {
+  background-color: var(--accent-01);
+}
+
+#single-goal-card:has(div > .interactive-goals:checked) > .details-goals {
+  display: block;
+}
+
+#single-goal-card:has(div > .interactive-goals:checked) {
+  border-left-width: 0px;
+  border-bottom-width: 2px;
 }

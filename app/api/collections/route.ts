@@ -36,7 +36,7 @@ const createCollectionSchema = z.object({
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { label, isPrivate, userId = "123test" } = body;
+        const { label, isPrivate, userId} = body;
 
         const collectionData = { label, isPrivate, userId };
 
@@ -56,8 +56,7 @@ export async function POST(request: NextRequest) {
             data: newCollection,
         });
     } catch (error) {
-        // console.log("[CREATE COLLECTION]", error);
-
+        console.log("[CREATE COLLECTION]", error);
         if (error instanceof z.ZodError) {
             return NextResponse.json(
                 { error: error.errors[0].message },

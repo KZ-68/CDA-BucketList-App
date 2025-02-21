@@ -84,6 +84,7 @@ const Home = () => {
 
         <div className='bg-thirdColor h-1/2 rounded-xl text-neutralWhite p-3'>test</div>
       </div>
+
     </div>
 
     <div> </div>

@@ -11,7 +11,7 @@ interface fetchResponse {
 }
 
 const Page = async ({ params }: {
-    params: { collectionId: string };
+    params: Promise<{ collectionId: string }>;
 }) => {
 
     // const { userId } = await auth();

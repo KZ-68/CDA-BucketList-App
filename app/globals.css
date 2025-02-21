@@ -47,10 +47,6 @@ body {
 .interactive-input-grey:checked + label {
   background-color: var(--dark-grey);
   color: var(--accent-02);
-
-  color: var(--neutralWhite);
-  background: var(--gradientBg);
-  font-family: var(--font-main);
 }
 
 .main-font {

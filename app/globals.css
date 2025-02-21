@@ -7,8 +7,14 @@
   --foreground: #171717;
 
   --dark-grey: #071427;
-  --accent-01 : #C6E8AA;
-  --accent-02 : #2CC7E1;
+  --accentColor: #C6E8AA ;
+  --secondColor: #2CC7E1; 
+  --thirdColor: #CCBED7 ; 
+
+  --mediumGrey: #22324C;
+  --lightGrey: #7B889D ;
+
+  --gradientBg: linear-gradient(180deg, var(--darkGrey) 0%, var(--mediumGrey) 40%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,7 +30,7 @@
     --darkGreyLowOpacity: hsl(216, 70%, 9%, 0.7) ;
     --mediumGrey: #22324C;
     --lightGrey: #7B889D ;
-    --neutralWhite: #EDFAFF;
+    
 
     --gradientBg: linear-gradient(180deg, var(--darkGrey) 0%, var(--mediumGrey) 40%);
   }

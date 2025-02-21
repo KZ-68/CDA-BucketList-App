@@ -2,13 +2,16 @@
 import { CollectionType } from '@/types/types';
 import { useState, useEffect } from 'react';
 
-const SelectCollection = ({collectionId}: {collectionId : string | string[] | undefined}) => {
+type SelectCollectionProps = {
+    collectionId: string | string[] | undefined,
+    setCollectionId : React.Dispatch<React.SetStateAction<string>>
+}
+
+const SelectCollection: React.FC<SelectCollectionProps >= ({collectionId, setCollectionId}) => {
     const [collections, setCollections] = useState<[]>([]);
 
-    const [selectedValue, setSelectedValue] = useState(collectionId);
-
     const handleChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedValue(target.value);
+        setCollectionId(target.value);
     };
 
     useEffect(() => {
@@ -25,7 +28,7 @@ const SelectCollection = ({collectionId}: {collectionId : string | string[] | un
     return (
         <div className='flex flex-col items-start gap-4'>
             <label className='text-white text-2xl' htmlFor="label">Collection : </label>
-            <select className='bg-[#142339] text-white py-3 px-2 rounded-md' name="goal-collection" id="goal-collection" value={selectedValue} onChange={handleChange}>
+            <select className='bg-[#142339] text-white py-3 px-2 rounded-md' name="goal-collection" id="goal-collection" value={collectionId} onChange={handleChange}>
             {collections.map((collection:CollectionType) => <option className='bg-[#142339] text-white' value={collection.id} key={collection.id} >{collection.label}</option>)}
             </select>
         </div>

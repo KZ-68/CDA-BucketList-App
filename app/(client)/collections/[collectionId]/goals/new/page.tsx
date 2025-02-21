@@ -3,10 +3,9 @@ import React, { useState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { createGoal } from "@/components/createGoal";
 import SelectCategory from '@/components/SelectCategory';
-import { useParams } from 'next/navigation';
+import SelectCollection from '@/components/SelectCollection';
 
 const NewGoalPage = () => {
-    const params = useParams();
     const [isSubmited, setIsSubmited] = useState(false);
     
     const [success, setSuccess] = useState(false);
@@ -14,7 +13,7 @@ const NewGoalPage = () => {
 
     const handler = async (formData:FormData) => {
         setIsSubmited(true);
-        const response = await createGoal(formData, params.collectionId);
+        const response = await createGoal(formData);
         setSuccess(response.success);
         setMessage(response.message);
     }
@@ -36,7 +35,8 @@ const NewGoalPage = () => {
                 <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' type='text-area' name="goal-description" id="goal-description" placeholder="Add a description..." />
                 <label className='text-white text-2xl' htmlFor="label">Priority : </label>
                 <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' type='number' min={0} max={255} name="goal-priority" id="goal-priority" placeholder="0" />
-                <SelectCategory />
+                <SelectCategory categoryId={""} />
+                <SelectCollection collectionId={""} />
                 <button className='py-2 px-2 rounded-lg bg-lime-200 text-black font-bold' type='submit'>Add</button>
             </form>
         </div>

@@ -1,10 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import CollectionItem from "@/components/CollectionItem";
 import PageTitle from "@/components/PageTitle";
-import ProgressSection from '@/components/ProgressSection';
-import { PiRocketFill } from "react-icons/pi";
 
 interface Collection {
     label: string;

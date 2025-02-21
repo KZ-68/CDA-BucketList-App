@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { SortElement } from "./_components/SortElement";
 import { headers } from "next/headers";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 interface fetchResponse {
     collection: CollectionType,

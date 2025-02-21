@@ -4,12 +4,15 @@ import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { editGoal } from "@/components/editGoal";
 import { useParams } from 'next/navigation';
 import SelectCategory from '@/components/SelectCategory';
+import SelectCollection from '@/components/SelectCollection';
 
 const EditGoalPage = () => {
     const params = useParams();
     const [label, setLabel] = useState("");
-    const [description, setDescription] = useState("");
+    const [description, setDescription] = useState<string | null>(null);
     const [priority, setPriority] = useState(0);
+    const [categoryId, setCategoryId] = useState("");
+    const [collectionId, setCollectionId] = useState("");
 
     const [isSubmited, setIsSubmited] = useState(false);
     
@@ -23,12 +26,16 @@ const EditGoalPage = () => {
           setLabel(data.data.label);
           setDescription(data.data.description);
           setPriority(data.data.priority);
+          setCategoryId(data.data.categoryId)
+          setCollectionId(data.data.collectionId);
         }
         fetchData();
     }, [params.goalId, params.categoryId]);
 
     const handleChangeLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLabel(e.target.value);
+        if (label !== e.target.value) {
+            setLabel(e.target.value);
+        }
     };
 
     const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,16 +61,17 @@ const EditGoalPage = () => {
         {isSubmited && success === false && (
             <p id="error" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><XCircleIcon className='text-white bg-red-600 rounded-full'/>{message}</p>
         )}
-        <h1 className='text-2xl my-3 text-white'>Edit Collection</h1>
+        <h1 className='text-2xl my-3 text-white'>Edit Goal</h1>
         <div className='flex flex-col my-6 py-8 px-6 mx-80 rounded-lg bg-[#22324c]'>
             <form className='flex flex-col gap-6 py-8 px-6 rounded-2xl' action={handler} id="signup-form">
                 <label className='text-white text-2xl' htmlFor="label">Label : </label>
-                <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={label} onChange={handleChangeLabel} type='text' name="collection-label" id="collection-label" placeholder="Add a label..." />
+                <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={label} onChange={handleChangeLabel} type='text' name="goal-label" id="goal-label" placeholder="Add a label..." />
                 <label className='text-white text-2xl' htmlFor="label">Description : </label>
-                <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={description} onChange={handleChangeDescription} type='text-area' name="goal-description" id="goal-description" placeholder="Add a description..." />
+                <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={description ? description : ""} onChange={handleChangeDescription} type='text-area' name="goal-description" id="goal-description" placeholder="Add a description..." />
                 <label className='text-white text-2xl' htmlFor="label">Priority : </label>
                 <input className='bg-[#142339] text-white py-3 px-2 rounded-lg' value={priority} onChange={handleChangePriority} type='number' min={0} max={255} name="goal-priority" id="goal-priority" placeholder="0" />
-                <SelectCategory />
+                <SelectCategory categoryId={categoryId} />
+                <SelectCollection collectionId={collectionId} />
                 <button className='py-2 px-2 rounded-lg bg-lime-200 text-black font-bold' type='submit'>Update</button>
             </form>
         </div>

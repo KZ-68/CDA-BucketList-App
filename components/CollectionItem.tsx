@@ -2,15 +2,17 @@ import { PiRocketFill } from "react-icons/pi";
 import { MdRemoveRedEye } from "react-icons/md";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoHourglass } from "react-icons/io5";
+import Link from 'next/link';
 
 interface CollectionItemProps {
+   id : string;
    label: string;
    totalGoal: number;
    achievedGoal: number;
    isPrivate: boolean;
   }
 
-   const CollectionItem = ( { label, achievedGoal, totalGoal, isPrivate }: CollectionItemProps) => {
+   const CollectionItem = ( { label, achievedGoal, totalGoal, isPrivate, id }: CollectionItemProps) => {
 
    let collectionState = "";
    let progression = 0;
@@ -36,10 +38,10 @@ interface CollectionItemProps {
       collectionState = "Completed";
       IconComponent = FaCircleCheck;
       color = "accentColor"
-       bgcolor = "accentColor"
-       textColor = "darkGrey"
-       goalTextColor = "darkGrey"
-       textWeight = "600"
+      bgcolor = "accentColor"
+      textColor = "darkGrey"
+      goalTextColor = "darkGrey"
+      textWeight = "600"
    } else  {
       progression = Math.round((achievedGoal / totalGoal) * 100);
       collectionState = "In Progress";
@@ -73,11 +75,13 @@ interface CollectionItemProps {
                   <IconComponent />
                </div>
             </div>
-            <div className=" w-4/6 flex flex-col items-center justify-center text-lg" style={{fontWeight: textWeight}}>
-               <p className="w-full uppercase" style={{color :  `var(--${textColor})` }}>{label}</p>
+            <div className=" w-4/6 flex flex-col items-start justify-center text-lg" style={{fontWeight: textWeight}}>
+               <Link href={`/collections/${id}`}>
+                  <p className="w-full uppercase" style={{color :  `var(--${textColor})` }}>{label}</p>
+               </Link>
                <p className="w-full text-left" style={{color: `var(--${goalTextColor})`}}>
                   {achievedGoal > 10 ? achievedGoal : `0${achievedGoal}`} / 
-                  {totalGoal > 10 ? totalGoal : `0${totalGoal}`}
+                  {totalGoal > 10 ? totalGoal : ` 0${totalGoal}`}
                   {totalGoal === 1 || totalGoal === 0   ? ' Goal' : ' Goals'}
                </p>
             </div>

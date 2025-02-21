@@ -94,21 +94,25 @@ const Home = () => {
         text="See What's on My List"
         color="accentColor"
         icon={LuLayoutList}
+        url={""}
       />
       <MenuItem
         text="Start a New Adventure"
         color="secondColor"
         icon={RiCompass3Fill}
+        url={"collections/new"}
       />
       <MenuItem
         text="Get Inspired by Others"
         color="thirdColor"
         icon={RiLightbulbFill}
+        url={""}
       />
       <MenuItem
         text="Track My Progress"
         color="neutralWhite"
         icon={HiOutlineChartBarSquare}
+        url={"/progress"}
       />
     </div>
 

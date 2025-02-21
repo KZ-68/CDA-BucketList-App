@@ -17,6 +17,7 @@ interface Collection {
 const Home = () => {
   const { user } = useUser();
   const userId = user?.id;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collections, setCollections] = useState<Collection[]>([]);
   const [totalCollections, setTotalCollections] = useState<number>(0);
   const [totalGoals, setTotalGoals] = useState<number>(0);

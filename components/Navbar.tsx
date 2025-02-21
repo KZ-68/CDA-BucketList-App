@@ -18,7 +18,7 @@ export default function Navbar() {
             <Link href="/collections/user" className="text-2xl hover:text-accentColor">
                 <LuLayoutList />
             </Link>
-            <Link href="#" className="text-2xl bg-accentColor text-darkGrey rounded-[50%] p-3 hover:bg-thirdColor">
+            <Link href="/collections/new" className="text-2xl bg-accentColor text-darkGrey rounded-[50%] p-3 hover:bg-thirdColor">
                 <LuPlus />
             </Link>
             <Link href="/progress" className="text-2xl hover:text-accentColor">

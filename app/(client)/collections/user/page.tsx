@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import CollectionItem from "@/components/CollectionItem";
 import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
+
 interface Collection {
     label: string;
     isPrivate : boolean;

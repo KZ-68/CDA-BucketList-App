@@ -12,4 +12,7 @@ model Goal {
     
     categoryId String @db.ObjectId
     category Category @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+    @@index([collectionId])
+    @@index([categoryId])
 }

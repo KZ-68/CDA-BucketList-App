@@ -9,6 +9,7 @@ import { ImStatsBars2 } from "react-icons/im";
 
 const ProgressPage = () => {
     const { user } = useUser();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userId = user?.id;
 
 

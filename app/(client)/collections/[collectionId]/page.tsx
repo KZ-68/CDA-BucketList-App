@@ -1,6 +1,6 @@
 import { CollectionType, GoalType } from "@/types/types";
 import { db } from "@/lib/db";
-import { SingleGoal } from "./_components/SingleGoal";
+import { SingleGoal } from "./_components/singleGoal";
 import RoundPlus from "/public/add.svg";
 import Image from "next/image";
 import { Divider } from "./_components/Divider";
@@ -16,6 +16,7 @@ interface fetchResponse {
     goals: GoalType[],
     totalGoalsCount: number
 }
+
 
 const Page = async ({ params, searchParams }: {
     params: { collectionId: string };

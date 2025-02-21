@@ -43,7 +43,7 @@ const CollectionsPage = ({ params }: Props)  => {
       };
 
     fetchCollections();
-  }, [params]);
+  }, [params, userId]);
 
   return (
     <>

@@ -6,6 +6,43 @@ type Props = {
     params: Promise<{ categoryId: string }>
 }
 
+export async function GET(request: NextRequest, { params }: Props) {
+    try {
+        const { categoryId } = await params;
+
+        const category = await db.category.findUnique({
+            where: {
+                id: categoryId
+            }, 
+            include: {
+                goals: true
+            }
+        });
+
+        if(category !== null) {
+            return NextResponse.json({
+                data: category,
+                message: "Successfully got the category",
+                success: true, 
+            })
+        } else {
+            return NextResponse.json({
+                data: null,
+                message: "Category not found",
+                success: false,
+            }, { status: 404 })
+        }
+
+    } catch (error) {
+        console.log("[category]", error)
+        return NextResponse.json({
+            data: null,
+            success: false,
+            message: `category: Internal Error:  ${error}`
+        }, { status: 500 }
+        )
+    }
+}
 
 const editCategorySchema = z.object({
     label: z.string().nonempty({ message: "Label is required" }),

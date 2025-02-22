@@ -17,6 +17,7 @@ interface Collection {
 const Home = () => {
   const { user } = useUser();
   const userId = user?.id;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collections, setCollections] = useState<Collection[]>([]);
   const [totalCollections, setTotalCollections] = useState<number>(0);
   const [totalGoals, setTotalGoals] = useState<number>(0);
@@ -84,6 +85,7 @@ const Home = () => {
 
         <div className='bg-thirdColor h-1/2 rounded-xl text-neutralWhite p-3'>test</div>
       </div>
+
     </div>
 
     <div> </div>
@@ -92,21 +94,25 @@ const Home = () => {
         text="See What's on My List"
         color="accentColor"
         icon={LuLayoutList}
+        url={""}
       />
       <MenuItem
         text="Start a New Adventure"
         color="secondColor"
         icon={RiCompass3Fill}
+        url={"collections/new"}
       />
       <MenuItem
         text="Get Inspired by Others"
         color="thirdColor"
         icon={RiLightbulbFill}
+        url={""}
       />
       <MenuItem
         text="Track My Progress"
         color="neutralWhite"
         icon={HiOutlineChartBarSquare}
+        url={"/progress"}
       />
     </div>
 

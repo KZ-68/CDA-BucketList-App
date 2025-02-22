@@ -16,6 +16,7 @@ interface Collection {
     _count?: {
       goals: number;
     };
+    
 }
 
 interface Goal {
@@ -203,7 +204,6 @@ const CollectionsPage = () => {
                   achievedGoal= {collection.accomplishedGoals}
                   isPrivate = {collection.isPrivate} 
                   id = {collection.id}/>
-                  {/* <p>DATE : {collection.createdAt}</p> */}
               </div>
             ))
           )}

@@ -2,9 +2,15 @@
 import React, { useActionState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { createCollection } from "@/components/createCollection";
+import { useUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 const NewCollectionPage = () => {
-
+    const { user } = useUser();
+    if(!user) {
+        redirect("/login");
+    }
+  
     const [formState, formAction] = useActionState(createCollection, null);
 
     return (

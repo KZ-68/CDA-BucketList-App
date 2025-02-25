@@ -6,6 +6,7 @@ import {  useUser } from "@clerk/nextjs";
 import { HiOutlineChartBarSquare } from "react-icons/hi2";
 import { RiLightbulbFill, RiCompass3Fill } from "react-icons/ri";
 import { LuLayoutList } from "react-icons/lu";
+import { redirect } from 'next/navigation';
 
 interface Collection {
   label: string;
@@ -16,7 +17,7 @@ interface Collection {
 
 const Home = () => {
   const { user } = useUser();
-  const userId = user?.id;
+  const userId = user ? user.id : redirect("/login");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collections, setCollections] = useState<Collection[]>([]);
   const [totalCollections, setTotalCollections] = useState<number>(0);

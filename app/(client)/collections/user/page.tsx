@@ -5,6 +5,7 @@ import CollectionItem from "@/components/CollectionItem";
 import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 interface Collection {
     id: string;
@@ -32,7 +33,7 @@ const CollectionsPage = () => {
     const { userId } = useAuth(); 
   
     useEffect(() => {
-      if (!userId) return;
+      if (!userId) redirect("/login");
       const fetchCollections = async () => {
         try {
           const response = await fetch(`/api/collections/user`);

@@ -1,13 +1,14 @@
 'use client';
 import { CollectionType } from '@/types/types';
 import { useState, useEffect } from 'react';
+import fetchCollectionsData from '@/services/FetchCollectionsService'
 
-type SelectCollectionProps = {
+interface SelectCollectionProps {
     collectionId: string | string[] | undefined,
     setCollectionId : React.Dispatch<React.SetStateAction<string>>
 }
 
-const SelectCollection: React.FC<SelectCollectionProps >= ({collectionId, setCollectionId}) => {
+const SelectCollection: React.FC<SelectCollectionProps>= ({collectionId, setCollectionId}) => {
     const [collections, setCollections] = useState<[]>([]);
 
     const handleChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
@@ -15,13 +16,9 @@ const SelectCollection: React.FC<SelectCollectionProps >= ({collectionId, setCol
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch(`/api/collections/`, {cache: 'force-cache'});
-            const data = await res.json();
-            setCollections(data.data);
-        }
+        
         if (collections.length === 0) {
-            fetchData();
+            fetchCollectionsData().then(data => setCollections(data.data))
         }
     }, [collections]);
     

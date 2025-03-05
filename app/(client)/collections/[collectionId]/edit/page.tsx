@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { editCollection } from "@/components/editCollection";
 import { useParams } from 'next/navigation';
+import fetchCollectionData from '@/services/FetchCollectionService';
 
 const EditCollectionPage = () => {
     const params = useParams();
@@ -15,13 +16,9 @@ const EditCollectionPage = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const fetchData = async () => {
-          const res = await fetch(`/api/collections/${params.collectionId}`);
-          const data = await res.json();
-          setLabel(data.data.label);
-          setIsPrivate(data.data.isPrivate);
-        }
-        fetchData();
+        fetchCollectionData(params.collectionId).then(
+            data => (setLabel(data.data.label), setIsPrivate(data.data.isPrivate)), 
+        )
     }, [params.collectionId]);
 
     const onChangeCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {

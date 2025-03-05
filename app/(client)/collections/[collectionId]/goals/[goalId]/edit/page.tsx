@@ -5,6 +5,7 @@ import { editGoal } from "@/components/editGoal";
 import { useParams } from 'next/navigation';
 import SelectCategory from '@/components/SelectCategory';
 import SelectCollection from '@/components/SelectCollection';
+import fetchGoalData from '@/services/FetchGoalService';
 
 const EditGoalPage = () => {
     const params = useParams();
@@ -20,16 +21,15 @@ const EditGoalPage = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const fetchData = async () => {
-          const res = await fetch(`/api/goals/${params.goalId}`);
-          const data = await res.json();
-          setLabel(data.data.label);
-          setDescription(data.data.description);
-          setPriority(data.data.priority);
-          setCategoryId(data.data.categoryId)
-          setCollectionId(data.data.collectionId);
-        }
-        fetchData();
+        fetchGoalData(params.goalId).then(
+            data => (
+                setLabel(data.data.label), 
+                setDescription(data.data.description), 
+                setPriority(data.data.priority), 
+                setCategoryId(data.data.categoryId),
+                setCollectionId(data.data.collectionId)
+            ),
+        )
     }, [params.goalId, params.categoryId]);
 
     const handleChangeLabel = (e: React.ChangeEvent<HTMLInputElement>) => {

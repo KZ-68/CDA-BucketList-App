@@ -2,13 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { editGoal } from "@/components/editGoal";
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import SelectCategory from '@/components/SelectCategory';
 import SelectCollection from '@/components/SelectCollection';
+import { useUser } from '@clerk/nextjs';
 import fetchGoalData from '@/services/FetchGoalService';
 
 const EditGoalPage = () => {
     const params = useParams();
+    const { user } = useUser();
+    if(!user) {
+        redirect("/login");
+    }
+
     const [label, setLabel] = useState("");
     const [description, setDescription] = useState<string | null>(null);
     const [priority, setPriority] = useState(0);

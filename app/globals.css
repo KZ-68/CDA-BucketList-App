@@ -46,13 +46,13 @@ body {
 }
 
 .interactive-input-color:checked + label {
-  background-color: var(--accent-01);
+  background-color: var(--accentColor);
   color: var(--dark-grey);
 }
 
 .interactive-input-grey:checked + label {
   background-color: var(--dark-grey);
-  color: var(--accent-02);
+  color: var(--secondColor);
 }
 
 .main-font {
@@ -64,7 +64,7 @@ body {
 }
 
 .interactive-check-done:checked + label > div {
-  background-color: var(--accent-01);
+  background-color: var(--accentColor);
 }
 
 #single-goal-card:has(div > .interactive-goals:checked) > .details-goals {

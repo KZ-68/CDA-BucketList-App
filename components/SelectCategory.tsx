@@ -1,13 +1,14 @@
 'use client';
 import { CategoryType } from '@/types/types';
 import { useState, useEffect } from 'react';
+import fetchCategoriesData from '@/services/FetchCategoriesService';
 
-type SelectCategoryProps = {
-    categoryId: string | string[] | undefined,
-    setCategoryId : React.Dispatch<React.SetStateAction<string>>
+interface SelectCategoryProps {
+    categoryId: string;
+    setCategoryId : React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SelectCategory: React.FC<SelectCategoryProps> = ({categoryId, setCategoryId}) => {
+const SelectCategory : React.FC<SelectCategoryProps> =  ({categoryId, setCategoryId} : SelectCategoryProps) => {
 	const [categories, setCategories] = useState<[]>([]);
 
     const handleChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
@@ -15,13 +16,8 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({categoryId, setCategoryI
     };
 
 	useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch(`/api/categories/`, {cache: 'force-cache'});
-            const data = await res.json();
-            setCategories(data.data);
-        }
         if (categories.length === 0) {
-            fetchData();
+            fetchCategoriesData().then(data => setCategories(data.data))
         }
     }, [categories]);
     

@@ -4,13 +4,15 @@ import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { editCollection } from "@/components/editCollection";
 import { redirect, useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
+import fetchCollectionData from '@/services/FetchCollectionService';
 
 const EditCollectionPage = () => {
     const params = useParams();
-    const { user } = useUser();
-    if(!user) {
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
         redirect("/login");
     }
+    
     const [label, setLabel] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
 
@@ -20,14 +22,10 @@ const EditCollectionPage = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const fetchData = async () => {
-          const res = await fetch(`/api/collections/${params.collectionId}`);
-          const data = await res.json();
-          setLabel(data.data.label);
-          setIsPrivate(data.data.isPrivate);
-        }
-        fetchData();
-    }, [params.collectionId]);
+        fetchCollectionData(params.collectionId).then(
+            data => (setLabel(data.data.label), setIsPrivate(data.data.isPrivate)), 
+        )
+    }, [params.collectionId, isSignedIn]);
 
     const onChangeCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIsPrivate(e.target.checked);

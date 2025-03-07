@@ -17,7 +17,7 @@ interface fetchResponse {
 
 interface PageProps {
     params: Promise<{ collectionId: string }>
-    searchParams: Promise<{ sortBy: string, byAccomplished: string }>
+    searchParams: Promise<{ sortBy: string, byAccomplished?: string }>
 }
 
 interface DynamicProps {
@@ -34,11 +34,8 @@ export async function generateMetadata(
 
 const Page = async ({ params, searchParams }: PageProps) => {
     const { collectionId } = await params;
-    const { byAccomplished, sortBy } = await searchParams;
-    const { categories } = await fetchCategories();
-
-    console.log("collectionId page", collectionId);
-    
+    const { byAccomplished = "todo", sortBy } = await searchParams;
+    const { categories } = await fetchCategories();    
 
     const { collection, goals, totalGoalsCount } = await fetchUserCollection(collectionId, byAccomplished, sortBy) as fetchResponse;
     const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
@@ -88,6 +85,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
                         <input type="text" name="label" id="label" placeholder="New Goal" 
                             className="bg-black" 
                         />
+
                         <input type="hidden" name="collectionId" id="collectionId" value={collection.id}/>
 
                         <select name="categoryId" id="categoryId" className="text-black">
@@ -95,6 +93,16 @@ const Page = async ({ params, searchParams }: PageProps) => {
                             {categories.map((category) => (
                                 <option className="text-black" key={category.id}  value={category.id}>{category.label}</option>
                             ))}
+                        </select>
+
+                        <select name="priority" id="priority" className="text-black">
+                            <option className="text-black" value="">Priority</option>
+                        
+                            <option className="text-black" value="1">1</option>
+                            <option className="text-black" value="2">2</option>
+                            <option className="text-black" value="3">3</option>
+                            <option className="text-black" value="4">4</option>
+                            <option className="text-black" value="5">5</option>
                         </select>
                     </form>
                 </div>

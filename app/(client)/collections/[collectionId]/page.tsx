@@ -42,12 +42,13 @@ export async function generateMetadata(
 
 async function isOwnerLogged(collecId: string) {
     const Auth = await auth();
+
     const { collection } = await fetchUserCollection(collecId) as fetchResponse;
 
     const loggedUserId = Auth.userId;
     console.log("loggedUSer : ", loggedUserId);
 
-    if (!loggedUserId) return redirect("/login");
+    if (Auth.sessionId === null) return redirect("/login");
 
     const isOwner = collection.userId === loggedUserId;
 

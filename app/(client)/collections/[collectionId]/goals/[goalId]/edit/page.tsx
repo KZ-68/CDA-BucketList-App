@@ -10,8 +10,8 @@ import fetchGoalData from '@/services/FetchGoalService';
 
 const EditGoalPage = () => {
     const params = useParams();
-    const { user } = useUser();
-    if(!user) {
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
         redirect("/login");
     }
 

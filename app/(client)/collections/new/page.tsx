@@ -6,8 +6,8 @@ import { useUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 const NewCollectionPage = () => {
-    const { user } = useUser();
-    if(!user) {
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
         redirect("/login");
     }
   

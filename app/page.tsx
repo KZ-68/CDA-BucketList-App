@@ -16,8 +16,11 @@ interface Collection {
 }
 
 const Home = () => {
-  const { user } = useUser();
-  const userId = user ? user.id : redirect("/login");
+  const { isSignedIn , user } = useUser();
+  const userId = user ? user.id : null;
+  if(isSignedIn === false) {
+    redirect("/login");
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collections, setCollections] = useState<Collection[]>([]);
   const [totalCollections, setTotalCollections] = useState<number>(0);

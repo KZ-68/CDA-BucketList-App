@@ -35,7 +35,7 @@ export async function generateMetadata(
 const Page = async ({ params, searchParams }: PageProps) => {
     const { collectionId } = await params;
     const { byAccomplished = "todo", sortBy } = await searchParams;
-    const { categories } = await fetchCategories();    
+    const { categories } = await fetchCategories();
 
     const { collection, goals, totalGoalsCount } = await fetchUserCollection(collectionId, byAccomplished, sortBy) as fetchResponse;
     const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
@@ -71,41 +71,40 @@ const Page = async ({ params, searchParams }: PageProps) => {
             </div>
 
             <div className="flex flex-row gap-4">
-                <div className="flex flex-row items-center gap-4 p-4">
-                    <form action={createGoal}>
-                        <button type="submit">
-                            <Image
-                                src={RoundPlus}
-                                alt="Round plus icon"
-                                height={33}
-                                className='select-none'
-                            />
-                        </button>
 
-                        <input type="text" name="label" id="label" placeholder="New Goal" 
-                            className="bg-black" 
+                <form action={createGoal} className="flex flex-row items-center gap-4 p-4">
+                    <button type="submit">
+                        <Image
+                            src={RoundPlus}
+                            alt="Round plus icon"
+                            height={33}
+                            className='select-none'
                         />
+                    </button>
 
-                        <input type="hidden" name="collectionId" id="collectionId" value={collection.id}/>
+                    <input type="text" name="label" id="label" placeholder="New Goal"
+                        className="bg-transparent"
+                    />
 
-                        <select name="categoryId" id="categoryId" className="text-black">
-                            <option className="text-black" value="">Category</option>
-                            {categories.map((category) => (
-                                <option className="text-black" key={category.id}  value={category.id}>{category.label}</option>
-                            ))}
-                        </select>
+                    <input type="hidden" name="collectionId" id="collectionId" value={collection.id} />
 
-                        <select name="priority" id="priority" className="text-black">
-                            <option className="text-black" value="">Priority</option>
-                        
-                            <option className="text-black" value="1">1</option>
-                            <option className="text-black" value="2">2</option>
-                            <option className="text-black" value="3">3</option>
-                            <option className="text-black" value="4">4</option>
-                            <option className="text-black" value="5">5</option>
-                        </select>
-                    </form>
-                </div>
+                    <select name="categoryId" id="categoryId" className="bg-[#506382] outline-none p-1">
+                        <option value="">Category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>{category.label}</option>
+                        ))}
+                    </select>
+
+                    <select name="priority" id="priority" className="bg-[#506382] outline-none p-1">
+                        <option value="">Priority</option>
+
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </form>
 
                 <div className="flex flex-row items-end gap-4 px-4 pt-4">
                     <p className="font-bold text-xl">

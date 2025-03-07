@@ -55,7 +55,6 @@ export function SingleGoal({ goal, isOwner, fetchToggleGoal }: SingleGoalProps) 
                 </label>
             </div>
 
-
             <div className="hidden details-goals mt-4">
                 <Divider />
 

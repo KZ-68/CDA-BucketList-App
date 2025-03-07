@@ -8,10 +8,11 @@ import fetchCollectionData from '@/services/FetchCollectionService';
 
 const EditCollectionPage = () => {
     const params = useParams();
-    const { user } = useUser();
-    if(!user) {
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
         redirect("/login");
     }
+    
     const [label, setLabel] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
 
@@ -24,7 +25,7 @@ const EditCollectionPage = () => {
         fetchCollectionData(params.collectionId).then(
             data => (setLabel(data.data.label), setIsPrivate(data.data.isPrivate)), 
         )
-    }, [params.collectionId]);
+    }, [params.collectionId, isSignedIn]);
 
     const onChangeCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIsPrivate(e.target.checked);

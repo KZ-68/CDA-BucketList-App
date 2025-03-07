@@ -15,8 +15,8 @@ type Props = {
 }
 
 const CollectionsPage = ({ params }: Props)  => {
-  const { user } = useUser();
-  if(!user) {
+  const { isSignedIn } = useUser();
+  if(isSignedIn === false) {
       redirect("/login");
   }
   const [collections, setCollections] = useState<Collection[]>([]);

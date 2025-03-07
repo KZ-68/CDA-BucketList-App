@@ -20,22 +20,22 @@ const GlobalProgressChart:React.FC<GlobalProgressChartProps> = (
       label: "Not started",
       value: notStarted,
       unit: '%',
-      color: "rba(86,73,231,255)",
-      cutout: `80%`,
+      color: "#d0bcd4",
+      cutout: `70%`,
     },
     {
       label: "In progress",
       value: inProgress,
       unit: '%',
-      color: "rgba(226,76,74,255)",
-      cutout: `80%`,
+      color: "#30c4e4",
+      cutout: `70%`,
     },
     {
       label: "Completed",
       value: completed,
       unit: "%",
-      color: "rgba(234,188,20,1)",
-      cutout: `80%`,
+      color: "#c8ecac",
+      cutout: `70%`,
     },
   ]
 

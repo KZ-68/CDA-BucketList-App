@@ -8,6 +8,7 @@ import { TbStarsFilled } from "react-icons/tb";
 import { ImStatsBars2 } from "react-icons/im";
 import GlobalProgress from '@/components/GlobalProgress';
 import { redirect } from 'next/navigation';
+import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
 
 const ProgressPage = () => {
   const { user } = useUser();
@@ -24,39 +25,18 @@ const ProgressPage = () => {
   console.log(lastGoalAccomplishedLabel);
 
   useEffect(() => {   
-    const fetchGoals = async () => {
-      try {
-        const response = await fetch(`/api/collections/user/${userId}`);
-        const data = await response.json();
-        const totalCollections = data.totalCollections;
-        const lastGoalCompleted = data.lastGoalAccomplished[0].label;
-        const dataTotalGoals = data.totalGoals;
-        const dataLastGoalCompleted = data.totalAccomplishedGoals;
-        const dataGoalSuggestion = data.goalSuggestion[0].label;
-        const dataNotStarted = data.collectionsNotStarted;
-        const dataCompleted = data.collectionsCompleted;
-        const dataInProgress = data.collectionsInProgress;
-        
-        const calcTotalGoalsPercent =  dataLastGoalCompleted * 100 / dataTotalGoals;
-        const calcNotStarted = dataNotStarted * 100 / totalCollections;
-        const calcCompleted = dataCompleted * 100 / totalCollections;
-        const calcInProgress = dataInProgress * 100 / totalCollections; 
-
-        setLastGoalAccomplishedLabel(lastGoalCompleted);
-        setTotalGoals(dataTotalGoals);
-        setTotalAccomplishedGoals(dataLastGoalCompleted);
-        setTotalGoalsPercent(calcTotalGoalsPercent.toFixed(2));
-        setGoalSuggestion(dataGoalSuggestion);
-        setCollectionNotStarted(calcNotStarted.toFixed(0));
-        setCollectionCompleted(calcCompleted.toFixed(0));
-        setCollectionInProgress(calcInProgress.toFixed(0));
-
-      } catch (error) {
-        console.error("Erreur lors de la récupération des objectifs :", error);
-      }
-    };
-
-    fetchGoals();
+        fetchUserCollectionsData(userId).then(
+          data => (
+            setLastGoalAccomplishedLabel(data.lastGoalAccomplished[0].label),
+            setTotalGoals(data.totalGoals),
+            setTotalAccomplishedGoals(data.totalAccomplishedGoals),
+            setTotalGoalsPercent((data.totalAccomplishedGoals * 100 / data.totalGoals).toFixed(2)),
+            setGoalSuggestion(data.goalSuggestion[0].label),
+            setCollectionNotStarted((data.collectionsNotStarted * 100 / data.totalCollections).toFixed(0)),
+            setCollectionCompleted((data.collectionsCompleted * 100 / data.totalCollections).toFixed(0)),
+            setCollectionInProgress((data.collectionsInProgress * 100 / data.totalCollections).toFixed(0))
+          )
+        );
   }, [userId]);
 
   return (

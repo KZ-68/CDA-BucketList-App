@@ -4,11 +4,14 @@ import Image from "next/image";
 import threeDot from "/public/three_dot.svg";
 import { Divider } from "./Divider";
 
+
 interface SingleGoalProps {
     goal: GoalType;
+    isOwner: boolean;
+    fetchToggleGoal: (goalId: string) => Promise<void>;
 }
 
-export function SingleGoal({ goal }: SingleGoalProps) {
+export function SingleGoal({ goal, isOwner, fetchToggleGoal }: SingleGoalProps) {
     const getColorPriority = (priority: number | string) => {
         return {
             1: "red-500",
@@ -17,6 +20,11 @@ export function SingleGoal({ goal }: SingleGoalProps) {
             4: "green-300",
             5: "green-500",
         }[priority] || "gray-500";
+    }
+    async function changeState() {
+        "use server";
+        await fetchToggleGoal(goal.id);
+        return;
     }
 
     return (
@@ -32,7 +40,7 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         >
             <div className="flex flex-row justify-between items-center h-full">
                 <div className="flex items-center">
-                    <Check state={goal.isAccomplished} label={goal.label} />
+                    <Check state={goal.isAccomplished} isOwner={isOwner} label={goal.label} changeState={changeState} />
                     <label htmlFor={goal.label}>{goal.label}</label>
                 </div>
 
@@ -69,3 +77,6 @@ export function SingleGoal({ goal }: SingleGoalProps) {
         </div>
     )
 }
+
+
+

@@ -5,6 +5,8 @@ import CollectionItem from "@/components/CollectionItem";
 import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import fetchAllUserCollectionsData from '@/services/FetchAllUsersCollectionsService'
 
 interface Collection {
     id: string;
@@ -29,23 +31,12 @@ const CollectionsPage = () => {
     const [filter, setFilter] = useState<string>('All');
     const [sortType, setSortType] = useState<string>('date');
     const [sortOrder, setSortOrder] = useState<string>('asc'); 
-    const { userId } = useAuth(); 
+    const { isSignedIn } = useAuth(); 
   
     useEffect(() => {
-      if (!userId) return;
-      const fetchCollections = async () => {
-        try {
-          const response = await fetch(`/api/collections/user`);
-          const data = await response.json();
-          setCollections(data.data || []);
-
-        } catch (error) {
-          console.error("Erreur lors de la récupération des collections :", error);
-        }
-      };
-  
-      fetchCollections();
-    }, [userId]);
+      if (isSignedIn === false) redirect("/login");
+      fetchAllUserCollectionsData().then(data => setCollections(data.data || []))
+    }, [isSignedIn]);
 
     
     const filteredCollections = collections.filter((collection) => {

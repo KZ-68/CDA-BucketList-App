@@ -10,6 +10,14 @@ import GlobalProgress from '@/components/GlobalProgress';
 import { redirect } from 'next/navigation';
 import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
 
+interface CategoriesProgress {
+  categoryId: string;
+  categoryName: string;
+  goalsCompleted: number;
+  totalGoals: number;
+  progress: string;
+}
+
 const ProgressPage = () => {
   const { user } = useUser();
   const userId = user ? user.id : redirect("/login");
@@ -22,6 +30,7 @@ const ProgressPage = () => {
   const [collectionNotStarted, setCollectionNotStarted] = useState("");
   const [collectionCompleted, setCollectionCompleted] = useState("");
   const [collectionInProgress, setCollectionInProgress] = useState("");
+  const [categoriesProgress, setCategoriesProgress] = useState<CategoriesProgress[]>([]);
   console.log(lastGoalAccomplishedLabel);
 
   useEffect(() => {   
@@ -34,7 +43,8 @@ const ProgressPage = () => {
             setGoalSuggestion(data.goalSuggestion[0].label),
             setCollectionNotStarted((data.collectionsNotStarted * 100 / data.totalCollections).toFixed(0)),
             setCollectionCompleted((data.collectionsCompleted * 100 / data.totalCollections).toFixed(0)),
-            setCollectionInProgress((data.collectionsInProgress * 100 / data.totalCollections).toFixed(0))
+            setCollectionInProgress((data.collectionsInProgress * 100 / data.totalCollections).toFixed(0)),
+            setCategoriesProgress(data.categoriesStats)
           )
         );
   }, [userId]);
@@ -67,6 +77,7 @@ const ProgressPage = () => {
           notStarted={collectionNotStarted}
           completed={collectionCompleted}
           inProgress={collectionInProgress}
+          categoriesProgress={categoriesProgress}
         />
     </>
   )

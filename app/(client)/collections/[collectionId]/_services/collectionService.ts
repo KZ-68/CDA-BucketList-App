@@ -71,31 +71,22 @@ export async function createGoal(formData: FormData) {
     const categoryId = formData.get('categoryId')?.toString() || '';
     const description = 'None for now';
     const isAccomplished = false;
-    const priority = 1;
+    const priority = parseInt(formData.get('priority')?.toString() || '1', 10);
     const collectionId = formData.get('collectionId')?.toString() || '';
 
     const goalData = { label, description, isAccomplished, priority, collectionId, categoryId };
-
-
-
-    console.log("goalData :", goalData);
 
     const baseUrl = process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000'
         : 'https://cda-bucket-list-app.vercel.app';
 
-    const response = await fetch(`${baseUrl}/api/goals`, {
+    await fetch(`${baseUrl}/api/goals`, {
         method: 'POST',
         body: JSON.stringify(goalData),
         headers: {
             'Content-Type': 'application/json'
         }
     });
-
-    const data = await response.json();
-
-    console.log("data :", data.data);
-
 }
 
 export async function togglePrivacy(privacy: string, collectionId: string) {
@@ -122,9 +113,6 @@ export async function toggleSort(
     }
 ) {
     "use server";
-    const headersList = await headers();
-    const pathname = headersList.get("x-pathname") || "";
-
     const searchParams = new URLSearchParams(currentSearchParams.searchParams);
     searchParams.set('sortBy', sortType);
 
@@ -139,11 +127,8 @@ export async function toggleCollection(
     }
 ) {
     "use server";
-    const headersList = await headers();
-    const pathname = headersList.get("x-pathname") || "";
-
     const searchParams = new URLSearchParams(currentSearchParams.searchParams);
-    searchParams.set('byAccomplished', sortType);
+    searchParams.set('byAccomplished', (sortType === 'done' || sortType === 'todo') ? sortType : 'todo');
 
     redirect(`${currentSearchParams.pathname}?${searchParams.toString()}`);
 }

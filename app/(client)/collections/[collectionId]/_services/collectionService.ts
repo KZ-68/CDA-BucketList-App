@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
+import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -33,7 +34,11 @@ export async function fetchUserCollection(
         ? 'http://localhost:3000'
         : 'https://cda-bucket-list-app.vercel.app';
 
-    const response = await fetch(`${baseUrl}/api/collections/${collectionId}`);
+        const response = await fetch(`${baseUrl}/api/collections/${collectionId}`, {
+            next: {
+                tags: [`collection-${collectionId}`]
+            }
+        });
     const data = await response.json();
 
     const totalGoalsCount = await db.goal.count({
@@ -87,6 +92,8 @@ export async function createGoal(formData: FormData) {
             'Content-Type': 'application/json'
         }
     });
+
+    revalidateTag(`collection-${collectionId}`);
 }
 
 export async function togglePrivacy(privacy: string, collectionId: string) {
@@ -156,4 +163,6 @@ export async function toggleGoal(goalId: string) {
             isAccomplished: !currentGoal.isAccomplished
         }
     });
+
+    revalidateTag(`collection-${currentGoal.collectionId}`);
 }

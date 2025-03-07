@@ -7,7 +7,7 @@ import { TogglePrivacy } from "./_components/TogglePrivacy";
 import { SortElement } from "./_components/SortElement";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
 import { Metadata } from "next";
-import { fetchUserCollection, isOwnerLogged, toggleCollection, toggleGoal, togglePrivacy, toggleSort } from "./_services/collectionService";
+import { createGoal, fetchCategories, fetchUserCollection, isOwnerLogged, toggleCollection, toggleGoal, togglePrivacy, toggleSort } from "./_services/collectionService";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -35,10 +35,14 @@ export async function generateMetadata(
 const Page = async ({ params, searchParams }: PageProps) => {
     const { collectionId } = await params;
     const { byAccomplished, sortBy } = await searchParams;
+    const { categories } = await fetchCategories();
+
+    console.log("collectionId page", collectionId);
+    
 
     const { collection, goals, totalGoalsCount } = await fetchUserCollection(collectionId, byAccomplished, sortBy) as fetchResponse;
     const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
-    const isOwner = await isOwnerLogged(collectionId);
+    const isOwner = await isOwnerLogged(collection.id);
 
     return (
         <div className=" flex flex-col justify-center items-center bg-[#22324C]">
@@ -71,13 +75,28 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
             <div className="flex flex-row gap-4">
                 <div className="flex flex-row items-center gap-4 p-4">
-                    <Image
-                        src={RoundPlus}
-                        alt="Round plus icon"
-                        height={33}
-                        className='select-none'
-                    />
-                    <p className="text-[rgba(255,255,255,0.7)]">New goal</p>
+                    <form action={createGoal}>
+                        <button type="submit">
+                            <Image
+                                src={RoundPlus}
+                                alt="Round plus icon"
+                                height={33}
+                                className='select-none'
+                            />
+                        </button>
+
+                        <input type="text" name="label" id="label" placeholder="New Goal" 
+                            className="bg-black" 
+                        />
+                        <input type="hidden" name="collectionId" id="collectionId" value={collection.id}/>
+
+                        <select name="categoryId" id="categoryId" className="text-black">
+                            <option className="text-black" value="">Category</option>
+                            {categories.map((category) => (
+                                <option className="text-black" key={category.id}  value={category.id}>{category.label}</option>
+                            ))}
+                        </select>
+                    </form>
                 </div>
 
                 <div className="flex flex-row items-end gap-4 px-4 pt-4">

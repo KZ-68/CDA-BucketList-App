@@ -8,6 +8,7 @@ import { SortElement } from "./_components/SortElement";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
 import { Metadata } from "next";
 import { createGoal, fetchCategories, fetchUserCollection, isOwnerLogged, toggleCollection, toggleGoal, togglePrivacy, toggleSort } from "./_services/collectionService";
+import { redirect } from "next/navigation";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -40,6 +41,10 @@ const Page = async ({ params, searchParams }: PageProps) => {
     const { collection, goals, totalGoalsCount } = await fetchUserCollection(collectionId, byAccomplished, sortBy) as fetchResponse;
     const accomplishedGoals = goals.reduce((acc, goal) => acc + (goal.isAccomplished ? 1 : 0), 0);
     const isOwner = await isOwnerLogged(collection.id);
+
+    if (!isOwner && collection.isPrivate) {
+        redirect('/collections');
+    }
 
     return (
         <div className=" flex flex-col justify-center items-center bg-[#22324C]">

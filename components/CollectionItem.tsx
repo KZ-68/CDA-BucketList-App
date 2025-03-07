@@ -88,7 +88,7 @@ interface CollectionItemProps {
             </div>
             {!isPrivate && (
                <div className="absolute bottom-[5px] right-[10px] text-2xl" style={{color: `var(--${goalTextColor})`}}>
-                  <a href={`${id}`}><MdRemoveRedEye /></a>
+                  <MdRemoveRedEye />
                </div>
             )}
         </div>

@@ -3,6 +3,7 @@ import { Check } from "./Check";
 import Image from "next/image";
 import threeDot from "/public/three_dot.svg";
 import { Divider } from "./Divider";
+import Link from "next/link";
 
 
 interface SingleGoalProps {
@@ -54,12 +55,14 @@ export function SingleGoal({ goal, isOwner, fetchToggleGoal }: SingleGoalProps) 
                     />
                 </label>
             </div>
-
             <div className="hidden details-goals mt-4">
                 <Divider />
 
                 <div className="flex flex-row justify-between items-center my-4">
                     <h2 className="text-[#2CC7E1]">{goal.category.label}</h2>
+
+                    {isOwner && <Link href={`/collections/${goal.collectionId}/goals/${goal.id}/edit`}>EDIT</Link>}
+
                     <p className={`
                         border-2 rounded-full size-7 
                         border-${getColorPriority(goal.priority || '0')}

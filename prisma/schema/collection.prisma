@@ -7,4 +7,5 @@ model Collection {
     userId     String 
 
     goals Goal[]
+    likes Like[] 
 }

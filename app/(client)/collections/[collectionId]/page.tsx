@@ -9,6 +9,7 @@ import { ToggleAccomplish } from "./_components/ToggleAccomplish";
 import { Metadata } from "next";
 import { createGoal, fetchCategories, fetchUserCollection, toggleCollection, toggleGoal, togglePrivacy, toggleSort } from "./_services/collectionService";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 
 interface fetchResponse {
@@ -75,6 +76,8 @@ const Page = async ({ params, searchParams }: PageProps) => {
                 }
             </div>
             <h1 className="text-5xl text-center">{collection.label}</h1>
+
+            {isOwner && <Link href={`/collections/${collectionId}/edit`}>edit</Link>}
 
             <div
                 className="

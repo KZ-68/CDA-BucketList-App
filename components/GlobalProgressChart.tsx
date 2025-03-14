@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { Context } from "vm";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Legend, ChartDataLabels);
 
 interface GlobalProgressChartProps {
   notStarted: string
@@ -18,21 +20,21 @@ const GlobalProgressChart:React.FC<GlobalProgressChartProps> = (
   const data = [
     {
       label: "Not started",
-      value: notStarted,
+      value: parseFloat(notStarted),
       unit: '%',
       color: "#d0bcd4",
       cutout: `70%`,
     },
     {
       label: "In progress",
-      value: inProgress,
+      value: parseFloat(inProgress),
       unit: '%',
       color: "#30c4e4",
       cutout: `70%`,
     },
     {
       label: "Completed",
-      value: completed,
+      value: parseFloat(completed),
       unit: "%",
       color: "#c8ecac",
       cutout: `70%`,
@@ -40,14 +42,34 @@ const GlobalProgressChart:React.FC<GlobalProgressChartProps> = (
   ]
 
   const options = {
+    responsive: true,
+    layout: {
+      padding: {
+        top: 50,
+        left: 85,
+        right: 85,
+        bottom: 50
+      },
+    },
     plugins: {
-      tooltip: {
-        callbacks: {
-          label: (context:{raw:{value:string,unit:string}}) => {
-            return `${context.raw.value} ${context.raw.unit}`
-          }
-        }
-      }
+      legend: {
+        display: false
+      },
+      datalabels: {
+        color: data.map((item) => item.color), 
+        font: {
+          weight: "bold" as const,
+          size: 18,
+        },
+        align: 'end',
+        anchor: 'end',
+        clip: false,
+        formatter: (value: number, context: Context) => {
+          const unit = data[context.dataIndex].unit; 
+          const label = data[context.dataIndex].label;
+          return [`${value} ${unit}`, label];
+        },
+      },
     },
     cutout: data.map((item) => item.cutout),
     aspectRatio: 1
@@ -57,16 +79,14 @@ const GlobalProgressChart:React.FC<GlobalProgressChartProps> = (
     labels: data.map((item) => item.label),
     datasets: [
       {
-        data: data.map((item) => ({"value": item.value, "unit": item.unit})),
+        data: data.map((item) => (item.value)),
         backgroundColor: data.map((item) => item.color),
         borderColor: data.map((item) => item.color),
         borderWidth: 1,
-        dataVisibility: new Array(data.length).fill(true),
       },
     ],
   };
   // @ts-expect-error Trigger errors for context.raw properties, but didn't create any conflict
-  return <Doughnut data={finalData} options={options} />;
-}
-
+  return <Doughnut className="h-0 w-[450px]" data={finalData} options={options} />;
+}  
 export default GlobalProgressChart

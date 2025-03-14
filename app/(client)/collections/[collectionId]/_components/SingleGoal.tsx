@@ -61,7 +61,7 @@ export function SingleGoal({ goal, isOwner, fetchToggleGoal }: SingleGoalProps) 
                 <div className="flex flex-row justify-between items-center my-4">
                     <h2 className="text-[#2CC7E1]">{goal.category.label}</h2>
 
-                    {!isOwner && <Link href={`/collections/${goal.collectionId}/goals/${goal.id}/edit`}>EDIT</Link>}
+                    {isOwner && <Link href={`/collections/${goal.collectionId}/goals/${goal.id}/edit`}>EDIT</Link>}
 
                     <p className={`
                         border-2 rounded-full size-7 

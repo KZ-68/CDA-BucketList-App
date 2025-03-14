@@ -1,5 +1,8 @@
 'use client';
+import { useUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
 
 interface Collection {
   label: string;
@@ -12,6 +15,10 @@ type Props = {
 }
 
 const CollectionsPage = ({ params }: Props)  => {
+  const { isSignedIn } = useUser();
+  if(isSignedIn === false) {
+      redirect("/login");
+  }
   const [collections, setCollections] = useState<Collection[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -25,24 +32,8 @@ const CollectionsPage = ({ params }: Props)  => {
   }, [params]); 
 
 
-    useEffect(() => {
-      const fetchCollections = async () => {
-  
-        try {
-          const response = await fetch(`/api/collections/user/${userId}`);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-  
-          const data = await response.json();
-          setCollections(data.data);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des collections :", error);
-        }
-      };
-
-    fetchCollections();
+  useEffect(() => {
+    fetchUserCollectionsData(userId).then(data => setCollections(data.data))
   }, [params, userId]);
 
   return (

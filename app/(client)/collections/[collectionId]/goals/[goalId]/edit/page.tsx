@@ -2,12 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { editGoal } from "@/components/editGoal";
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import SelectCategory from '@/components/SelectCategory';
 import SelectCollection from '@/components/SelectCollection';
+import { useUser } from '@clerk/nextjs';
+import fetchGoalData from '@/services/FetchGoalService';
 
 const EditGoalPage = () => {
     const params = useParams();
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
+        redirect("/login");
+    }
+
     const [label, setLabel] = useState("");
     const [description, setDescription] = useState<string | null>(null);
     const [priority, setPriority] = useState(0);
@@ -20,16 +27,15 @@ const EditGoalPage = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const fetchData = async () => {
-          const res = await fetch(`/api/goals/${params.goalId}`);
-          const data = await res.json();
-          setLabel(data.data.label);
-          setDescription(data.data.description);
-          setPriority(data.data.priority);
-          setCategoryId(data.data.categoryId)
-          setCollectionId(data.data.collectionId);
-        }
-        fetchData();
+        fetchGoalData(params.goalId).then(
+            data => (
+                setLabel(data.data.label), 
+                setDescription(data.data.description), 
+                setPriority(data.data.priority), 
+                setCategoryId(data.data.categoryId),
+                setCollectionId(data.data.collectionId)
+            ),
+        )
     }, [params.goalId, params.categoryId]);
 
     const handleChangeLabel = (e: React.ChangeEvent<HTMLInputElement>) => {

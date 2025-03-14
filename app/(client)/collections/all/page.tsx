@@ -5,6 +5,7 @@ import PageTitle from "@/components/PageTitle";
 import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 import { CollectionType as OriginalCollectionType, GoalType } from "@/types/types";
 import { useAuth } from '@clerk/nextjs';
+import Link from 'next/link';
 
 interface CollectionType extends OriginalCollectionType {
   accomplishedGoals?: number;
@@ -14,7 +15,7 @@ interface CollectionType extends OriginalCollectionType {
   };
 }
 
-const collections =  () => {
+const Collections =  () => {
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
@@ -59,7 +60,7 @@ const collections =  () => {
             {collectionsData.map((collection: CollectionType) => (
               <div key={collection.id} className="flex">
                 <p>
-                  - {collection.label} by {collection.user.username} | {collection.accomplishedGoals} / {collection.totalGoals}
+                  - {collection.label} by <Link className='font-bold hover:text-secondColor' href={"/collections/user/"+collection.userId}>{collection.user.username}</Link> | {collection.accomplishedGoals} / {collection.totalGoals}
                 </p>
                 <button>♥</button>
               </div>
@@ -71,4 +72,4 @@ const collections =  () => {
   )
 }
 
-export default collections
+export default Collections

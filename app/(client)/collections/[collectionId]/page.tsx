@@ -59,7 +59,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
             </div>
             <h1 className="text-5xl text-center">{collection.label}</h1>
 
-            <Link href={`/collections/${collectionId}/edit`}>edit</Link>
+            {isOwner && <Link href={`/collections/${collectionId}/edit`}>edit</Link>}
 
             <div
                 className="

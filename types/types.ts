@@ -26,3 +26,10 @@ export interface CategoryType {
     label: string;
     goals: GoalType[];
 }
+
+export interface LikeType {
+    id: string;
+    createdAd : Date;
+    userId : string;
+    collectionId : string;
+}

@@ -7,7 +7,6 @@ import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 import FetchUserFavoriteCollectionsService from '@/services/FetchUserFavoriteCollectionsService';
 import { CollectionType as OriginalCollectionType, GoalType } from "@/types/types";
 import { useAuth } from '@clerk/nextjs';
-import Link from 'next/link';
 
 
 interface CollectionType extends OriginalCollectionType {

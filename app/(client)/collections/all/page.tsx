@@ -114,8 +114,7 @@ const Collections =  () => {
                   numberGoals = {collection.totalGoals ?? 0}
                   isLiked={likedCollections.includes(collection.id)}
                   onLikeToggle={() => handleLike(collection.id)}
-                  userId = {collection.userId}
-                  numberLikes = {collection._count.likes}
+                  numberLikes={collection._count?.likes || 0}
                   goals={collection.goals?.map((goal: GoalType) => ({
                     label: goal.label,
                     id: goal.id,

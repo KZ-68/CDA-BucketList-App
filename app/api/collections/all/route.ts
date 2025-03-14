@@ -32,10 +32,8 @@ export async function GET(req: NextRequest) {
                 likes : true,
                 _count: {
                   select: { likes: true }
-              },
+                },
             }
-            
-            
         });
 
         const collectionWithUser = await Promise.all(

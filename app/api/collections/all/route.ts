@@ -4,7 +4,7 @@ import { clerkClient } from '@clerk/nextjs/server';
 import { getAuth } from "@clerk/nextjs/server";
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
 
     try {
 

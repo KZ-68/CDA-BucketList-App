@@ -109,7 +109,8 @@ const Collections =  () => {
                   {likedCollections.includes(collection.id) ? "♥" : "x"}
                   </button> */}
                 <AllCollectionItem
-                  title= {collection.label} 
+                  title= {collection.label}
+                  userId= {collection.userId} 
                   username = {collection.user.username} 
                   numberGoals = {collection.totalGoals ?? 0}
                   isLiked={likedCollections.includes(collection.id)}

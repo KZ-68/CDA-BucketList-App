@@ -1,15 +1,17 @@
+import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface AllCollectionItemProps {
     title: string;
+    userId: string;
     username : string;
     numberGoals : number;
     isLiked : boolean;
     onLikeToggle: () => void;
   }
   
-  const AllCollectionItem = ({ title, username, numberGoals, isLiked, onLikeToggle }: AllCollectionItemProps) => {
+  const AllCollectionItem = ({ title, userId, username, numberGoals, isLiked, onLikeToggle }: AllCollectionItemProps) => {
 
     let color = "accentColor";
     let starColor = "darkGrey";
@@ -31,7 +33,7 @@ interface AllCollectionItemProps {
         >
             <div className="flex items-center justify-between">
                 <p className="uppercase text-xl">{title}</p>
-                <p className="opacity-75">{username}</p>
+                <Link href={"/collections/user/"+`${userId}`} className="opacity-75">{username}</Link>
             </div>
 
             <div className="">

@@ -6,6 +6,7 @@ interface AllCollectionItemProps {
   title: string;
   username: string;
   numberGoals: number;
+  numberLikes: number;
   isLiked: boolean;
   onLikeToggle: () => void;
   goals: GoalProp[];
@@ -17,7 +18,7 @@ interface GoalProp {
   label: string;
 }
 
-const AllCollectionItem = ({title, username, numberGoals, isLiked, onLikeToggle, goals, userId}: AllCollectionItemProps) => {
+const AllCollectionItem = ({title, username, numberGoals, numberLikes, isLiked, onLikeToggle, goals, userId}: AllCollectionItemProps) => {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -75,7 +76,8 @@ const AllCollectionItem = ({title, username, numberGoals, isLiked, onLikeToggle,
         )}
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex items-end justify-end gap-2">
+        <p className="flex items-end leading-none ">{numberLikes}</p>
         <button onClick={onLikeToggle} className="cursor-pointer">
           <FaStar
             className="text-[25px] cursor-pointer hover:fill-accentColor  transition-all"

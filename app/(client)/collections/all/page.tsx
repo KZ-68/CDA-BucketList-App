@@ -17,7 +17,7 @@ interface CollectionType extends OriginalCollectionType {
   };
 }
 
-const collections =  () => {
+const Collections =  () => {
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
@@ -125,4 +125,4 @@ const collections =  () => {
   )
 }
 
-export default collections;
+export default Collections;

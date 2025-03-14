@@ -1,37 +1,37 @@
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { clerkClient } from '@clerk/nextjs/server';
 import { getAuth } from "@clerk/nextjs/server";
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
 
     try {
 
-    const auth = getAuth(req);
-    console.log("Auth data:", auth);
+        const auth = getAuth(req);
+        console.log("Auth data:", auth);
 
-    const { userId } =auth;
- 
-    if (!userId) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-    }
+        const { userId } = auth;
 
-    console.log("Utilisateur connecté avec ID:", userId);
+        if (!userId) {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        }
+
+        console.log("Utilisateur connecté avec ID:", userId);
 
         const collections = await db.collection.findMany({
             where: {
                 isPrivate: false, // Filtrer les collections 
                 userId: { not: userId }
-              },
-            orderBy: { 
-                createdAt: "desc" 
+            },
+            orderBy: {
+                createdAt: "desc"
             },
             include: {
-                goals : true,
-                likes : true
+                goals: true,
+                likes: true
             }
-            
+
         });
 
 
@@ -55,8 +55,8 @@ export async function GET() {
                 }
             })
         );
-        console.log("collections all", collections )
-        console.log("userid co" , userId)
+        console.log("collections all", collections)
+        console.log("userid co", userId)
         return NextResponse.json({
             data: collectionWithUser, //null si erreur
             message: "Succesfully got all users the collections ", // msg d'erreur si erreur
@@ -76,50 +76,50 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     try {
-      const { userId, collectionId } = await req.json();
-  
-      const existingLike = await db.like.findUnique({
-        where: {
-          userId_collectionId: {
-            userId,
-            collectionId
-          }
-        }
-      });
-  
-      if (existingLike) {
-        await db.like.delete({
-          where: {
-            userId_collectionId: {
-              userId,
-              collectionId
+        const { userId, collectionId } = await req.json();
+
+        const existingLike = await db.like.findUnique({
+            where: {
+                userId_collectionId: {
+                    userId,
+                    collectionId
+                }
             }
-          }
         });
-  
-        return NextResponse.json({
-          success: true,
-          message: "Like removed successfully!" 
-        });
-      }
-  
-      await db.like.create({
-        data: {
-          userId,
-          collectionId,
+
+        if (existingLike) {
+            await db.like.delete({
+                where: {
+                    userId_collectionId: {
+                        userId,
+                        collectionId
+                    }
+                }
+            });
+
+            return NextResponse.json({
+                success: true,
+                message: "Like removed successfully!"
+            });
         }
-      });
-  
-      return NextResponse.json({
-        success: true,
-        message: "Like added successfully!"
-      });
-  
+
+        await db.like.create({
+            data: {
+                userId,
+                collectionId,
+            }
+        });
+
+        return NextResponse.json({
+            success: true,
+            message: "Like added successfully!"
+        });
+
     } catch (error) {
-      console.log("[Error handling like]", error);
-      return NextResponse.json({
-        success: false,
-        message: "An error occurred while handling the like."
-      }, { status: 500 });
+        console.log("[Error handling like]", error);
+        return NextResponse.json({
+            success: false,
+            message: "An error occurred while handling the like."
+        }, { status: 500 });
     }
-  }
+}

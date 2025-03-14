@@ -7,7 +7,8 @@ import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 import FetchUserFavoriteCollectionsService from '@/services/FetchUserFavoriteCollectionsService';
 import { CollectionType as OriginalCollectionType, GoalType } from "@/types/types";
 import { useAuth } from '@clerk/nextjs';
-
+import Link from "next/link";
+import { MdRemoveRedEye } from "react-icons/md";
 
 interface CollectionType extends OriginalCollectionType {
   accomplishedGoals?: number;
@@ -96,14 +97,13 @@ const Collections =  () => {
   return (
     <>
       <PageTitle title='All collections' />
-      <div>
         {isLoading ? (
           <p>Loading...</p> 
         ) : (
           isFiltered && (
-            <div>
+            <div className='flex flex-col gap-8'>
               {collectionsData.map((collection: CollectionType) => (
-                <div key={collection.id} className="flex">
+                <div key={collection.id}>
                   {/* <button onClick={() => handleLike(collection.id)}>
                   {likedCollections.includes(collection.id) ? "♥" : "x"}
                   </button> */}
@@ -114,14 +114,29 @@ const Collections =  () => {
                   numberGoals = {collection.totalGoals ?? 0}
                   isLiked={likedCollections.includes(collection.id)}
                   onLikeToggle={() => handleLike(collection.id)}
+                  userId = {collection.userId}
+                  numberLikes = {collection._count.likes}
+                  goals={collection.goals?.map((goal: GoalType) => ({
+                    label: goal.label,
+                    id: goal.id,
+                  })) || []}
                   />
                 </div>
               ))}
             </div>
           )
         )}
-      </div>
 
+        <div className='flex justify-end mt-20'>
+          <Link href = {`/user/${userId}/favorites`} className=''>
+          <div className=' flex items-center gap-4 group'>
+            <p className='opacity-80  group-hover:opacity-100 transition-all'>See my favorite collections </p>
+            <div className='bg-accentColor rounded-full p-2 group-hover:bg-secondColor transition-all'>
+              <MdRemoveRedEye className='text-2xl text-darkGrey'/>
+            </div>
+          </div>
+          </Link>
+        </div>
     </>
   )
 }

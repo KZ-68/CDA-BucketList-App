@@ -1,0 +1,10 @@
+model Like {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   
+  collectionId String @db.ObjectId
+  createdAt   DateTime @default(now())  
+
+  collection  Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  @@unique([userId, collectionId])
+
+}

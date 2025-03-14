@@ -25,8 +25,34 @@ export async function GET(request: NextRequest, { params }: Props) {
             },
             include: {
                 _count: {
-                    select: { goals: true }
+                    select: { 
+                        goals: true,
+                    },
                 },
+                goals:true
+            }
+        });
+
+        const categoriesWithGoalsStats = await db.category.findMany({
+            where: {
+                goals: {
+                    some: {
+                        collection: {
+                            userId: userId
+                        }
+                    }
+                }
+            },
+            include: {
+                _count: {
+                    select: {
+                        goals: true,
+                    }
+                },
+                goals: {
+                    where: { isAccomplished: true },
+                    select: { id: true },
+                }
             }
         });
 
@@ -103,17 +129,30 @@ export async function GET(request: NextRequest, { params }: Props) {
             }
         })
 
-        // calcul du nb de collections
         const totalCollections = collections.length || 0;
 
-        // calcul du total des goals (somme de tous les `_count.goals`)
         const totalGoals = collections.reduce((sum, collection) => sum + (collection._count?.goals || 0), 0);
+
+        const categoriesStats = categoriesWithGoalsStats.map(category => ({
+            categoryId: category.id,
+            categoryName: category.label,
+            goalsCompleted: category.goals.length,
+            totalGoals: category._count.goals,
+            progress: (category.goals.length * 100 / category._count.goals).toFixed(0)
+        }));
 
         const goalsGlobalProgression = totalGoals - totalAccomplishedGoals;
 
-        // return NextResponse.json(cards);
+        const collectionsWithAccomplishedGoals = collections.map(collection => {
+            const accomplishedGoals = collection.goals.filter(goal => goal.isAccomplished).length;
+            return {
+                ...collection,
+                accomplishedGoals
+            }
+        });
+
         return NextResponse.json({
-            data: collections, 
+            data: collectionsWithAccomplishedGoals, 
             totalCollections,
             totalGoals,
             totalAccomplishedGoals,
@@ -123,6 +162,7 @@ export async function GET(request: NextRequest, { params }: Props) {
             collectionsNotStarted,
             collectionsCompleted,
             collectionsInProgress,
+            categoriesStats,
             message: "Succesfully send the collections", 
             success: true, 
         })

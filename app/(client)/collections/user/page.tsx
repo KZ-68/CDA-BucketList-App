@@ -6,7 +6,7 @@ import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import fetchAllUserCollectionsData from '@/services/FetchAllUsersCollectionsService'
+import fetchAllUserCollectionsData from '@/services/FetchAllUserCollectionsService'
 
 interface Collection {
     id: string;

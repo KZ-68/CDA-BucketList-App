@@ -19,10 +19,20 @@ export interface CollectionType {
     createdAt: Date;
     updatedAt: Date;
     userId: string;
+    _count: {
+        likes: number;
+    };
     goals: GoalType[];
 }
 export interface CategoryType {
     id: string;
     label: string;
     goals: GoalType[];
+}
+
+export interface LikeType {
+    id: string;
+    createdAd : Date;
+    userId : string;
+    collectionId : string;
 }

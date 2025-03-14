@@ -1,4 +1,6 @@
 'use client';
+import { useUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface Goal {
@@ -8,6 +10,11 @@ interface Goal {
 }
 
 const GoalsPage = () => {
+  const { isSignedIn } = useUser();
+  if(isSignedIn === false) {
+    redirect("/login");
+  }
+  
   const [goals, setGoals] = useState<Goal[]>([]);
 
   useEffect(() => {   

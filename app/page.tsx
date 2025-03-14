@@ -6,6 +6,7 @@ import {  useUser } from "@clerk/nextjs";
 import { HiOutlineChartBarSquare } from "react-icons/hi2";
 import { RiLightbulbFill, RiCompass3Fill } from "react-icons/ri";
 import { LuLayoutList } from "react-icons/lu";
+import { redirect } from 'next/navigation';
 
 interface Collection {
   label: string;
@@ -15,8 +16,11 @@ interface Collection {
 }
 
 const Home = () => {
-  const { user } = useUser();
-  const userId = user?.id;
+  const { isSignedIn , user } = useUser();
+  const userId = user ? user.id : null;
+  if(isSignedIn === false) {
+    redirect("/login");
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collections, setCollections] = useState<Collection[]>([]);
   const [totalCollections, setTotalCollections] = useState<number>(0);
@@ -93,21 +97,25 @@ const Home = () => {
         text="See What's on My List"
         color="accentColor"
         icon={LuLayoutList}
+        url={""}
       />
       <MenuItem
         text="Start a New Adventure"
         color="secondColor"
         icon={RiCompass3Fill}
+        url={"collections/new"}
       />
       <MenuItem
         text="Get Inspired by Others"
         color="thirdColor"
         icon={RiLightbulbFill}
+        url={"/collections/all"}
       />
       <MenuItem
         text="Track My Progress"
         color="neutralWhite"
         icon={HiOutlineChartBarSquare}
+        url={"/progress"}
       />
     </div>
 

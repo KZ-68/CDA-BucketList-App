@@ -4,8 +4,14 @@ import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { createGoal } from "@/components/createGoal";
 import SelectCategory from '@/components/SelectCategory';
 import SelectCollection from '@/components/SelectCollection';
+import { useUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 const NewGoalPage = () => {
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
+        redirect("/login");
+    }
     const [isSubmited, setIsSubmited] = useState(false);
     
     const [success, setSuccess] = useState(false);

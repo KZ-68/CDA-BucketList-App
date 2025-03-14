@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import PageTitle from "@/components/PageTitle";
+import AllCollectionItem from "@/components/AllCollectionItem";
 import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 import FetchUserFavoriteCollectionsService from '@/services/FetchUserFavoriteCollectionsService';
 import { CollectionType as OriginalCollectionType, GoalType } from "@/types/types";
@@ -95,27 +96,34 @@ const Collections =  () => {
   return (
     <>
       <PageTitle title='All collections' />
-      {isLoading ? (
-        <p>Loading...</p> 
-      ) : (
-        isFiltered && (
-          <div>
-            {collectionsData.map((collection: CollectionType) => (
-              <div key={collection.id} className="flex">
-                <p>
-                  - {collection.label} by {collection.user.username} | {collection.accomplishedGoals} / {collection.totalGoals}
-                </p>
-                <button onClick={() => handleLike(collection.id)}>
-                {likedCollections.includes(collection.id) ? "♥" : "x"}
-              </button>
-                {/* <p>is liked ? </p> */}
-              </div>
-            ))}
-          </div>
-        )
-      )}
+      <div>
+        {isLoading ? (
+          <p>Loading...</p> 
+        ) : (
+          isFiltered && (
+            <div>
+              {collectionsData.map((collection: CollectionType) => (
+                <div key={collection.id} className="flex">
+                  {/* <button onClick={() => handleLike(collection.id)}>
+                  {likedCollections.includes(collection.id) ? "♥" : "x"}
+                  </button> */}
+                <AllCollectionItem
+                  title= {collection.label} 
+                  username = {collection.user.username} 
+                  numberGoals = {collection.totalGoals ?? 0}
+                  isLiked={likedCollections.includes(collection.id)}
+                  onLikeToggle={() => handleLike(collection.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          )
+        )}
+      </div>
+
     </>
   )
 }
 
-export default Collections
+
+export default Collections;

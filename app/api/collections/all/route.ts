@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { clerkClient } from '@clerk/nextjs/server';
 
 export async function GET() {
@@ -8,12 +8,12 @@ export async function GET() {
         const collections = await db.collection.findMany({
             where: {
                 isPrivate: false, // Filtrer les collections publiques
-              },
-            orderBy: { 
-                createdAt: "desc" 
+            },
+            orderBy: {
+                createdAt: "desc"
             },
             include: {
-                goals : true
+                goals: true
             }
         });
 
@@ -22,14 +22,14 @@ export async function GET() {
             collections.map(async (collection) => {
                 try {
 
-                    const clerk = await clerkClient(); 
-                    const user = await clerk.users.getUser(collection.userId); 
+                    const clerk = await clerkClient();
+                    const user = await clerk.users.getUser(collection.userId);
 
                     return {
                         ...collection,
                         user: {
                             id: user.id,
-                            username: user.username,  
+                            username: user.username,
                         }
                     };
                 } catch (error) {
@@ -38,14 +38,14 @@ export async function GET() {
                 }
             })
         );
-        console.log("collections all", collections )
+        console.log("collections all", collections)
         return NextResponse.json({
             data: collectionWithUser, //null si erreur
             message: "Succesfully got the collections", // msg d'erreur si erreur
             success: true, // false si erreur 
         })
 
-        
+
 
     } catch (error) {
         console.log("[collections]", error)

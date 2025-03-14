@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { clerkClient } from '@clerk/nextjs/server';
 import { getAuth } from "@clerk/nextjs/server";
 
@@ -32,10 +32,8 @@ export async function GET(req: NextRequest) {
                 likes : true,
                 _count: {
                   select: { likes: true }
-              },
+                },
             }
-            
-            
         });
 
         const collectionWithUser = await Promise.all(

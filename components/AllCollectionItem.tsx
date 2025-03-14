@@ -38,7 +38,7 @@ const AllCollectionItem = ({title, username, numberGoals, numberLikes, isLiked, 
       >
         <div className="flex items-center justify-between">
           <p className="uppercase text-xl">{title}</p>
-          <Link href={`/user/${username}`}>
+          <Link href={`/collections/user/${userId}`}>
             <p className="opacity-75 hover:opacity-100 transition-all">
               {username}
             </p>

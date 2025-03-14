@@ -6,7 +6,7 @@ import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import fetchAllUserCollectionsData from '@/services/FetchAllUsersCollectionsService'
+import fetchAllUserCollectionsData from '@/services/FetchAllUserCollectionsService'
 
 interface Collection {
     id: string;
@@ -31,12 +31,12 @@ const CollectionsPage = () => {
     const [filter, setFilter] = useState<string>('All');
     const [sortType, setSortType] = useState<string>('date');
     const [sortOrder, setSortOrder] = useState<string>('asc'); 
-    const { userId } = useAuth(); 
+    const { isSignedIn } = useAuth(); 
   
     useEffect(() => {
-      if (!userId) redirect("/login");
+      if (isSignedIn === false) redirect("/login");
       fetchAllUserCollectionsData().then(data => setCollections(data.data || []))
-    }, [userId]);
+    }, [isSignedIn]);
 
     
     const filteredCollections = collections.filter((collection) => {

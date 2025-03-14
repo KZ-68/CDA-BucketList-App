@@ -19,8 +19,11 @@ interface CategoriesProgress {
 }
 
 const ProgressPage = () => {
-  const { user } = useUser();
-  const userId = user ? user.id : redirect("/login");
+  const { isSignedIn, user } = useUser();
+  const userId = user ? user.id : null;
+  if(isSignedIn === false) {
+    redirect('/login');
+  }
 
   const [lastGoalAccomplishedLabel, setLastGoalAccomplishedLabel] = useState("");
   const [totalGoals, setTotalGoals] = useState(0);

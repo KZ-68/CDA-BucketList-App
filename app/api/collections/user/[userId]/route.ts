@@ -25,8 +25,11 @@ export async function GET(request: NextRequest, { params }: Props) {
             },
             include: {
                 _count: {
-                    select: { goals: true }
+                    select: { 
+                        goals: true,
+                    },
                 },
+                goals:true
             }
         });
 
@@ -140,8 +143,16 @@ export async function GET(request: NextRequest, { params }: Props) {
 
         const goalsGlobalProgression = totalGoals - totalAccomplishedGoals;
 
+        const collectionsWithAccomplishedGoals = collections.map(collection => {
+            const accomplishedGoals = collection.goals.filter(goal => goal.isAccomplished).length;
+            return {
+                ...collection,
+                accomplishedGoals
+            }
+        });
+
         return NextResponse.json({
-            data: collections, 
+            data: collectionsWithAccomplishedGoals, 
             totalCollections,
             totalGoals,
             totalAccomplishedGoals,

@@ -8,8 +8,8 @@ import { useUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 const NewGoalPage = () => {
-    const { user } = useUser();
-    if(!user) {
+    const { isSignedIn } = useUser();
+    if(isSignedIn === false) {
         redirect("/login");
     }
     const [isSubmited, setIsSubmited] = useState(false);

@@ -1,4 +1,4 @@
-const FetchAllUsersCollectionService = async () => {
+const FetchAllUserCollectionsService = async () => {
     try {
         const response = await fetch(`/api/collections/user`);
         const data = await response.json();
@@ -8,4 +8,4 @@ const FetchAllUsersCollectionService = async () => {
     }
 }
 
-export default FetchAllUsersCollectionService
+export default FetchAllUserCollectionsService

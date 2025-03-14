@@ -36,7 +36,7 @@ export default function RootLayout({
         <header>
           <Navbar />
         </header>
-        <main className="py-12 pb-44 px-8  tracking-wide md:pt-24 md:w-3/4 m-auto">
+        <main className="py-12 pb-32 px-8  tracking-wide md:pt-24 md:w-3/4 m-auto">
           {children}
         </main>
       </body>

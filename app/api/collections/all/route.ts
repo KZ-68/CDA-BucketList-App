@@ -28,12 +28,15 @@ export async function GET(req: NextRequest) {
                 createdAt: "desc"
             },
             include: {
-                goals: true,
-                likes: true
+                goals : true,
+                likes : true,
+                _count: {
+                  select: { likes: true }
+              },
             }
-
+            
+            
         });
-
 
         const collectionWithUser = await Promise.all(
             collections.map(async (collection) => {
@@ -55,8 +58,7 @@ export async function GET(req: NextRequest) {
                 }
             })
         );
-        console.log("collections all", collections)
-        console.log("userid co", userId)
+        console.log("collections all", collections )
         return NextResponse.json({
             data: collectionWithUser, //null si erreur
             message: "Succesfully got all users the collections ", // msg d'erreur si erreur

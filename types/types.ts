@@ -19,6 +19,9 @@ export interface CollectionType {
     createdAt: Date;
     updatedAt: Date;
     userId: string;
+    _count: {
+        likes: number;
+    };
     goals: GoalType[];
 }
 export interface CategoryType {

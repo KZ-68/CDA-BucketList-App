@@ -36,9 +36,11 @@ const createCollectionSchema = z.object({
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
+        console.log("Request :", body)
         const { label, isPrivate, userId} = body;
 
         const collectionData = { label, isPrivate, userId };
+        console.log("Collection Data :", body)
 
         createCollectionSchema.parse(collectionData);
 

@@ -5,8 +5,6 @@ export async function createGoal(
     formData:FormData
 ) {
     const { userId } = await auth()
-    let url = "";
-    const autorization = process.env.VERCEL_TOKEN ? 'Bearer ' + process.env.VERCEL_TOKEN : ""
 
     if (!userId) return { success: false, message: 'User not authentified'};
     
@@ -25,19 +23,18 @@ export async function createGoal(
         collectionId: goalCollection,
         userId: userId
     })
-
-    if(process.env.NEXT_PUBLIC_VERCEL_ENV && process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
-        url = "http://" + process.env.VERCEL_URL  + `/api/goals`
-    } else {
-        url = process.env.NEXT_PUBLIC_URL + `/api/goals`
-    }
     
-    const response = await fetch(url, {
+    const apiURL = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_URL;
+    const autorization = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? `Bearer ${process.env.VERCEL_TOKEN}` : ""
+    
+    const response = await fetch(`${apiURL}/api/goals`, {
         method: 'POST',
-        body: JSON.stringify(bodyForm),
         headers: {
-            Autorization: autorization
-        }
+            "Content-Type":"application/json",
+            x_authorization: autorization,
+        },
+        body: JSON.stringify(bodyForm),
+        
     })
 
     if(response.ok) {

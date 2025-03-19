@@ -18,12 +18,16 @@ export default async function createCollection(prevState: { success: boolean; me
         userId: userId
     })
 
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/collections`, {
+
+    const apiURL = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_URL;
+    const autorization = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? `Bearer ${process.env.VERCEL_TOKEN}` : ""
+
+    const response = await fetch(`${apiURL}/api/collections`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
+            x_authorization: autorization,
         },
-        credentials: "include",
         body: JSON.stringify(bodyForm),
     })
 

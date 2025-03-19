@@ -31,6 +31,7 @@ export default async function createCollection(prevState: { success: boolean; me
         method: 'POST',
         body: JSON.stringify(bodyForm),
         headers: {
+            "Content-Type": "application/json",
             Autorization: autorization
         }
     })
@@ -43,7 +44,7 @@ export default async function createCollection(prevState: { success: boolean; me
     } else {
         return {
             success: false,
-            message: 'Error during the collection creation process',
+            message: 'Error during the collection creation process :' + response.status,
         };
     }
 }

@@ -23,7 +23,7 @@ export default async function createCollection(prevState: { success: boolean; me
     if(process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
         url = process.env.NEXT_PUBLIC_URL + `/api/collections`
     } else {
-        url = "http://" + process.env.VERCEL_URL  + `/api/collections`
+        url = "https://" + process.env.VERCEL_URL  + `/api/collections`
     }
 
     

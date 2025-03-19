@@ -18,7 +18,7 @@ export async function editCollection(
         userId: userId
     })
     
-    const response = await fetch(process.env.URL + `/api/collections/${collectionId}`, {
+    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/collections/${collectionId}`, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

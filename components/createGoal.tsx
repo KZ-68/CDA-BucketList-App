@@ -24,7 +24,7 @@ export async function createGoal(
         userId: userId
     })
     
-    const response = await fetch(process.env.URL + `/api/goals`, {
+    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/goals`, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

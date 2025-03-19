@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server'
 
 export default async function createCollection(prevState: { success: boolean; message: string; } | Promise<{ success: boolean; message: string; } | null> | null, formData:FormData) {
     const { userId } = await auth()
+    let url = "";
 
     if (!userId) return { success: false, message: 'User not authentified'};
 
@@ -18,7 +19,13 @@ export default async function createCollection(prevState: { success: boolean; me
         userId: userId
     })
     
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/collections`, {
+    if(process.env.NEXT_PUBLIC_VERCEL_ENV && process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
+        url = "http://" + process.env.VERCEL_URL  + `/api/collections`
+    } else {
+        url = process.env.NEXT_PUBLIC_URL + `/api/collections`
+    }
+
+    const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

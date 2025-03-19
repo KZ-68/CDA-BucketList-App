@@ -6,6 +6,7 @@ export async function editCollection(
     collectionId: string | string[] | undefined
 ) {
     const { userId } = await auth()
+    let url = "";
 
     if (!userId) return { success: false, message: 'User not authentified'};
     
@@ -17,8 +18,14 @@ export async function editCollection(
         isPrivate : collectionisPrivate,
         userId: userId
     })
+
+    if(process.env.NEXT_PUBLIC_VERCEL_ENV && process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
+        url = "http://" + process.env.VERCEL_URL  + `/api/collections/${collectionId}`
+    } else {
+        url = process.env.NEXT_PUBLIC_URL + `/api/collections/${collectionId}`
+    }
     
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/collections/${collectionId}`, {
+    const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

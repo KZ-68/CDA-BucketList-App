@@ -6,6 +6,7 @@ export async function editGoal(
     goalId: string | string[] | undefined,
 ) {
     const { userId } = await auth()
+    let url = "";
 
     if (!userId) return { success: false, message: 'User not authentified'};
     
@@ -25,8 +26,14 @@ export async function editGoal(
         collectionId: goalCollection,
         userId: userId
     })
+
+    if(process.env.NEXT_PUBLIC_VERCEL_ENV && process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
+        url = "http://" + process.env.VERCEL_URL  + `/api/goals/${goalId}`
+    } else {
+        url = process.env.NEXT_PUBLIC_URL + `/api/goals/${goalId}`
+    }
     
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/goals/${goalId}`, {
+    const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

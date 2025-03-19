@@ -24,13 +24,13 @@ export default function Navbar() {
             <Link href="/progress" className="text-2xl hover:text-accentColor">
                 <HiOutlineChartBarSquare />
             </Link>
-            <div className="flex flex-row-reverse items-center">
+            <div className="flex flex-row-reverse items-center gap-4">
                 <SignedOut>
-                    <SignInButton />
-                    <SignUpButton />
+                    <SignInButton fallbackRedirectUrl="/" />
+                    <SignUpButton fallbackRedirectUrl="/" />
                 </SignedOut>
                 <SignedIn >
-                    <UserButton 
+                    <UserButton
                     appearance={{
                         elements: {
                         //   userButtonAvatarBox: "rounded-full border-2 border-blue-500",
@@ -58,19 +58,18 @@ export default function Navbar() {
                 <Link href="/progress" className="text-2xl hover:text-accentColor">
                     My Progress
                 </Link>
-                <div className="flex flex-row-reverse items-center">
+                <div className="flex flex-row-reverse items-center gap-4 text-2xl">
                     <SignedOut>
-                        <SignInButton />
-                        <SignUpButton />
+                        <SignInButton fallbackRedirectUrl="/" />
+                        <SignUpButton fallbackRedirectUrl="/" />
                     </SignedOut>
-                    <SignedIn >
+                    <SignedIn>
                         <UserButton 
                         appearance={{
                             elements: {
                             //   userButtonAvatarBox: "rounded-full border-2 border-blue-500",
                             },
                         }}/>
-                    
                     </SignedIn>
                 </div>
             </div>

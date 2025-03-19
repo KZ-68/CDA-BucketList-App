@@ -19,10 +19,12 @@ export default async function createCollection(prevState: { success: boolean; me
         userId: userId
     })
     
-    if(process.env.NEXT_PUBLIC_VERCEL_ENV && process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
-        url = "http://" + process.env.VERCEL_URL  + `/api/collections`
-    } else {
+    if(process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
         url = process.env.NEXT_PUBLIC_URL + `/api/collections`
+        console.log(url);
+    } else {
+        url = "http://" + process.env.VERCEL_URL  + `/api/collections`
+        console.log(url);
     }
 
     const response = await fetch(url, {

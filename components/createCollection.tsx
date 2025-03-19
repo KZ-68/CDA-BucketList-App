@@ -22,10 +22,10 @@ export default async function createCollection(prevState: { success: boolean; me
     
     if(process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
         url = process.env.NEXT_PUBLIC_URL + `/api/collections`
-        console.log(url);
+        console.log(autorization)
     } else {
         url = "http://" + process.env.VERCEL_URL  + `/api/collections`
-        console.log(url);
+        console.log(autorization);
     }
 
     

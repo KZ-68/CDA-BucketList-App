@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server'
 export default async function createCollection(prevState: { success: boolean; message: string; } | Promise<{ success: boolean; message: string; } | null> | null, formData:FormData) {
     const { userId } = await auth()
     let url = "";
+    const autorization = process.env.VERCEL_TOKEN ? 'Bearer' + process.env.VERCEL_TOKEN : ""
 
     if (!userId) return { success: false, message: 'User not authentified'};
 
@@ -27,9 +28,13 @@ export default async function createCollection(prevState: { success: boolean; me
         console.log(url);
     }
 
+    
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
+        headers: {
+            Autorization: autorization
+        }
     })
 
     if(response.ok) {

@@ -6,6 +6,7 @@ export async function createGoal(
 ) {
     const { userId } = await auth()
     let url = "";
+    const autorization = process.env.VERCEL_TOKEN ? 'Bearer' + process.env.VERCEL_TOKEN : ""
 
     if (!userId) return { success: false, message: 'User not authentified'};
     
@@ -34,6 +35,9 @@ export async function createGoal(
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
+        headers: {
+            Autorization: autorization
+        }
     })
 
     if(response.ok) {

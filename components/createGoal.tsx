@@ -24,7 +24,7 @@ export async function createGoal(
         userId: userId
     })
     
-    const apiURL = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? process.env.VERCEL_URL : process.env.NEXT_PUBLIC_API_URL;
+    const apiURL = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? `https://${process.env.VERCEL_URL}` : process.env.NEXT_PUBLIC_API_URL;
     const autorization = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? `Bearer ${process.env.VERCEL_TOKEN}` : ""
     
     const response = await fetch(`${apiURL}/api/goals`, {

@@ -128,7 +128,7 @@ const Collections =  () => {
         )}
 
         <div className='flex justify-end mt-20'>
-          <Link href = {`/user/${userId}/favorites`} className=''>
+          <Link href = {`user/favorites`} className=''>
           <div className=' flex items-center gap-4 group'>
             <p className='opacity-80  group-hover:opacity-100 transition-all'>See my favorite collections </p>
             <div className='bg-accentColor rounded-full p-2 group-hover:bg-secondColor transition-all'>

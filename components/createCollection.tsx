@@ -24,6 +24,7 @@ export default async function createCollection(prevState: { success: boolean; me
         url = process.env.NEXT_PUBLIC_URL + `/api/collections`
     } else {
         url = "https://" + process.env.VERCEL_URL  + `/api/collections`
+        console.log(url);
     }
 
     

@@ -15,11 +15,11 @@ const LoginPage = () => {
                 </h1>
             </hgroup>
             <div className='flex flex-col gap-10'>
-                <div className='text-3xl text-black bg-accentColor py-3 px-9 rounded-lg text-center'>
-                    <SignInButton />
+                <div className='text-3xl text-black font-bold bg-accentColor py-3 px-9 rounded-lg text-center'>
+                    <SignInButton fallbackRedirectUrl="/" />
                 </div>
-                <div className='text-3xl border-[2px] border-black py-3 px-4 rounded-lg text-center'>
-                    <SignUpButton />
+                <div className='text-3xl border-[2px] border-white py-3 px-4 rounded-lg text-center'>
+                    <SignUpButton fallbackRedirectUrl="/" />
                 </div>
             </div>
         </div>

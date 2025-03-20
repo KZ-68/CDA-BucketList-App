@@ -26,12 +26,12 @@ interface Collection {
   goals: GoalType[];
   userId: string;
   _count: {
-      likes: number;
+    likes: number;
   };
 }
 
 
-const Collections =  () => {
+const Collections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +43,7 @@ const Collections =  () => {
   const userId = user ? user.id : null;
   const [likedCollections, setLikedCollections] = useState<string[]>([]);
   const [collectionsLikedSorted, setCollectionsLikedSorted] = useState<Collection[]>([]);
-  
+
 
   useEffect(() => {
     const fetchLikedCollections = async () => {
@@ -106,7 +106,7 @@ const Collections =  () => {
     const day = date.getDate();
     return year * 10000 + month * 100 + day;
   };
-  
+
   const sortedCollections = [...filteredCollections].sort((a, b) => {
     if (sortType === 'date') {
       const yearA = formatDateToNumber(a.createdAt);
@@ -148,126 +148,113 @@ const Collections =  () => {
   return (
     <>
       <PageTitle title='All collections' />
-
-      
-      <div className='mb-14'>
+      <div className='mb-11'>
         <Searchbar />
       </div>
-      
+      <div className='text-lg mb-20'>
+        <LikesFilter setCollectionsLikedSorted={setCollectionsLikedSorted} collections={sortedCollections} likedCollections={likedCollections} />
+        <div className='flex flex-col gap-3 mb-6 '>
+          <p>State :</p>
+
+          <div className='flex gap-2 flex-wrap'>
+            <p
+              className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'Completed' ? 'border-accentColor text-accentColor' : ''}`}
+              onClick={() => setFilter('Completed')}
+            >
+              Completed
+            </p>
+            <p
+              className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'In Progress' ? 'border-accentColor text-accentColor' : ''}`}
+              onClick={() => setFilter('In Progress')}
+            >
+              In Progress
+            </p>
+            <p
+              className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'Not Started' ? 'border-accentColor text-accentColor' : ''}`}
+              onClick={() => setFilter('Not Started')}
+            >
+              Not Started
+            </p>
+            <p
+              className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'All' ? 'border-accentColor text-accentColor' : ''}`}
+              onClick={() => setFilter('All')}
+            >
+              All
+            </p>
+          </div>
+        </div>
+        <div className='flex flex-col gap-3  '>
+          <p>Sort by :</p>
+          <div className='flex gap-2 flex-wrap'>
+
+            <div>
+              <p>Date</p>
+              <select
+                value={sortType === 'date' ? sortOrder : ''}
+                onChange={(e) => {
+                  setSortType('date');
+                  setSortOrder(e.target.value);
+                }}
+                className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'
+              >
+                <option value="">Select...</option>
+                <option value="desc">New → Old</option>
+                <option value="asc">Old → New</option>
+              </select>
+            </div>
+
+            <div>
+              <p>Goals</p>
+              <select
+                value={sortType === 'goals' ? sortOrder : ''}
+                onChange={(e) => {
+                  setSortType('goals');
+                  setSortOrder(e.target.value);
+                }}
+                className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'
+              >
+                <option value="">Select...</option>
+                <option value="desc">High → Low</option>
+                <option value="asc">Low → High </option>
+              </select>
+            </div>
+
+            <div>
+              <p>Completion</p>
+              <select
+                value={sortType === 'completion' ? sortOrder : ''}
+                onChange={(e) => {
+                  setSortType('completion');
+                  setSortOrder(e.target.value);
+                }}
+                className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'
+              >
+                <option value="">Select...</option>
+                <option value="desc">High → Low</option>
+                <option value="asc">Low → High</option>
+              </select>
+            </div>
+
+            <div className='cursor-pointer'>
+              <p className='text-mediumGrey'>Reset</p>
+              <p onClick={() => {
+                setSortType('date');
+                setSortOrder('desc');
+              }} className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'>
+                Reset
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
         isFiltered && (
           <div className='flex flex-col gap-8'>
-            {collectionsData.map((collection: CollectionType) => (
+            {collectionsLikedSorted.map((collection: Collection) => (
               <div key={collection.id}>
                 {/* <button onClick={() => handleLike(collection.id)}>
-
-        <div className='text-lg mb-20'>
-          <LikesFilter setCollectionsLikedSorted={setCollectionsLikedSorted} collections={sortedCollections} likedCollections={likedCollections} />  
-          <div className='flex flex-col gap-3 mb-6 '>
-            <p>State :</p>
-            
-            <div className='flex gap-2 flex-wrap'>
-              <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'Completed' ? 'border-accentColor text-accentColor' : ''}`}
-                  onClick={() => setFilter('Completed')}
-              >
-                  Completed
-              </p>
-              <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'In Progress' ? 'border-accentColor text-accentColor' : ''}`}
-                  onClick={() => setFilter('In Progress')}
-              >
-                  In Progress
-              </p>
-              <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'Not Started' ? 'border-accentColor text-accentColor' : ''}`}
-                  onClick={() => setFilter('Not Started')}
-              >
-                  Not Started
-              </p>
-              <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor hover:text-accentColor ${filter === 'All' ? 'border-accentColor text-accentColor' : ''}`}
-                  onClick={() => setFilter('All')}
-              >
-                  All
-              </p>
-            </div>
-          </div>
-          <div className='flex flex-col gap-3  '>
-            <p>Sort by :</p>
-            <div className='flex gap-2 flex-wrap'>
-
-              <div>
-                <p>Date</p>
-                <select 
-                  value={sortType === 'date' ? sortOrder : ''} 
-                  onChange={(e) => {
-                    setSortType('date');
-                    setSortOrder(e.target.value);
-                  }} 
-                  className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'
-                >
-                  <option value="">Select...</option>
-                  <option value="desc">New → Old</option>
-                  <option value="asc">Old → New</option>
-                </select>
-              </div>
-              
-              <div>
-                <p>Goals</p>
-                <select 
-                  value={sortType === 'goals' ? sortOrder : ''} 
-                  onChange={(e) => {
-                    setSortType('goals');
-                    setSortOrder(e.target.value);
-                  }} 
-                  className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'
-                >
-                  <option value="">Select...</option>
-                  <option value="desc">High → Low</option>
-                  <option value="asc">Low → High </option>
-                </select>
-              </div>
-
-              <div>
-                <p>Completion</p>
-                <select 
-                  value={sortType === 'completion' ? sortOrder : ''} 
-                  onChange={(e) => {
-                    setSortType('completion');
-                    setSortOrder(e.target.value);
-                  }} 
-                  className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'
-                >
-                  <option value="">Select...</option>
-                  <option value="desc">High → Low</option>
-                  <option value="asc">Low → High</option>
-                </select>
-              </div>
-
-              <div className='cursor-pointer'>
-                <p className='text-mediumGrey'>Reset</p>
-                <p onClick={() => {
-                  setSortType('date');
-                  setSortOrder('desc');
-                }} className='bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base'>
-                  Reset
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        {isLoading ? (
-          <p>Loading...</p> 
-        ) : (
-          isFiltered && (
-            <div className='flex flex-col gap-8'>
-              {collectionsLikedSorted.map((collection: Collection) => (
-                <div key={collection.id}>
-                  {/* <button onClick={() => handleLike(collection.id)}>
-
                   {likedCollections.includes(collection.id) ? "♥" : "x"}
                   </button> */}
                 <AllCollectionItem
@@ -289,8 +276,8 @@ const Collections =  () => {
         )
       )}
 
-        <div className='flex justify-end mt-20'>
-          <Link href = {`user/favorites`} className=''>
+      <div className='flex justify-end mt-20'>
+        <Link href={`user/favorites`} className=''>
           <div className=' flex items-center gap-4 group'>
             <p className='opacity-80  group-hover:opacity-100 transition-all'>See my favorite collections </p>
             <div className='bg-accentColor rounded-full p-2 group-hover:bg-secondColor transition-all'>

@@ -23,16 +23,13 @@ export async function createGoal(
         collectionId: goalCollection,
         userId: userId
     })
+
+    const baseUrl = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://cda-bucket-list-app.vercel.app';
     
-    const apiURL = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? `https://${process.env.VERCEL_URL}` : process.env.NEXT_PUBLIC_API_URL;
-    const autorization = process.env.VERCEL_ENV && process.env.VERCEL_ENV === "preview" ? `Bearer ${process.env.VERCEL_TOKEN}` : ""
-    
-    const response = await fetch(`${apiURL}/api/goals`, {
+    const response = await fetch(baseUrl + `/api/goals`, {
         method: 'POST',
-        headers: {
-            "Content-Type":"application/json",
-            x_authorization: autorization,
-        },
         body: JSON.stringify(bodyForm),
         
     })

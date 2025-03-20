@@ -1,7 +1,7 @@
 "use client"
 import React, { useActionState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
-import createCollection from "@/components/createCollection";
+import { createCollection } from "@/components/createCollection";
 import { useUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import RedirectionHook from '@/components/RedirectionHook';

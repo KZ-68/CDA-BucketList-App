@@ -6,7 +6,7 @@ import AllCollectionItem from "@/components/AllCollectionItem";
 import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 import FetchUserFavoriteCollectionsService from '@/services/FetchUserFavoriteCollectionsService';
 import { CollectionType as OriginalCollectionType, GoalType } from "@/types/types";
-import { useAuth } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import Link from "next/link";
 import { MdRemoveRedEye } from "react-icons/md";
 
@@ -22,7 +22,8 @@ const Collections =  () => {
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
-  const { userId } = useAuth();
+  const { user } = useUser();
+  const userId = user ? user.id : null;
   const [likedCollections, setLikedCollections] = useState<string[]>([]);
   
   useEffect(() => {

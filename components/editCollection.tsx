@@ -17,8 +17,12 @@ export async function editCollection(
         isPrivate : collectionisPrivate,
         userId: userId
     })
+
+    const baseUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://cda-bucket-list-app.vercel.app';
     
-    const response = await fetch(process.env.URL + `/api/collections/${collectionId}`, {
+    const response = await fetch(baseUrl + `/api/collections/${collectionId}`, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

@@ -44,19 +44,19 @@ const LikesFilter: React.FC<LikesFilterProps> = ({setCollectionsLikedSorted, col
         <div className="flex my-4 gap-2">
             <div className='flex gap-2 flex-wrap bg-[--accentColor] rounded-xl'>
               <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor ${likeFilter === 'Liked' ? 'border-[--accentColor] bg-[--accentColor] text-darkGrey font-bold' : ''}`}
+                  className={`border border-[--accentColor] px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor ${likeFilter === 'Liked' ? 'border-[--accentColor] bg-[--accentColor] text-darkGrey font-bold' : 'bg-darkGrey'}`}
                   onClick={() => {setLikeFilter('Liked')}}
               >
                   Liked
               </p>
               <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor ${likeFilter === 'Not liked' ? 'border-[--accentColor] bg-[--accentColor] text-darkGrey font-bold' : ''}`}
+                  className={`border border-[--accentColor]  px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor ${likeFilter === 'Not liked' ? 'border-[--accentColor] bg-[--accentColor] text-darkGrey font-bold' : 'bg-darkGrey'}`}
                   onClick={() => {setLikeFilter('Not liked')}}
               >
                   Not liked
               </p>
               <p
-                  className={`bg-darkGrey border border-solid border-neutralWhite px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor ${likeFilter === 'All' ? 'border-[--accentColor] bg-[--accentColor] text-darkGrey font-bold' : ''}`}
+                  className={`border border-[--accentColor] px-5 py-2 rounded-md text-base cursor-pointer hover:border-accentColor ${likeFilter === 'All' ? 'border-[--accentColor] bg-[--accentColor] text-darkGrey font-bold' : 'bg-darkGrey'}`}
                   onClick={() => {setLikeFilter('All')}}
               >
                   All

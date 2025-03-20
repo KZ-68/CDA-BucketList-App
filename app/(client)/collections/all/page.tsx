@@ -9,6 +9,7 @@ import { CollectionType as OriginalCollectionType, GoalType } from "@/types/type
 import { useAuth } from '@clerk/nextjs';
 import Link from "next/link";
 import { MdRemoveRedEye } from "react-icons/md";
+import Searchbar from '@/components/Searchbar';
 
 interface CollectionType extends OriginalCollectionType {
   accomplishedGoals?: number;
@@ -18,13 +19,13 @@ interface CollectionType extends OriginalCollectionType {
   };
 }
 
-const Collections =  () => {
+const Collections = () => {
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
   const { userId } = useAuth();
   const [likedCollections, setLikedCollections] = useState<string[]>([]);
-  
+
   useEffect(() => {
     const fetchLikedCollections = async () => {
       if (!userId) return;
@@ -54,12 +55,12 @@ const Collections =  () => {
       // collection.userId !== userId
       // );
 
-     setCollections(data.data);
-     setIsLoading(false);
-     setIsFiltered(true); 
+      setCollections(data.data);
+      setIsLoading(false);
+      setIsFiltered(true);
 
     };
-    
+
     fetchData();
   }, [userId]);
 
@@ -69,12 +70,12 @@ const Collections =  () => {
       totalGoals: collection.goals?.length || 0,
       accomplishedGoals:
         collection.goals?.filter((goal: GoalType) => goal.isAccomplished).length || 0,
-  })) || [];
+    })) || [];
 
 
   async function handleLike(collectionId: string) {
     const response = await fetch('/api/collections/all', {
-      method: 'POST', 
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -97,21 +98,26 @@ const Collections =  () => {
   return (
     <>
       <PageTitle title='All collections' />
-        {isLoading ? (
-          <p>Loading...</p> 
-        ) : (
-          isFiltered && (
-            <div className='flex flex-col gap-8'>
-              {collectionsData.map((collection: CollectionType) => (
-                <div key={collection.id}>
-                  {/* <button onClick={() => handleLike(collection.id)}>
+      
+      <div className='mb-14'>
+        <Searchbar />
+      </div>
+      
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        isFiltered && (
+          <div className='flex flex-col gap-8'>
+            {collectionsData.map((collection: CollectionType) => (
+              <div key={collection.id}>
+                {/* <button onClick={() => handleLike(collection.id)}>
                   {likedCollections.includes(collection.id) ? "♥" : "x"}
                   </button> */}
                 <AllCollectionItem
-                  title= {collection.label}
-                  userId= {collection.userId} 
-                  username = {collection.user.username} 
-                  numberGoals = {collection.totalGoals ?? 0}
+                  title={collection.label}
+                  userId={collection.userId}
+                  username={collection.user.username}
+                  numberGoals={collection.totalGoals ?? 0}
                   isLiked={likedCollections.includes(collection.id)}
                   onLikeToggle={() => handleLike(collection.id)}
                   numberLikes={collection._count?.likes || 0}
@@ -119,23 +125,23 @@ const Collections =  () => {
                     label: goal.label,
                     id: goal.id,
                   })) || []}
-                  />
-                </div>
-              ))}
-            </div>
-          )
-        )}
+                />
+              </div>
+            ))}
+          </div>
+        )
+      )}
 
-        <div className='flex justify-end mt-20'>
-          <Link href = {`/user/${userId}/favorites`} className=''>
+      <div className='flex justify-end mt-20'>
+        <Link href={`/user/${userId}/favorites`} className=''>
           <div className=' flex items-center gap-4 group'>
             <p className='opacity-80  group-hover:opacity-100 transition-all'>See my favorite collections </p>
             <div className='bg-accentColor rounded-full p-2 group-hover:bg-secondColor transition-all'>
-              <MdRemoveRedEye className='text-2xl text-darkGrey'/>
+              <MdRemoveRedEye className='text-2xl text-darkGrey' />
             </div>
           </div>
-          </Link>
-        </div>
+        </Link>
+      </div>
     </>
   )
 }

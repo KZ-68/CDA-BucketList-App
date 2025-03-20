@@ -16,7 +16,6 @@ const Searchbar = () => {
                 className='bg-gray-950 outline-none p-2 rounded w-full'
             />
 
-            {/* Results dropdown with absolute positioning */}
             {resultData.length > 0 && (
                 <div className='absolute top-full left-0 right-0 z-50 border border-gray-700 rounded overflow-hidden bg-gray-950 max-h-[300px] overflow-y-auto shadow-lg'>
                     {resultData.map((data: CollectionType) => (

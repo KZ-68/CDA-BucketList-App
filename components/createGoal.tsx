@@ -23,8 +23,12 @@ export async function createGoal(
         collectionId: goalCollection,
         userId: userId
     })
+
+    const baseUrl = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://cda-bucket-list-app.vercel.app';
     
-    const response = await fetch(process.env.URL + `/api/goals`, {
+    const response = await fetch(baseUrl + `/api/goals`, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
     })

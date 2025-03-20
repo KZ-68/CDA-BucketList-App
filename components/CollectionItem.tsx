@@ -2,6 +2,7 @@ import { PiRocketFill } from "react-icons/pi";
 import { MdRemoveRedEye } from "react-icons/md";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoHourglass } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
 import Link from 'next/link';
 
 interface CollectionItemProps {
@@ -85,6 +86,9 @@ interface CollectionItemProps {
                   {totalGoal > 10 ? totalGoal : ` 0${totalGoal}`}
                   {totalGoal === 1 || totalGoal === 0   ? ' Goal' : ' Goals'}
                </p>
+            </div>
+            <div className="mx-10">
+               <a href={`/collections/${id}/edit`}><FaEdit className="w-8 h-6 text-[--lightGrey] hover:text-[--secondColor]"/></a>
             </div>
             {!isPrivate && (
                <div className="absolute bottom-[5px] right-[10px] text-2xl" style={{color: `var(--${goalTextColor})`}}>

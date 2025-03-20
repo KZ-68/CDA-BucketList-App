@@ -1,7 +1,7 @@
 const FetchUserFavoriteCollectionsService = async (userId: string | null) => {
     if (!userId) throw new Error("User ID is required");
     try {
-        const response =await fetch(`/api/user/${userId}/likedCollections`, {cache: 'force-cache'});
+        const response =await fetch(`/api/user/${userId}/liked-collections`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

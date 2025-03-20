@@ -30,18 +30,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider afterSignOutUrl="/login">
-      <html lang="en">
-        <body className={`h-screen  ${mainFont} ${secondaryFont} antialiased`}>
-          <header>
-            <Navbar />
-          </header>
-          <main className="py-12 pb-32 px-8  tracking-wide md:pt-24 md:w-3/4 m-auto">
+        <html lang="en">
+          <body className={`h-screen  ${mainFont} ${secondaryFont} antialiased`}>
             <ClerkLoaded>
-              {children}
+            <header>
+              <Navbar />
+            </header>
+            <main className="py-12 pb-32 px-8  tracking-wide md:pt-24 md:w-3/4 m-auto">
+                {children} 
+            </main>
             </ClerkLoaded>
-          </main>
-        </body>
-      </html>
+          </body>
+        </html>
     </ClerkProvider>
   );
 }

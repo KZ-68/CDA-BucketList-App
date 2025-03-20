@@ -35,7 +35,7 @@ export async function createCollection(prevState: { success: boolean; message: s
     } else {
         return {
             success: false,
-            message: 'Error during the collection creation process',
+            message: 'Error during the collection creation process :' + response.status,
         };
     }
 }

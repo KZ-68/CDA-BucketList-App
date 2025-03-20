@@ -31,6 +31,7 @@ export async function createGoal(
     const response = await fetch(baseUrl + `/api/goals`, {
         method: 'POST',
         body: JSON.stringify(bodyForm),
+        
     })
 
     if(response.ok) {

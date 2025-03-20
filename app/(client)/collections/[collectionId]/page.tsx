@@ -7,10 +7,9 @@ import { TogglePrivacy } from "./_components/TogglePrivacy";
 import { SortElement } from "./_components/SortElement";
 import { ToggleAccomplish } from "./_components/ToggleAccomplish";
 import { Metadata } from "next";
-import { createGoal, fetchCategories, fetchUserCollection, toggleCollection, toggleGoal, togglePrivacy, toggleSort } from "./_services/collectionService";
+import { createGoal, fetchCategories, fetchUserCollection, toggleCollection, toggleGoal, togglePrivacy, toggleSort , isOwnerLogged} from "./_services/collectionService";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
 
 interface fetchResponse {
     collection: CollectionType,
@@ -33,23 +32,6 @@ export async function generateMetadata(
     const collectionId = (await params).collectionId
     const { collection } = await fetchUserCollection(collectionId);
     return { title: collection.label }
-}
-
-
-async function isOwnerLogged(collecId: string) {
-    const Auth = await auth();
-
-    const { collection } = await fetchUserCollection(collecId) as fetchResponse;
-
-    const loggedUserId = Auth.userId;
-    console.log("loggedUSer : ", loggedUserId);
-
-    if (Auth.sessionId === null) return redirect("/login");
-
-    const isOwner = collection.userId === loggedUserId;
-
-    console.log("isOwner : ", isOwner);
-    return isOwner;
 }
 
 const Page = async ({ params, searchParams }: PageProps) => {

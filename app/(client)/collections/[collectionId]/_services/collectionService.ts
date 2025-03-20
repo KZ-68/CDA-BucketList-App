@@ -1,27 +1,30 @@
 import { db } from "@/lib/db";
+import { CollectionType, GoalType } from "@/types/types";
 import { auth } from "@clerk/nextjs/server";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
+interface fetchResponse {
+    collection: CollectionType,
+    goals: GoalType[],
+    totalGoalsCount: number
+}
+
 export async function isOwnerLogged(collecId: string) {
     "use server"
     const Auth = await auth();
-    console.log("collecId :", collecId);
-
-    const collection = await db.collection.findUnique({
-        where: {
-            id: collecId,
-        }
-    });
-    console.log("collection :", collection);
-
-    if (!collection) return false;
+    
+    const { collection } = await fetchUserCollection(collecId) as fetchResponse;
 
     const loggedUserId = Auth.userId;
-    console.log("loggedUserId :", loggedUserId);
-    if (!loggedUserId) return false;
+    console.log("loggedUSer : ", loggedUserId);
 
-    return collection?.userId === loggedUserId;
+    if (Auth.sessionId === null) return redirect("/login");
+
+    const isOwner = collection.userId === loggedUserId;
+
+    console.log("isOwner : ", isOwner);
+    return isOwner;
 }
 
 export async function fetchUserCollection(

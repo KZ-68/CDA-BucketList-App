@@ -5,6 +5,7 @@ import { editCollection } from "@/components/editCollection";
 import { redirect, useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import fetchCollectionData from '@/services/FetchCollectionService';
+import RedirectionHook from '@/components/RedirectionHook';
 
 const EditCollectionPage = () => {
     const params = useParams();
@@ -45,10 +46,16 @@ const EditCollectionPage = () => {
     return (
     <>
         {isSubmited && success === true && (
-            <p id="success" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><CheckCircle2 className='flex flex-row gap-2 text-white bg-green-700 rounded-full'/>{message}</p>
+            <div id="success" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 rounded-md'><CheckCircle2 className='flex flex-row gap-2 text-white bg-green-700 rounded-full'/>
+                <p className='text-black'>{message}</p>
+                <RedirectionHook url={`/collections/user`}/>
+            </div>
         )}
         {isSubmited && success === false && (
-            <p id="error" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 text-black rounded-md'><XCircleIcon className='text-white bg-red-600 rounded-full'/>{message}</p>
+            <div id="error" className='flex flex-row gap-2 bg-white w-fit py-2 px-3 my-3 rounded-md'><XCircleIcon className='text-white bg-red-600 rounded-full'/>
+                <p className='text-black'>{message}</p>
+                <RedirectionHook url={`/collections/user`}/>
+            </div>
         )}
         <h1 className='text-2xl my-3 text-white'>Edit Collection</h1>
         <div className='flex flex-col my-6 py-8 px-6 mx-80 rounded-lg bg-slate-800'>
@@ -58,9 +65,9 @@ const EditCollectionPage = () => {
                 <div className="flex items-center justify-center w-full my-8">
                     <label htmlFor="toggle" className="flex items-center cursor-pointer relative">
                         <input type="checkbox" id="toggle" checked={isPrivate} onChange={onChangeCheckBox} className="sr-only peer" name='collection-isPrivate'/>
-                        <div className="w-[200px] h-7 flex items-center bg-[#28344c] rounded-lg text-[12px] peer-checked:text-[#30c4e4] text-[#30c4e4] font-extrabold after:flex after:items-center after:justify-center peer after:content-['Public'] peer-checked:after:content-['Private'] peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-[#081424] after:bg-[#081424] after:border after:border-[#081424] after:rounded-lg after:h-6 after:w-24 after:transition-all peer-checked:bg-[#081424]">
+                        <div className="w-[193px] h-7 flex items-center bg-[#28344c] border-[2px] border-[#081424] rounded-lg text-[12px] peer-checked:text-[#30c4e4] text-[#30c4e4] font-extrabold after:flex after:items-center after:justify-center peer after:content-['Public'] peer-checked:after:content-['Private'] peer-checked:after:translate-x-full after:absolute after:left-[0px] peer-checked:after:border-[#081424] after:bg-[#081424] after:border after:border-[#081424] after:rounded-lg after:h-6 after:w-24 after:transition-all peer-checked:bg-[#28344c] peer-checked:border-[#081424]">
                             <span className='text-white mx-7'>Public</span>
-                            <span className='text-white mx-7'>Private</span>
+                            <span className='text-white mx-6'>Private</span>
                         </div>
                     </label>
                 </div>

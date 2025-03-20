@@ -109,7 +109,7 @@ const Home = () => {
         text="Get Inspired by Others"
         color="thirdColor"
         icon={RiLightbulbFill}
-        url={""}
+        url={"/collections/all"}
       />
       <MenuItem
         text="Track My Progress"

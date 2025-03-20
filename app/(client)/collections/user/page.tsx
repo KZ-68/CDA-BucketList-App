@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useAuth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import CollectionItem from "@/components/CollectionItem";
 import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import fetchAllUserCollectionsData from '@/services/FetchAllUsersCollectionsService'
+import fetchAllUserCollectionsData from '@/services/FetchAllUserCollectionsService'
 
 interface Collection {
     id: string;
@@ -31,7 +31,7 @@ const CollectionsPage = () => {
     const [filter, setFilter] = useState<string>('All');
     const [sortType, setSortType] = useState<string>('date');
     const [sortOrder, setSortOrder] = useState<string>('asc'); 
-    const { isSignedIn } = useAuth(); 
+    const { isSignedIn } = useUser(); 
   
     useEffect(() => {
       if (isSignedIn === false) redirect("/login");

@@ -1,54 +1,93 @@
 'use client';
-import { useAuth } from '@clerk/nextjs';
-import { redirect, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
-import CollectionItem from '@/components/CollectionItem';
-import getUserInformationService from '@/services/GetUserInformationsService';
-import PageTitle from '@/components/PageTitle';
+import React from 'react';
+import PageTitle from "@/components/PageTitle";
+import AllCollectionItem from "@/components/AllCollectionItem";
+import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
+import FetchUserFavoriteCollectionsService from '@/services/FetchUserFavoriteCollectionsService';
+import { useUser } from '@clerk/nextjs';
+import Link from "next/link";
+import { MdRemoveRedEye } from "react-icons/md";
+import { GoalType } from '@/types/types';
+import LikesFilter from '@/components/LikesFilter';
 
-interface UserCollection {
+interface Collection {
   id: string;
-  label: string;
-  isPrivate : boolean;
+  label: string
+  isPrivate: boolean;
+  accomplishedGoals?: number;
+  totalGoals?: number;
+  user: {
+    username: string;
+  };
   createdAt: number;
-  accomplishedGoals: number;
-  goals: Goal[];
+  goals: GoalType[];
+  userId: string;
   _count: {
-    goals:number;
-  }
+      likes: number;
+  };
 }
 
-interface Goal {
-  id: string;
-  isAccomplished: boolean;
-}
-
-const CollectionsPage = ()  => {
-  const params = useParams<{userId:string}>();
-  const [collections, setCollections] = useState<UserCollection[]>([]);
+const Collections =  () => {
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFiltered, setIsFiltered] = useState(false);
   const [filter, setFilter] = useState<string>('All');
   const [sortType, setSortType] = useState<string>('date');
   const [sortOrder, setSortOrder] = useState<string>('asc');
-  const [username, setUsername] = useState<string | null>('unknown');
-  const { isSignedIn } = useAuth();
+  const { user } = useUser();
+  const userId = user ? user.id : null;
+  const [likedCollections, setLikedCollections] = useState<string[]>([]);
+  const [collectionsLikedSorted, setCollectionsLikedSorted] = useState<Collection[]>([]);
   
   useEffect(() => {
-    if (isSignedIn === false) redirect("/login");
-    fetchUserCollectionsData(params.userId).then(
-      data => (
-        setCollections(data.data || [])      
-      )
-    )
-    getUserInformationService(params.userId).then(
-      username => {
-        setUsername(username)
-      }
-    );
-  }, [isSignedIn, params.userId, username]);
+    const fetchLikedCollections = async () => {
+      if (!userId) return;
 
-  const filteredCollections = collections.filter((collection) => {
-    const totalGoals = collection.goals.length;
+      // const response = await fetch(`/api/user/${userId}/likedCollections`);
+      // const data = await response.json();
+      const data = await FetchUserFavoriteCollectionsService(userId);
+      console.log("Liked collections:", data);
+
+      // extraire uniquement les collectionId
+      const likedIds = data.data.map((like: { collectionId: string }) => like.collectionId);
+      setLikedCollections(likedIds);
+    };
+
+    fetchLikedCollections();
+  }, [userId]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await FetchAllCollectionsService();
+      setIsLoading(true);
+      console.log("API response", data);
+
+      //  filtre les collections pour retirer celles de l'user connecté 
+      // const filteredCollections = data.data.filter((collection: CollectionType) => 
+      // collection.userId !== userId
+      // );
+
+     setCollections(data.data);
+     setIsLoading(false);
+     setIsFiltered(true); 
+
+    };
+    
+    fetchData();
+  }, [userId]);
+
+  const collectionsData =
+    collections?.map((collection) => ({
+      ...collection,
+      totalGoals: collection.goals?.length || 0,
+      accomplishedGoals:
+        collection.goals?.filter((goal: GoalType) => goal.isAccomplished).length || 0,
+  })) || [];
+
+  const filteredCollections = collectionsData.filter((collection) => {
+    const totalGoals = collection.totalGoals;
     if (filter === 'All') return true;
     if (filter === 'Completed') return totalGoals > 0 ? collection.goals.every((goal) => goal.isAccomplished === true) : "";
     if (filter === 'In Progress') return collection.accomplishedGoals > 0 && collection.accomplishedGoals < totalGoals;
@@ -62,7 +101,7 @@ const CollectionsPage = ()  => {
     const day = date.getDate();
     return year * 10000 + month * 100 + day;
   };
-
+  
   const sortedCollections = [...filteredCollections].sort((a, b) => {
     if (sortType === 'date') {
       const yearA = formatDateToNumber(a.createdAt);
@@ -79,10 +118,33 @@ const CollectionsPage = ()  => {
     return 0;
   });
 
+  async function handleLike(collectionId: string) {
+    const response = await fetch('/api/collections/all', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId,
+        collectionId: collectionId,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    // Mise à jour locale de l'état pour éviter le refresh
+    setLikedCollections((prevLiked) =>
+      prevLiked.includes(collectionId)
+        ? prevLiked.filter((id) => id !== collectionId) // Retirer si déjà liké
+        : [...prevLiked, collectionId] // ajouter si c'est pas le cas
+    );
+  }
+
   return (
     <>
-      <PageTitle title={`${username?.toLocaleUpperCase()}` + "'S COLLECTIONS:"} />
-      <div className='text-lg mb-20'>
+      <PageTitle title='All collections' />
+        <div className='text-lg mb-20'>
+          <LikesFilter setCollectionsLikedSorted={setCollectionsLikedSorted} collections={sortedCollections} likedCollections={likedCollections} />  
           <div className='flex flex-col gap-3 mb-6 '>
             <p>State :</p>
             
@@ -111,8 +173,7 @@ const CollectionsPage = ()  => {
               >
                   All
               </p>
-          </div>
-
+            </div>
           </div>
           <div className='flex flex-col gap-3  '>
             <p>Sort by :</p>
@@ -178,25 +239,48 @@ const CollectionsPage = ()  => {
             </div>
           </div>
         </div>
+        {isLoading ? (
+          <p>Loading...</p> 
+        ) : (
+          isFiltered && (
+            <div className='flex flex-col gap-8'>
+              {collectionsLikedSorted.map((collection: Collection) => (
+                <div key={collection.id}>
+                  {/* <button onClick={() => handleLike(collection.id)}>
+                  {likedCollections.includes(collection.id) ? "♥" : "x"}
+                  </button> */}
+                <AllCollectionItem
+                  title= {collection.label}
+                  userId= {collection.userId} 
+                  username = {collection.user.username} 
+                  numberGoals = {collection.totalGoals ?? 0}
+                  isLiked={likedCollections.includes(collection.id)}
+                  onLikeToggle={() => handleLike(collection.id)}
+                  numberLikes={collection._count?.likes || 0}
+                  goals={collection.goals?.map((goal: GoalType) => ({
+                    label: goal.label,
+                    id: goal.id,
+                  })) || []}
+                  />
+                </div>
+              ))}
+            </div>
+          )
+        )}
 
-        <div className='flex  flex-col gap-12 mb-16'>
-          {collections.length === 0 ? (
-            <p>Loading...</p>
-          ) : (
-            sortedCollections.map((collection : UserCollection, index: number) => (
-              <div key={collection.label || index} className='flex flex-col'>
-                <CollectionItem 
-                  label = {collection.label}
-                  totalGoal = {collection._count?.goals || 0}
-                  achievedGoal= {collection.accomplishedGoals}
-                  isPrivate = {collection.isPrivate} 
-                  id = {collection.id}/>
-              </div>
-            ))
-          )}
+        <div className='flex justify-end mt-20'>
+          <Link href = {`user/favorites`} className=''>
+          <div className=' flex items-center gap-4 group'>
+            <p className='opacity-80  group-hover:opacity-100 transition-all'>See my favorite collections </p>
+            <div className='bg-accentColor rounded-full p-2 group-hover:bg-secondColor transition-all'>
+              <MdRemoveRedEye className='text-2xl text-darkGrey'/>
+            </div>
+          </div>
+          </Link>
         </div>
     </>
-  );
-};
+  )
+}
 
-export default CollectionsPage;
+
+export default Collections;

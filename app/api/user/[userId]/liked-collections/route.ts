@@ -18,8 +18,8 @@ export async function GET(request: NextRequest, { params }: Props) {
 
     const likedCollections = await db.like.findMany({
       where: {
-        userId,
-      },
+        userId: userId,
+      }
     });
 
     console.log("liked collections", likedCollections);

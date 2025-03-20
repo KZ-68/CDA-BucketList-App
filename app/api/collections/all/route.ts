@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
                 }
             })
         );
-        console.log("collections all", collections )
+
         return NextResponse.json({
             data: collectionWithUser, //null si erreur
             message: "Succesfully got all users the collections ", // msg d'erreur si erreur

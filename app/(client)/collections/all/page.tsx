@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import PageTitle from "@/components/PageTitle";
 import AllCollectionItem from "@/components/AllCollectionItem";
-import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
-import FetchUserFavoriteCollectionsService from '@/services/FetchUserFavoriteCollectionsService';
 import { useUser } from '@clerk/nextjs';
 import Link from "next/link";
 import { MdRemoveRedEye } from "react-icons/md";
 import Searchbar from '@/components/Searchbar';
 import { GoalType } from '@/types/types';
 import LikesFilter from '@/components/LikesFilter';
+import useSWR from 'swr';
+import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 
 
 interface Collection {
@@ -30,6 +30,7 @@ interface Collection {
   };
 }
 
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
 
 const Collections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -44,46 +45,21 @@ const Collections = () => {
   const [likedCollections, setLikedCollections] = useState<string[]>([]);
   const [collectionsLikedSorted, setCollectionsLikedSorted] = useState<Collection[]>([]);
 
-
+  const dataCollection = FetchAllCollectionsService();
+  const { data: datalikedCollections } = useSWR(`/api/user/${userId}/liked-collections`, fetcher);
+  
   useEffect(() => {
-    const fetchLikedCollections = async () => {
-      if (!userId) return;
-
-      // const response = await fetch(`/api/user/${userId}/likedCollections`);
-      // const data = await response.json();
-      const data = await FetchUserFavoriteCollectionsService(userId);
-      console.log("Liked collections:", data);
-
-      // extraire uniquement les collectionId
-      const likedIds = data.data.map((like: { collectionId: string }) => like.collectionId);
-      setLikedCollections(likedIds);
-    };
-
-    fetchLikedCollections();
-  }, [userId]);
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await FetchAllCollectionsService();
-      setIsLoading(true);
-      console.log("API response", data);
-
-      //  filtre les collections pour retirer celles de l'user connecté 
-      // const filteredCollections = data.data.filter((collection: CollectionType) => 
-      // collection.userId !== userId
-      // );
-
-      setCollections(data.data);
-      setIsLoading(false);
+    setIsLoading(true);
+    if (dataCollection && datalikedCollections) {
+      setCollections(dataCollection.data || []);
+      const likedCollectionsIds = datalikedCollections.data.map((like: { collectionId: string }) => like.collectionId);
+      setLikedCollections(likedCollectionsIds);
       setIsFiltered(true);
+    }
+    setIsLoading(false);
+  }, [dataCollection, datalikedCollections]);
 
-    };
-
-    fetchData();
-  }, [userId]);
-
-  const collectionsData =
+  const collectionsData = 
     collections?.map((collection) => ({
       ...collection,
       totalGoals: collection.goals?.length || 0,
@@ -111,7 +87,6 @@ const Collections = () => {
     if (sortType === 'date') {
       const yearA = formatDateToNumber(a.createdAt);
       const yearB = formatDateToNumber(b.createdAt);
-      console.log('yearA:', yearA);
       return sortOrder === 'desc' ? yearB - yearA : yearA - yearB;
     }
     if (sortType === 'goals') {

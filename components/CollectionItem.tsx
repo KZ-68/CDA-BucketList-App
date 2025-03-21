@@ -68,7 +68,7 @@ interface CollectionItemProps {
                <p className="text-font-secondary text-base">{progression}%</p>
             </div>
         </div>
-        <div className="flex justify-between gap-8 items-center w-full bg-darkGrey border border-solid border-secondColor rounded-2xl px-5 py-6 pl-9 relative"
+        <div className="flex justify-between gap-8 items-center w-full bg-darkGrey border border-solid border-secondColor rounded-2xl px-5 py-6 pl-9 relative "
             style={{ borderColor: `var(--${color})` , backgroundColor: `var(--${bgcolor})` }}>
             <div className=" w-14 h-14 text-4xl bg-mediumGrey rounded  border border-solid flex items-center justify-center rotate-45 "
                  style={{ color: `var(--${color})`, borderColor: `var(--${color})` }}>
@@ -78,7 +78,7 @@ interface CollectionItemProps {
             </div>
             <div className=" w-4/6 flex flex-col items-start justify-center text-lg" style={{fontWeight: textWeight}}>
                <Link href={`/collections/${id}`}>
-                  <p className="w-full uppercase" style={{color :  `var(--${textColor})` }}>{label}</p>
+                  <p className="w-full uppercase opacity-80 hover:opacity-100">{label}</p>
                </Link>
                <p className="w-full text-left" style={{color: `var(--${goalTextColor})`}}>
                   {achievedGoal > 10 ? achievedGoal : `0${achievedGoal}`} / 
@@ -88,7 +88,7 @@ interface CollectionItemProps {
             </div>
             {!isPrivate && (
                <div className="absolute bottom-[5px] right-[10px] text-2xl" style={{color: `var(--${goalTextColor})`}}>
-                  <a href={`${id}`}><MdRemoveRedEye /></a>
+                  <MdRemoveRedEye />
                </div>
             )}
         </div>

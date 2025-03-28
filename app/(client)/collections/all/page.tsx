@@ -11,6 +11,7 @@ import { MdRemoveRedEye } from "react-icons/md";
 import Searchbar from '@/components/Searchbar';
 import { GoalType } from '@/types/types';
 import LikesFilter from '@/components/LikesFilter';
+import { redirect } from 'next/navigation';
 
 
 interface Collection {
@@ -39,15 +40,15 @@ const Collections = () => {
   const [filter, setFilter] = useState<string>('All');
   const [sortType, setSortType] = useState<string>('date');
   const [sortOrder, setSortOrder] = useState<string>('asc');
-  const { user } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
   const userId = user ? user.id : null;
   const [likedCollections, setLikedCollections] = useState<string[]>([]);
   const [collectionsLikedSorted, setCollectionsLikedSorted] = useState<Collection[]>([]);
 
 
   useEffect(() => {
+    if (isLoaded && !isSignedIn) redirect("/login");
     const fetchLikedCollections = async () => {
-      if (!userId) return;
 
       // const response = await fetch(`/api/user/${userId}/likedCollections`);
       // const data = await response.json();
@@ -60,7 +61,7 @@ const Collections = () => {
     };
 
     fetchLikedCollections();
-  }, [userId]);
+  }, [isLoaded, isSignedIn, userId]);
 
 
   useEffect(() => {

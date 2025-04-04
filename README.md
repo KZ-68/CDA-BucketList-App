@@ -15,19 +15,8 @@ What you can do:
 - View another user's collection
 - Bookmark (like) another user's collection
 
-# Project folder Structure :
-
-├── app  
-|  ├── (client)  
-|  └── api  
-├── components  
-├── lib  
-├── prisma  
-|  └── schema  
-├── public  
-|  └── prority  
-├── services  
-└── types
+# Project folders Structure :
+![image](https://github.com/user-attachments/assets/1ef2e3e5-6d14-487f-9139-6ae1734a8fed)
 
 # API Documentation
 

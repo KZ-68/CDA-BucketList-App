@@ -21,7 +21,6 @@ interface CollectionItemProps {
 
    let color = "accentColor";
    let bgcolor = "darkGrey";
-   let textColor = "neutralWhite";
    let goalTextColor = "neutralWhite";
    let textWeight = "500";
 
@@ -31,7 +30,6 @@ interface CollectionItemProps {
       IconComponent = IoHourglass;
       color = "thirdColor"
       bgcolor = "darkGrey"
-      textColor = "neutralWhite"
       goalTextColor = "thirdColor"
       textWeight = "500"
    } else if (achievedGoal === totalGoal) {
@@ -40,7 +38,6 @@ interface CollectionItemProps {
       IconComponent = FaCircleCheck;
       color = "accentColor"
       bgcolor = "accentColor"
-      textColor = "darkGrey"
       goalTextColor = "darkGrey"
       textWeight = "600"
    } else  {
@@ -49,7 +46,6 @@ interface CollectionItemProps {
       IconComponent = PiRocketFill;
       color = "secondColor"
       bgcolor = "darkGrey"
-      textColor = "neutralWhite"
       goalTextColor = "secondColor"
       textWeight = "500"
    }

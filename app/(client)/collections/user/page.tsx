@@ -33,11 +33,14 @@ const CollectionsPage = () => {
     const [sortOrder, setSortOrder] = useState<string>('asc'); 
     const { isSignedIn } = useUser(); 
   
+    const collectionsUser = fetchAllUserCollectionsData()
+
     useEffect(() => {
       if (isSignedIn === false) redirect("/login");
-      fetchAllUserCollectionsData().then(data => setCollections(data.data || []))
-    }, [isSignedIn]);
-
+      if (collectionsUser) {
+        setCollections(collectionsUser.data || [])
+      }
+    }, [isSignedIn, collectionsUser]);
     
     const filteredCollections = collections.filter((collection) => {
       const totalGoals = collection.goals.length;

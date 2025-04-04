@@ -17,6 +17,7 @@ const Searchbar = () => {
                 className='bg-gray-950 outline-none p-2 rounded w-full'
                 aria-expanded={resultData.length > 0}
                 aria-controls="search-results"
+                role='combobox'
             />
 
             {resultData.length > 0 ? (

@@ -17,16 +17,16 @@ What you can do:
 
 # Project folder Structure :
 
-├── app
-|  ├── (client)
-|  └── api
-├── components
-├── lib
-├── prisma
-|  └── schema
-├── public
-|  └── prority
-├── services
+├── app  
+|  ├── (client)  
+|  └── api  
+├── components  
+├── lib  
+├── prisma  
+|  └── schema  
+├── public  
+|  └── prority  
+├── services  
 └── types
 
 # API Documentation

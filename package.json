@@ -17,7 +17,7 @@
     "@clerk/backend": "^1.25.1",
     "@clerk/nextjs": "^6.12.4",
     "@headlessui/react": "^2.2.0",
-    "@prisma/client": "^6.4.1",
+    "@prisma/client": "^6.5.0",
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",

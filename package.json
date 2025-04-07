@@ -23,7 +23,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "date-fns": "^4.1.0",
     "lucide": "^0.479.0",
-    "lucide-react": "^0.474.0",
+    "lucide-react": "^0.482.0",
     "next": "15.2.3",
     "prisma": "^6.4.1",
     "react": "^19.0.0",

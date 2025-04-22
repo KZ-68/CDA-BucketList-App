@@ -1,0 +1,28 @@
+version: 2.1
+orbs:
+  node: circleci/node@7.1.0
+jobs:
+  build-and-test:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - checkout
+      - setup_remote_docker
+      - node/install
+      - node/install-packages
+      - run:
+          name: Run Linter
+          command: npm run lint
+      - run:
+          name: Run type-check
+          command: npm run type-check
+      - run:
+          name: Run tests
+          command: npm run test
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test:
+        matrix:
+            parameters:
+              node-version: [19.x, 20.x, 21.x, 22.x]

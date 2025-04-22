@@ -158,7 +158,7 @@ const Collections = () => {
             </p>
           </div>
         </div>
-        <div className='flex flex-col gap-3  '>
+        <div className='flex flex-col gap-3'>
           <p>Sort by :</p>
           <div className='flex gap-2 flex-wrap'>
 

@@ -15,23 +15,30 @@ jobs:
           MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
     steps:
       - checkout
+      - setup_remote_docker
       - node/install
       - node/install-packages
       - run:
-          name: Run tests
-          command: npm run test
+          name: Run Linter
+          command: npm run lint
       - run:
-          name: Attendre que MongoDB démarre
+          name: Run type-check
+          command: npm run type-check
+      - run:
+          name: MongoDB Install
+          command: |
+            sudo apt-get install -y mongodb
+      - run:
+          name: Wait MongoDB to start...
           command: |
             for i in `seq 1 10`; do
-              nc -z localhost 27017 && echo "MongoDB est prêt" && break
-              echo "En attente de MongoDB..."
+              nc -z localhost 27017 && echo "MongoDB is ready" && break
+              echo "Waiting MongoDB connection..."
               sleep 3
             done
       - run:
-          name: Construire un conteneur pour tester la connexion
-          command: |
-            mongo "$DATABASE_URL" --eval "db.runCommand({ ping: 1 })"
+          name: Run tests
+          command: npm run test
 workflows:
   build-and-test:
     jobs:

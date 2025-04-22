@@ -12,7 +12,8 @@
     "test": "jest"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "schema": "./schema"
   },
   "type": "module",
   "dependencies": {

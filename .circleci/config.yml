@@ -5,7 +5,11 @@ jobs:
   build-and-test:
     docker:
       - image: "cimg/base:stable"
-      - image: mongo:6.0
+      - image: mongo:5.0
+        name: mongo
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+          MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
     steps:
       - checkout
       - node/install
@@ -14,9 +18,13 @@ jobs:
           name: Run tests
           command: npm run test
       - run:
-          name: Test remote MongoDB connection
+          name: Construire un conteneur pour tester la connexion
           command: |
-            mongosh "$DATABASE_URL" --eval 'db.runCommand({ ping: 1 })'
+            echo 'FROM mongo:5.0
+            CMD mongo "$DATABASE_URL" --eval "db.runCommand({ ping: 1 })"
+            ' > Dockerfile
+            docker build -t mongo-conn-check .
+            docker run --network host mongo-conn-check
 workflows:
   build-and-test:
     jobs:

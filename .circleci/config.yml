@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Test remote MongoDB connection
           command: |
-            mongo "$DATABASE_URL" --eval 'db.runCommand({ ping: 1 })'
+            mongosh "$DATABASE_URL" --eval 'db.runCommand({ ping: 1 })'
 workflows:
   build-and-test:
     jobs:

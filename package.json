@@ -20,6 +20,7 @@
     "@clerk/nextjs": "^6.10.4",
     "@headlessui/react": "^2.2.0",
     "@prisma/client": "^6.3.0",
+    "@types/jest": "^29.5.14",
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",

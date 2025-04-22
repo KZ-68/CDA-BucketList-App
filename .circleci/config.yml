@@ -5,11 +5,6 @@ jobs:
   build-and-test:
     docker:
       - image: "cimg/base:stable"
-      - image: mongo:5.0
-        name: mongo
-        environment:
-          MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
-          MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
     steps:
       - checkout
       - setup_remote_docker
@@ -21,21 +16,6 @@ jobs:
       - run:
           name: Run type-check
           command: npm run type-check
-      - run:
-          name: MongoDB Install
-          command: |
-            sudo apt-get install -y mongodb
-      - run:
-          name: Wait MongoDB to start...
-          command: |
-            while true; do
-            if nc -z localhost 27017; then
-                echo "[✓] MongoDB is up on port 27017"
-            else
-                echo "[✗] MongoDB is not reachable on port 27017"
-            fi
-            sleep 3
-            done
       - run:
           name: Run tests
           command: npm run test

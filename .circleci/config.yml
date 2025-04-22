@@ -3,7 +3,6 @@ orbs:
   node: circleci/node@7.1.0
 jobs:
   build-and-test:
-    machine: true
     docker:
       - image: "cimg/base:stable"
       - image: mongo:5.0
@@ -19,13 +18,17 @@ jobs:
           name: Run tests
           command: npm run test
       - run:
+          name: Attendre que MongoDB démarre
+          command: |
+            for i in `seq 1 10`; do
+              nc -z localhost 27017 && echo "MongoDB est prêt" && break
+              echo "En attente de MongoDB..."
+              sleep 3
+            done
+      - run:
           name: Construire un conteneur pour tester la connexion
           command: |
-            echo 'FROM mongo:5.0
-            CMD mongo "$DATABASE_URL" --eval "db.runCommand({ ping: 1 })"
-            ' > Dockerfile
-            docker build -t mongo-conn-check .
-            docker run --network host mongo-conn-check
+            mongo "$DATABASE_URL" --eval "db.runCommand({ ping: 1 })"
 workflows:
   build-and-test:
     jobs:

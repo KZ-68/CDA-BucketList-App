@@ -5,18 +5,20 @@ jobs:
   build-and-test:
     docker:
       - image: "cimg/base:stable"
-      - image: mongo:6.0
     steps:
       - checkout
+      - setup_remote_docker
       - node/install
       - node/install-packages
       - run:
+          name: Run Linter
+          command: npm run lint
+      - run:
+          name: Run type-check
+          command: npm run type-check
+      - run:
           name: Run tests
           command: npm run test
-      - run:
-          name: Test remote MongoDB connection
-          command: |
-            mongo "$DATABASE_URL" --eval 'db.runCommand({ ping: 1 })'
 workflows:
   build-and-test:
     jobs:

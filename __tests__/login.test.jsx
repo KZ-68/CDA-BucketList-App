@@ -4,8 +4,8 @@ import LoginPage from "../app/(client)/login/page";
 
 jest.mock('@clerk/clerk-react', () => {
   return {
-    SignInButton: ({}) => <div fallbackRedirectUrl="/" />,
-    SignUpButton: ({}) => <div fallbackRedirectUrl="/" />,
+    SignInButton: ({}) => <div fallbackredirecturl="/" />,
+    SignUpButton: ({}) => <div fallbackredirecturl="/" />,
     ClerkProvider: ({ children }) => <div>{children}</div>,
     useUser: () => ({ user: { id: 'user_123', fullName: 'John Doe' } }),
     useClerk: () => ({ signOut: jest.fn() }),

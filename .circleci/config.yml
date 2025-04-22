@@ -21,4 +21,6 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test:
-          test-results-path: junit.xml
+        matrix:
+            parameters:
+              node-version: [19.x, 20.x, 21.x, 22.x]

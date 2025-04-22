@@ -5,6 +5,7 @@ jobs:
   build-and-test:
     docker:
       - image: "cimg/base:stable"
+    mongodb:
       - image: mongo:5.0
         name: mongo
         ports: 

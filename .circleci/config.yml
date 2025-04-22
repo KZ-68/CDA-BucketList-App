@@ -3,6 +3,7 @@ orbs:
   node: circleci/node@7.1.0
 jobs:
   build-and-test:
+    machine: true
     docker:
       - image: "cimg/base:stable"
       - image: mongo:5.0

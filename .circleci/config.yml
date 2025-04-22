@@ -20,4 +20,7 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - build-and-test
+      - build-and-test:
+        matrix:
+            parameters:
+              node-version: [19.x, 20.x, 21.x, 22.x]

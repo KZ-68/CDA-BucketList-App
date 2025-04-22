@@ -28,10 +28,13 @@ jobs:
       - run:
           name: Wait MongoDB to start...
           command: |
-            for i in `seq 1 10`; do
-              nc -z localhost 27017 && echo "MongoDB is ready" && break
-              echo "Waiting MongoDB connection..."
-              sleep 3
+            while true; do
+            if nc -z localhost 27017; then
+                echo "[✓] MongoDB is up on port 27017"
+            else
+                echo "[✗] MongoDB is not reachable on port 27017"
+            fi
+            sleep 3
             done
       - run:
           name: Run tests

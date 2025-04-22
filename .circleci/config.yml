@@ -12,6 +12,11 @@ jobs:
       - run:
           name: Run tests
           command: npm run test
+      - run:
+          name: Test remote MongoDB connection
+          command: |
+            apt-get update && apt-get install -y mongodb-clients
+            mongo "$DATABASE_URL" --eval 'db.runCommand({ ping: 1 })'
 workflows:
   build-and-test:
     jobs:

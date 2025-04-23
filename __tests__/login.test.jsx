@@ -1,16 +1,19 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import LoginPage from "../app/(client)/login/page";
+import { useRouter } from "next/router";
+import { useUser } from '@clerk/nextjs';
 
-jest.mock('@clerk/clerk-react', () => {
+jest.mock("@clerk/clerk-react", () => {
   return {
-    SignInButton: ({}) => <div fallbackredirecturl="/" />,
-    SignUpButton: ({}) => <div fallbackredirecturl="/" />,
+    SignInButton: jest.fn(() => <button data-testid="mock-signin-button">Sign in</button>),
+    SignUpButton: jest.fn(() => <button data-testid="mock-signup-button">Sign up</button>),
     ClerkProvider: ({ children }) => <div>{children}</div>,
-    useUser: () => ({ user: { id: 'user_123', fullName: 'John Doe' } }),
+    ClerkLoaded: jest.fn(({ children }) => <>{children}</>),
     useClerk: () => ({ signOut: jest.fn() }),
   };
 });
+
 
 describe("Login Page", () => {
   it("check for relevant text", () => {

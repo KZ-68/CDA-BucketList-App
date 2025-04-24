@@ -17,6 +17,29 @@ jobs:
           name: Run type-check
           command: npm run type-check
       - run:
+          name: Install lighthouse-ci
+          command: npm install -g @lhci/cli@0.14.x
+      - run:
+          name: Test build
+          command: npm run build
+      - run:
+          name: Run lighthouse-ci
+          command:command: |
+            echo '{
+              "ci": {
+                "collect": {
+                  "url": ["http://localhost:3000"],
+                  "startServerCommand": "npm run start",
+                  "startServerReadyPattern": "started server",
+                  "numberOfRuns": 3
+                },
+                "upload": {
+                  "target": "temporary-public-storage"
+                }
+              }
+            }' > /tmp/lhci-config.json
+            lhci autorun --config=/tmp/lhci-config.json
+      - run:
           name: Run tests
           command: npm run test
 workflows:

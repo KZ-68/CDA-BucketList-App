@@ -14,10 +14,13 @@ jobs:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
+          name: Check Chrome install
           command: |
             google-chrome --version
             chromedriver --version
-          name: Check install
+      - run:
+          name: Audit npm package
+          command: npm audit
       - run:
           name: Run Linter
           command: npm run lint
@@ -27,9 +30,9 @@ jobs:
       - run:
           name: Install lighthouse-ci
           command: npm install -g @lhci/cli@0.14.x
-      - run:
-          name: Test build
-          command: npm run build
+      - run: 
+          name: Run Test Build with Bundle Analyzer
+          command: npm run analyze
       - run:
           name: Run lighthouse-ci
           command: |
@@ -47,9 +50,6 @@ jobs:
               }
             }' > /tmp/lhci-config.json
             lhci autorun --config=/tmp/lhci-config.json
-      - run: 
-          name: Run Bundle Analyzer
-          command: npm run analyze
       - store_artifacts:
           path: .next/analyze
           destination: bundle-report

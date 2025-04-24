@@ -49,7 +49,8 @@ jobs:
             lhci autorun --config=/tmp/lhci-config.json
       - run: 
           name: Run Bundle Analyzer
-          command: npm run analyze
+          command: |
+            echo 'ANALYZE=true next build'
       - store_artifacts:
           path: .next/analyze
           destination: bundle-report

@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build",
     "postinstall": "prisma generate",
     "test": "dotenv -e .env.test -- jest -i",
     "test:build": "dotenv -e .env.test -- jest -i __tests__/build",

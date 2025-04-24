@@ -12,7 +12,7 @@
     "postinstall": "prisma generate",
     "test": "dotenv -e .env.test -- jest -i",
     "test:build": "dotenv -e .env.test -- jest -i __tests__/build",
-    "test:a11y": "dotenv -e .env.test -- jest -i __tests__/a11y.test.jsx",
+    "test:a11y": "dotenv -e .env.test -- jest -i __tests__/a11y",
     "prisma-db-push:test": "dotenv -e .env.test -- npx prisma db push",
     "prisma-db-push:dev": "dotenv -e .env.development -- npx prisma db push",
     "prisma-studio:test": "dotenv -e .env.test -- npx prisma studio",

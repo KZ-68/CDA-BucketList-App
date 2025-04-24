@@ -1,25 +1,22 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render } from "@testing-library/react";
-import Home from "../app/page";
+import Home from "../../app/page";
 import { useUser } from "@clerk/nextjs";
 
-jest.mock("@clerk/clerk-react", () => {
+jest.mock("@clerk/nextjs", () => {
   return {
     SignInButton: jest.fn(() => <button data-testid="mock-signin-button">Sign in</button>),
     SignUpButton: jest.fn(() => <button data-testid="mock-signup-button">Sign up</button>),
     ClerkProvider: ({ children }) => <div>{children}</div>,
     ClerkLoaded: jest.fn(({ children }) => <>{children}</>),
     useClerk: () => ({ signOut: jest.fn() }),
-  };
-});
-
-jest.mock('@clerk/nextjs', () => ({
     useUser: () => ({
       isSignedIn: true,
       isLoaded: true,
       user: {id: 'user_4452342424'},
     }),
-}));
+  };
+});
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),

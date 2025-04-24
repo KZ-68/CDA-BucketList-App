@@ -47,9 +47,18 @@ jobs:
               }
             }' > /tmp/lhci-config.json
             lhci autorun --config=/tmp/lhci-config.json
+      - run: 
+          name: Run Bundle Analyzer
+          command: npm run analyze
+      - store_artifacts:
+          path: .next/analyze
+          destination: bundle-report
       - run:
-          name: Run tests
-          command: npm run test
+          name: Run jest test a11y
+          command: npm run test:a11y
+      - run:
+          name: Run jest tests build
+          command: npm run test:build
 workflows:
   build-and-test:
     jobs:

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render } from "@testing-library/react";
-import LoginPage from "../app/(client)/login/page";
+import LoginPage from "../../app/(client)/login/page";
 import { useRouter } from "next/router";
 import { useUser } from '@clerk/nextjs';
 

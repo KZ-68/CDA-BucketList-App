@@ -6,6 +6,7 @@ jobs:
   build-and-test:
     docker:
       - image: "cimg/base:stable"
+      - image: cypress/included:12.10.0
     steps:
       - checkout
       - setup_remote_docker
@@ -59,6 +60,20 @@ jobs:
       - run:
           name: Run jest tests build
           command: npm run test:build
+      - run:
+          name: Run Cypress Tests
+          command: |
+            npx cypress run
+      - run:
+          name: Save Cypress artifacts (Screenshots, Videos)
+          command: |
+            mkdir -p ~/cypress-artifacts/screenshots
+            mkdir -p ~/cypress-artifacts/videos
+            cp -r cypress/screenshots ~/cypress-artifacts/screenshots
+            cp -r cypress/videos ~/cypress-artifacts/videos
+      - store_artifacts:
+          path: ~/cypress-artifacts
+          destination: cypress-artifacts
 workflows:
   build-and-test:
     jobs:

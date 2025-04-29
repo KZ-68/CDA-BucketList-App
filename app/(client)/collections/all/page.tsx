@@ -33,7 +33,6 @@ interface Collection {
 
 const Collections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
-
   const [isLoading, setIsLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
   const [filter, setFilter] = useState<string>('All');
@@ -63,25 +62,24 @@ const Collections = () => {
   }, [userId]);
 
 
+
   useEffect(() => {
     const fetchData = async () => {
-      const data = await FetchAllCollectionsService();
-      setIsLoading(true);
-      console.log("API response", data);
-
-      //  filtre les collections pour retirer celles de l'user connecté 
-      // const filteredCollections = data.data.filter((collection: CollectionType) => 
-      // collection.userId !== userId
-      // );
-
-      setCollections(data.data);
-      setIsLoading(false);
-      setIsFiltered(true);
-
+      setIsLoading(true); // Indiquer que le chargement commence
+      try {
+        const data = await FetchAllCollectionsService();
+        // Vérification supplémentaire côté client
+        const filteredCollections = data.data.filter((collection: Collection) => !collection.isPrivate)
+        setCollections(filteredCollections);
+        setIsFiltered(true);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des collections :", error);
+      }
+      setIsLoading(false); // Indiquer que le chargement est terminé
     };
-
     fetchData();
-  }, [userId]);
+  }, [userId]); // Permet de rafraîchir les collections si l’utilisateur change.
+
 
   const collectionsData =
     collections?.map((collection) => ({
@@ -254,9 +252,6 @@ const Collections = () => {
           <div className='flex flex-col gap-8'>
             {collectionsLikedSorted.map((collection: Collection) => (
               <div key={collection.id}>
-                {/* <button onClick={() => handleLike(collection.id)}>
-                  {likedCollections.includes(collection.id) ? "♥" : "x"}
-                  </button> */}
                 <AllCollectionItem
                   title={collection.label}
                   userId={collection.userId}

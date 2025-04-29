@@ -1,5 +1,6 @@
 "use client";
 import { CollectionType } from '@/types/types';
+import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import React, { useEffect, KeyboardEvent } from 'react'
 
@@ -17,6 +18,7 @@ const Searchbar = () => {
                 className='bg-gray-950 outline-none p-2 rounded w-full'
                 aria-expanded={resultData.length > 0}
                 aria-controls="search-results"
+                role='combobox'
             />
 
             {resultData.length > 0 ? (
@@ -56,6 +58,8 @@ function useSearchData() {
     const [searchData, setSearchData] = React.useState<string>('');
     const [resultData, setResultData] = React.useState<CollectionType[]>([]);
     const [focusedIndex, setFocusedIndex] = React.useState<number>(-1);
+    const { user } = useUser();
+    const userId = user ? user.id : null;
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchData(e.target.value);
@@ -93,6 +97,7 @@ function useSearchData() {
                 : 'https://cda-bucket-list-app.vercel.app';
 
             try {
+                if (!userId) return;
                 const response = await fetch(`${baseUrl}/api/collections/search?search=${searchData}`);
                 const data = await response.json();
 
@@ -107,7 +112,7 @@ function useSearchData() {
         }
 
         fetchData();
-    }, [searchData])
+    }, [searchData, userId])
 
     return { 
         searchData, 

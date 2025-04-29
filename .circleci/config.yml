@@ -1,0 +1,83 @@
+version: 2.1
+orbs:
+  node: circleci/node@7.1.0
+  browser-tools: circleci/browser-tools@1.5.3
+jobs:
+  build-and-test:
+    docker:
+      - image: "cimg/base:stable"
+      - image: cypress/included:12.10.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - node/install
+      - node/install-packages
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Check Chrome install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      - run:
+          name: Audit npm package
+          command: npm audit
+      - run:
+          name: Run Linter
+          command: npm run lint
+      - run:
+          name: Run type-check
+          command: npm run type-check
+      - run:
+          name: Install lighthouse-ci
+          command: npm install -g @lhci/cli@0.14.x
+      - run: 
+          name: Run Test Build with Bundle Analyzer
+          command: npm run analyze
+      - run:
+          name: Run lighthouse-ci
+          command: |
+            echo '{
+              "ci": {
+                "collect": {
+                  "url": ["http://localhost:3000"],
+                  "startServerCommand": "npm run start",
+                  "startServerReadyPattern": "started server",
+                  "numberOfRuns": 3
+                },
+                "upload": {
+                  "target": "temporary-public-storage"
+                }
+              }
+            }' > /tmp/lhci-config.json
+            lhci autorun --config=/tmp/lhci-config.json
+      - store_artifacts:
+          path: .next/analyze
+          destination: bundle-report
+      - run:
+          name: Run jest test a11y
+          command: npm run test:a11y
+      - run:
+          name: Run jest tests build
+          command: npm run test:build
+      - run:
+          name: Run Cypress Tests
+          command: |
+            npx cypress run
+      - run:
+          name: Save Cypress artifacts (Screenshots, Videos)
+          command: |
+            mkdir -p ~/cypress-artifacts/screenshots
+            mkdir -p ~/cypress-artifacts/videos
+            cp -r cypress/screenshots ~/cypress-artifacts/screenshots
+            cp -r cypress/videos ~/cypress-artifacts/videos
+      - store_artifacts:
+          path: ~/cypress-artifacts
+          destination: cypress-artifacts
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test:
+        matrix:
+            parameters:
+              node-version: [19.x, 20.x, 21.x, 22.x]

@@ -1,6 +1,6 @@
 import React from 'react'
 import Searchbar from './Searchbar'
-import {mountWithClerk} from '@/cypress/e2e/mountClerk'
+import {mountWithClerk} from '@/cypress/support/mountClerk'
 
 describe('<Searchbar />', () => {
   it('renders', () => {

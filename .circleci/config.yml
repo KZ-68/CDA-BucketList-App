@@ -92,7 +92,7 @@ jobs:
           destination: cypress-artifacts
   vercel-deployment:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:20.19.2
     environment:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID

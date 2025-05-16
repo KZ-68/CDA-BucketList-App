@@ -85,8 +85,8 @@ jobs:
           command: |
             mkdir -p ~/cypress-artifacts/screenshots
             mkdir -p ~/cypress-artifacts/videos
-            cp -r cypress/screenshots ~/cypress-artifacts/screenshots
-            cp -r cypress/videos ~/cypress-artifacts/videos
+            cp -r cypress/screenshots ~/cypress-artifacts/screenshots || true
+            cp -r cypress/videos ~/cypress-artifacts/videos || true
       - store_artifacts:
           path: ~/cypress-artifacts
           destination: cypress-artifacts

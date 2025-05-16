@@ -2,15 +2,24 @@ version: 2.1
 orbs:
   node: circleci/node@7.1.0
   browser-tools: circleci/browser-tools@1.5.3
+executors:
+  docker:
+    docker:
+      - image: cimg/base:stable
 jobs:
   build-and-test:
+    parameters:
+        os:
+          type: executor
+        node-version:
+          type: string
+    executor: << parameters.os >>
     docker:
-      - image: "cimg/base:stable"
       - image: cypress/included:12.10.0
     steps:
       - checkout
-      - setup_remote_docker
-      - node/install
+      - node/install:
+          node-version: << parameters.node-version >>
       - node/install-packages
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -20,17 +29,21 @@ jobs:
             google-chrome --version
             chromedriver --version
       - run:
+          name: Install lighthouse-ci
+          command: npm install -g @lhci/cli@0.14.x
+      - run:
           name: Audit npm package
           command: npm audit
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - node_modules
       - run:
           name: Run Linter
           command: npm run lint
       - run:
           name: Run type-check
           command: npm run type-check
-      - run:
-          name: Install lighthouse-ci
-          command: npm install -g @lhci/cli@0.14.x
       - run: 
           name: Run Test Build with Bundle Analyzer
           command: npm run analyze
@@ -78,6 +91,7 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test:
-        matrix:
-            parameters:
-              node-version: [19.x, 20.x, 21.x, 22.x]
+          matrix:
+              parameters:
+                os: [docker]
+                node-version: [19.x, 20.x, 21.x, 22.x]

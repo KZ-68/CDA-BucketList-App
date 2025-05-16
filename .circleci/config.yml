@@ -82,7 +82,8 @@ jobs:
       - run:
           name: Start app server
           command: |
-            npm run start &
+            npm install --save-dev wait-on &
+            npm run dev -H localhost -p 3000 &
             npx wait-on http://localhost:8080
       - run:
           name: Run Cypress Tests

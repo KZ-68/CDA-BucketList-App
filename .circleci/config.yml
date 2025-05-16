@@ -5,7 +5,7 @@ orbs:
 executors:
   docker:
     docker:
-      - image: cimg/node:<< parameters.node-version >>-browsers
+      - image: cimg/base:stable
 jobs:
   build-and-test:
     parameters:
@@ -14,8 +14,6 @@ jobs:
         node-version:
           type: string
     executor: << parameters.os >>
-    docker:
-      - image: cimg/node:<< parameters.node-version >>-browsers
     steps:
       - checkout
       - node/install:
@@ -97,4 +95,4 @@ workflows:
           matrix:
               parameters:
                 os: [docker]
-                node-version: [19.x, 20.x, 21.x, 22.x]
+                node-version: [19.9.0, 20.19.2, 21.7.3, 22.15.1]

@@ -90,6 +90,27 @@ jobs:
       - store_artifacts:
           path: ~/cypress-artifacts
           destination: cypress-artifacts
+  vercel-deployment:
+    docker:
+      - image: cimg/base:stable
+    environment:
+      VERCEL_ORG_ID: $VERCEL_ORG_ID
+      VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+    steps:
+      - checkout
+      - run:
+          name: Vercel CLI Installation
+          command: npm install -g vercel@latest
+      - run:
+          name: Pull Vercel Environment Information
+          command: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+      - run:
+          name: Build Project Artifacts
+          command: vercel build --token=$VERCEL_TOKEN
+      - run:
+          name: Deploy to Vercel
+          command: |
+            vercel --prod --token=$VERCEL_TOKEN --confirm
 workflows:
   build-and-test:
     jobs:
@@ -98,3 +119,10 @@ workflows:
               parameters:
                 os: [docker]
                 node-version: [19.9.0, 20.19.2, 21.7.3, 22.15.1]
+      - vercel-deployment:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only:
+                - test/circleci

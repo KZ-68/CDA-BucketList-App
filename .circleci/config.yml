@@ -20,7 +20,12 @@ jobs:
           node-version: << parameters.node-version >>
       - node/install-packages
       - run:
-          name: Installer Cypress
+          name: Install Xvfb
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb
+      - run:
+          name: Install Cypress
           command: npm install --save-dev cypress
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -77,7 +82,7 @@ jobs:
       - run:
           name: Run Cypress Tests
           command: |
-            npx cypress run
+            xvfb-run --auto-servernum npx cypress run
       - run:
           name: Save Cypress artifacts (Screenshots, Videos)
           command: |

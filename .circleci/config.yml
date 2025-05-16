@@ -35,10 +35,10 @@ jobs:
       - run:
           name: Install lighthouse-ci
           command: npm install -g @lhci/cli@0.14.x
+      - cypress/install
       - run:
           name: Install wait-on server
-          command: npm install --save-dev wait-on
-      - cypress/install
+          command: npm install wait-on
       - run:
           name: Audit npm package
           command: npm audit

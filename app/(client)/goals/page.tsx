@@ -2,6 +2,8 @@
 import { useUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import FetchAllGoalsService from '@/services/FetchAllGoalsService';
+
 
 interface Goal {
   label: string;
@@ -17,21 +19,13 @@ const GoalsPage = () => {
   
   const [goals, setGoals] = useState<Goal[]>([]);
 
+  const dataGoals = FetchAllGoalsService();
+
   useEffect(() => {   
-    const fetchGoals = async () => {
-      try {
-        const response = await fetch('/api/goals');
-        const data = await response.json();
-        console.log("Fetched goals:", data);
-        setGoals(data.data);
-
-      } catch (error) {
-        console.error("Erreur lors de la récupération des objectifs :", error);
-      }
-    };
-
-    fetchGoals();
-  }, []);
+    if (dataGoals) {
+      setGoals(dataGoals.data);
+    }
+  }, [dataGoals]);
 
   return (
     <>

@@ -15,11 +15,15 @@ const SelectCategory : React.FC<SelectCategoryProps> =  ({categoryId, setCategor
         setCategoryId(target.value);
     };
 
+    const categoriesData = fetchCategoriesData();
+
 	useEffect(() => {
         if (categories.length === 0) {
-            fetchCategoriesData().then(data => setCategories(data.data))
+            if(categoriesData) {
+                setCategories(categoriesData.data)
+            }
         }
-    }, [categories]);
+    }, [categories, categoriesData]);
     
     return (
         <div className='flex flex-col items-start gap-4'>

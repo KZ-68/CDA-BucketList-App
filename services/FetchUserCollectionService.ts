@@ -1,15 +1,16 @@
-const FetchUserCollectionService = async (userId: string | null) => {
-    try {
-        const response = await fetch(`/api/collections/user/${userId}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+import useSWR from "swr";
 
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error("Erreur lors de la récupération des collections :", error);
-      }
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
+
+const FetchUserCollectionService = (userId: string | null) => {
+    
+  const {data : response, error} = useSWR(`/api/collections/user/${userId}`, fetcher);
+  if (error) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  return response;
+      
 }
 
 export default FetchUserCollectionService

@@ -27,6 +27,7 @@ interface DynamicProps {
     params: Promise<{ collectionId: string }>
 }
 
+
 export async function generateMetadata(
     { params }: DynamicProps
 ): Promise<Metadata> {
@@ -34,7 +35,6 @@ export async function generateMetadata(
     const { collection } = await fetchUserCollection(collectionId);
     return { title: collection.label }
 }
-
 
 async function isOwnerLogged(collecId: string) {
     const Auth = await auth();

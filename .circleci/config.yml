@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@7.1.0
   browser-tools: circleci/browser-tools@1.5.3
+  cypress: cypress-io/cypress@4
 executors:
   docker:
     docker:
@@ -24,9 +25,6 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y xvfb
-      - run:
-          name: Install Cypress
-          command: npm install --save-dev cypress
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
@@ -40,6 +38,7 @@ jobs:
       - run:
           name: Install wait-on server
           command: npm install --save-dev wait-on
+      - cypress/install
       - run:
           name: Audit npm package
           command: npm audit
@@ -78,12 +77,9 @@ jobs:
       - run:
           name: Run jest tests build
           command: npm run test:build
-      - run:
-          name: Run Cypress Tests
-          command: |
-            npm run start -p8080 &
-            npx wait-on http://localhost:8080 &
-            xvfb-run npx cypress run
+      - cypress/run:
+          cypress-command: npx wait-on@latest http://localhost:8080 && npx cypress run
+          start-command: npm start
       - run:
           name: Save Cypress artifacts (Screenshots, Videos)
           command: |

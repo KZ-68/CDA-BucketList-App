@@ -43,10 +43,6 @@ jobs:
       - run:
           name: Audit npm package
           command: npm audit
-      - save_cache:
-          key: v1-deps-{{ checksum "package-lock.json" }}
-          paths: 
-            - node_modules
       - run:
           name: Run Linter
           command: npm run lint
@@ -83,13 +79,10 @@ jobs:
           name: Run jest tests build
           command: npm run test:build
       - run:
-          name: Start app server
-          command: |
-            npm run dev -H localhost -p 3000 &
-            npx wait-on http://localhost:8080
-      - run:
           name: Run Cypress Tests
           command: |
+            npm run start -H localhost -p 3000 &
+            npx wait-on http://localhost:8080 &
             xvfb-run --auto-servernum npx cypress run
       - run:
           name: Save Cypress artifacts (Screenshots, Videos)

@@ -38,7 +38,6 @@ jobs:
       - run:
           name: Install wait-on server
           command: npm install --save-dev wait-on
-      - cypress/install
       - run:
           name: Audit npm package
           command: npm audit
@@ -77,9 +76,6 @@ jobs:
       - run:
           name: Run jest tests build
           command: npm run test:build
-      - cypress/run:
-          cypress-command: npx wait-on@latest http://localhost:8080 && npx cypress run
-          start-command: npm start
       - run:
           name: Save Cypress artifacts (Screenshots, Videos)
           command: |
@@ -98,3 +94,12 @@ workflows:
               parameters:
                 os: [docker]
                 node-version: [19.9.0, 20.19.2, 21.7.3, 22.15.1]
+      - cypress/run:
+          name: e2e-tests
+          requires:
+            - build-and-test
+          start: npm run start -- -p 8080
+          wait-on: http://localhost:8080
+          wait-on-timeout: 60
+          install-command: npm ci
+          cypress-command: npx cypress run

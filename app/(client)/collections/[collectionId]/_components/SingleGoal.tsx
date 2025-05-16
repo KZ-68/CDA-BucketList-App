@@ -1,7 +1,7 @@
 import { GoalType } from "@/types/types";
 import { Check } from "./Check";
-import Image from "next/image";
-import threeDot from "/public/three_dot.svg";
+// import threeDot from "/public/three_dot.svg";
+import { MdKeyboardArrowRight } from "react-icons/md";
 import { Divider } from "./Divider";
 import Link from "next/link";
 
@@ -47,12 +47,13 @@ export function SingleGoal({ goal, isOwner, fetchToggleGoal }: SingleGoalProps) 
 
                 <input type="checkbox" id={`${goal.id}-details`} className="hidden interactive-goals" />
                 <label htmlFor={`${goal.id}-details`} className="cursor-pointer">
-                    <Image
+                    {/* <Image
                         src={threeDot}
                         alt="three dot icon"
                         height={18.99}
                         className='select-none'
-                    />
+                    /> */}
+                    <MdKeyboardArrowRight />
                 </label>
             </div>
             <div className="hidden details-goals mt-4">

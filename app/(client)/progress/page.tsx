@@ -34,23 +34,23 @@ const ProgressPage = () => {
   const [collectionCompleted, setCollectionCompleted] = useState("");
   const [collectionInProgress, setCollectionInProgress] = useState("");
   const [categoriesProgress, setCategoriesProgress] = useState<CategoriesProgress[]>([]);
-  console.log(lastGoalAccomplishedLabel);
+
+  const userProgressData = fetchUserCollectionsData(userId)
 
   useEffect(() => {   
-        fetchUserCollectionsData(userId).then(
-          data => (
-            setLastGoalAccomplishedLabel(data.lastGoalAccomplished[0].label),
-            setTotalGoals(data.totalGoals),
-            setTotalAccomplishedGoals(data.totalAccomplishedGoals),
-            setTotalGoalsPercent((data.totalAccomplishedGoals * 100 / data.totalGoals).toFixed(2)),
-            setGoalSuggestion(data.goalSuggestion[0].label),
-            setCollectionNotStarted((data.collectionsNotStarted * 100 / data.totalCollections).toFixed(0)),
-            setCollectionCompleted((data.collectionsCompleted * 100 / data.totalCollections).toFixed(0)),
-            setCollectionInProgress((data.collectionsInProgress * 100 / data.totalCollections).toFixed(0)),
-            setCategoriesProgress(data.categoriesStats)
-          )
-        );
-  }, [userId]);
+    if(userProgressData) {
+      setLastGoalAccomplishedLabel(userProgressData.lastGoalAccomplished[0].label)
+      setTotalGoals(userProgressData.totalGoals)
+      setTotalAccomplishedGoals(userProgressData.totalAccomplishedGoals)
+      setTotalGoalsPercent((userProgressData.totalAccomplishedGoals * 100 / userProgressData.totalGoals).toFixed(2))
+      setGoalSuggestion(userProgressData.goalSuggestion[0].label)
+      setCollectionNotStarted((userProgressData.collectionsNotStarted * 100 / userProgressData.totalCollections).toFixed(0))
+      setCollectionCompleted((userProgressData.collectionsCompleted * 100 / userProgressData.totalCollections).toFixed(0))
+      setCollectionInProgress((userProgressData.collectionsInProgress * 100 / userProgressData.totalCollections).toFixed(0))
+      setCategoriesProgress(userProgressData.categoriesStats)
+    }
+        
+  }, [userId, userProgressData]);
 
   return (
     <>

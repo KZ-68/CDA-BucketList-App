@@ -80,6 +80,11 @@ jobs:
           name: Run jest tests build
           command: npm run test:build
       - run:
+          name: Start app server
+          command: |
+            npm run start &
+            npx wait-on http://localhost:8080
+      - run:
           name: Run Cypress Tests
           command: |
             xvfb-run --auto-servernum npx cypress run

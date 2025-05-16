@@ -8,5 +8,4 @@ it('Visit My Collections', () => {
     cy.get("[id='password-field']").type(Cypress.env("clerk-password"));
     cy.get("[class='cl-formButtonPrimary cl-button 🔒️ cl-internal-9c635s']").click({multiple:true, force:true});
   })
-  cy.get('a [href="/collections/user"]').click({multiple:true, force:true});
 })

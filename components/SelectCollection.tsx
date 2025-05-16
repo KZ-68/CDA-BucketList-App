@@ -15,12 +15,14 @@ const SelectCollection: React.FC<SelectCollectionProps>= ({collectionId, setColl
         setCollectionId(target.value);
     };
 
+    const collectionsData = fetchCollectionsData();
     useEffect(() => {
-        
         if (collections.length === 0) {
-            fetchCollectionsData().then(data => setCollections(data.data))
+            if(collectionsData) {
+                setCollections(collectionsData.data);
+            }
         }
-    }, [collections]);
+    }, [collections, collectionsData]);
     
     return (
         <div className='flex flex-col items-start gap-4'>

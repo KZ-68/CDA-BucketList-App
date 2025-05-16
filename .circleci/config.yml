@@ -15,6 +15,7 @@ jobs:
           type: string
     executor: << parameters.os >>
     docker:
+      - image: cimg/base:stable
       - image: cypress/included:12.10.0
     steps:
       - checkout

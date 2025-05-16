@@ -1,6 +1,5 @@
 import { GoalType } from "@/types/types";
 import { Check } from "./Check";
-import Image from "next/image";
 // import threeDot from "/public/three_dot.svg";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Divider } from "./Divider";

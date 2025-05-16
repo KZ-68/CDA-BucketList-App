@@ -27,14 +27,16 @@ const EditGoalPage = () => {
     const [message, setMessage] = useState("");
 
     const goalData = fetchGoalData(params.goalId);
-    
+
     useEffect(() => {
-        setLabel(goalData.data.label) 
-        setDescription(goalData.data.description)
-        setPriority(goalData.data.priority)
-        setCategoryId(goalData.data.categoryId)
-        setCollectionId(goalData.data.collectionId)
-            
+        if(goalData) {
+            setLabel(goalData.data.label) 
+            setDescription(goalData.data.description)
+            setPriority(goalData.data.priority)
+            setCategoryId(goalData.data.categoryId)
+            setCollectionId(goalData.data.collectionId)
+        }
+
     }, [params.goalId, params.categoryId, goalData]);
 
     const handleChangeLabel = (e: React.ChangeEvent<HTMLInputElement>) => {

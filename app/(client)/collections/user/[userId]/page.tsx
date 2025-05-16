@@ -33,19 +33,20 @@ const CollectionsPage = ()  => {
   const [username, setUsername] = useState<string | null>('unknown');
   const { isSignedIn } = useAuth();
   
+  const userCollections = fetchUserCollectionsData(params.userId)
+
   useEffect(() => {
     if (isSignedIn === false) redirect("/login");
-    fetchUserCollectionsData(params.userId).then(
-      data => (
-        setCollections(data.data || [])      
-      )
-    )
+    if(userCollections){
+      setCollections(userCollections.data || [])      
+    }
+     
     getUserInformationService(params.userId).then(
       username => {
         setUsername(username)
       }
     );
-  }, [isSignedIn, params.userId, username]);
+  }, [isSignedIn, params.userId, username, userCollections]);
 
   const filteredCollections = collections.filter((collection) => {
     const totalGoals = collection.goals.length;

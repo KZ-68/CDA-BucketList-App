@@ -26,17 +26,20 @@ interface Goal {
 }
 
 const CollectionsPage = () => {
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [filter, setFilter] = useState<string>('All');
-  const [sortType, setSortType] = useState<string>('date');
-  const [sortOrder, setSortOrder] = useState<string>('asc'); 
-  const { isSignedIn } = useUser(); 
+    const [collections, setCollections] = useState<Collection[]>([]);
+    const [filter, setFilter] = useState<string>('All');
+    const [sortType, setSortType] = useState<string>('date');
+    const [sortOrder, setSortOrder] = useState<string>('asc'); 
+    const { isSignedIn } = useUser(); 
+  
+    const collectionsUser = fetchAllUserCollectionsData()
 
-  useEffect(() => {
-    if (isSignedIn === false) redirect("/login");
-    fetchAllUserCollectionsData().then(data => setCollections(data.data || []))
-  }, [isSignedIn]);
-
+    useEffect(() => {
+      if (isSignedIn === false) redirect("/login");
+      if (collectionsUser) {
+        setCollections(collectionsUser.data || [])
+      }
+    }, [isSignedIn, collectionsUser]);
     
   const filteredCollections = collections.filter((collection) => {
     const totalGoals = collection.goals.length;

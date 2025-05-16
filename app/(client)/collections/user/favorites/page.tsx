@@ -33,24 +33,27 @@ const CollectionsPage = () => {
     const [sortType, setSortType] = useState<string>('date');
     const [sortOrder, setSortOrder] = useState<string>('asc');
     const [likedCollections, setLikedCollections] = useState<string[]>([]);
-  
+    
+    const dataAllCollections = FetchAllCollectionsService();
+    const datalikedCollections = fetchCollectionsLiked(userId ? userId : null);
+
     useEffect(() => {
         if (isSignedIn === false) redirect("/login");
-        fetchCollectionsLiked(userId ? userId : null).then(
-            data => {
-                const likedIds = data.data.map((like: {collectionId : string}) => like.collectionId);
-                setLikedCollections(likedIds);
-            }
-        )
-        const fetchData = async () => {
-            const data = await FetchAllCollectionsService();
+        
+        if(datalikedCollections) {
+            setLikedCollections(datalikedCollections.data.map((like: {collectionId : string}) => like.collectionId));
+        }
+        
+        const fetchData = () => {
             setIsLoading(true);
-            setCollections(data.data);
+            if(dataAllCollections) {
+                setCollections(dataAllCollections.data);
+            }
             setIsLoading(false);
         };
           
         fetchData();
-    }, [isSignedIn, userId]);
+    }, [isSignedIn, userId, dataAllCollections, datalikedCollections]);
 
     const collectionsData = collections?.map((collection) => ({
         ...collection,

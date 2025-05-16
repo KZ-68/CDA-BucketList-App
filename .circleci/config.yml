@@ -92,7 +92,7 @@ jobs:
           destination: cypress-artifacts
   vercel-deployment:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:latest
     environment:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
@@ -110,7 +110,7 @@ jobs:
       - run:
           name: Deploy to Vercel
           command: |
-            vercel --prod --token=$VERCEL_TOKEN --confirm
+            vercel deploy --prebuilt --token=$VERCEL_TOKEN --confirm
 workflows:
   build-and-test:
     jobs:

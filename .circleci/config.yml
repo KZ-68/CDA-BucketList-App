@@ -78,7 +78,7 @@ jobs:
           name: Run jest tests build
           command: npm run test:build
       - cypress/run-tests:
-          cypress-command: npm wait-on@latest http://localhost:8080 && npx cypress run
+          cypress-command: npx wait-on@latest http://localhost:8080 && npx cypress run
           start-command: npm start -- -p 8080
       - run:
           name: Save Cypress artifacts (Screenshots, Videos)

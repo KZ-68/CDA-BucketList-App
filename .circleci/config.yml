@@ -81,7 +81,7 @@ jobs:
       - run:
           name: Run Cypress Tests
           command: |
-            npm run start -H localhost -p 3000 &
+            npm run start &
             npx wait-on http://localhost:8080 &
             xvfb-run --auto-servernum npx cypress run
       - run:

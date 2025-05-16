@@ -3,9 +3,12 @@ import { CollectionType } from '@/types/types';
 import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import React, { useEffect, KeyboardEvent } from 'react'
+import useSWR from "swr";
+
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
 
 const Searchbar = () => {
-    const { searchData, handleSearch, resultData, focusedIndex, setFocusedIndex, handleKeyDown } = useSearchData();
+    const { searchData, handleSearch, resultData, focusedIndex, setFocusedIndex, handleKeyDown, isLoading } = useSearchData();
 
     return (
         <div className='relative flex flex-col w-full max-w-md'>
@@ -20,8 +23,15 @@ const Searchbar = () => {
                 aria-controls="search-results"
                 role='combobox'
             />
-
-            {resultData.length > 0 ? (
+            {isLoading ? (
+                <div className='absolute top-full left-0 right-0 z-50 border border-gray-700 rounded overflow-hidden bg-gray-950 max-h-[300px] overflow-y-auto shadow-lg'>
+                    <div className="p-2 hover:bg-gray-800 border-b border-gray-800 last:border-b-0">
+                        <p className="block w-full">
+                            Chargement...
+                        </p>
+                    </div>
+                </div>
+            ) : resultData.length > 0 ? (
                 <div id="search-results" className='absolute top-full left-0 right-0 z-50 border border-gray-700 rounded overflow-hidden bg-gray-950 max-h-[300px] overflow-y-auto shadow-lg'>
                     {resultData.map((data: CollectionType, index: number) => (
                         <div 
@@ -89,30 +99,22 @@ function useSearchData() {
                 break;
         }
     }
+    const baseUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://cda-bucket-list-app.vercel.app';
+
+    const {data, error, isLoading} = useSWR(`${baseUrl}/api/collections/search?search=${searchData}`, fetcher);
 
     useEffect(() => {
-        async function fetchData() {
-            const baseUrl = process.env.NODE_ENV === 'development'
-                ? 'http://localhost:3000'
-                : 'https://cda-bucket-list-app.vercel.app';
+        if(!userId) return;
 
-            try {
-                if (!userId) return;
-                const response = await fetch(`${baseUrl}/api/collections/search?search=${searchData}`);
-                const data = await response.json();
-
-                if (data.success) {
-                    setResultData(data.data);
-                }
-
-                console.log(data);
-            } catch (error) {
-                console.error(error);
-            }
+        if(error) console.error("Erreur lors de la recherche des collections :", error);
+        
+        if (data) {
+            setResultData(data);
         }
 
-        fetchData();
-    }, [searchData, userId])
+    }, [searchData, userId, error, isLoading, data])
 
     return { 
         searchData, 
@@ -120,7 +122,8 @@ function useSearchData() {
         resultData, 
         focusedIndex, 
         setFocusedIndex, 
-        handleKeyDown 
+        handleKeyDown,
+        isLoading
     };
 }
 

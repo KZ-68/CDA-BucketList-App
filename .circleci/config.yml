@@ -38,6 +38,9 @@ jobs:
           name: Install lighthouse-ci
           command: npm install -g @lhci/cli@0.14.x
       - run:
+          name: Install wait-on server
+          command: npm install --save-dev wait-on
+      - run:
           name: Audit npm package
           command: npm audit
       - save_cache:
@@ -82,7 +85,6 @@ jobs:
       - run:
           name: Start app server
           command: |
-            npm install --save-dev wait-on &
             npm run dev -H localhost -p 3000 &
             npx wait-on http://localhost:8080
       - run:

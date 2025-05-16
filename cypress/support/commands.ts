@@ -35,3 +35,20 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add("loginAsFakeUser", () => {
+    cy.window().then((win) => {
+      win.localStorage.setItem(
+        "clerk:session",
+        JSON.stringify({
+          user: {
+            id: "fake-user-id",
+            firstName: "Test",
+            lastName: "User",
+            emailAddress: "test@example.com",
+          },
+          isSignedIn: true,
+        })
+      );
+    });
+});

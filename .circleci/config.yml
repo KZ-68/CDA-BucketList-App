@@ -77,6 +77,9 @@ jobs:
       - run:
           name: Run jest tests build
           command: npm run test:build
+      - store_artifacts:
+          path: reports/html
+          destination: jest-html-report
       - cypress/run-tests:
           cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
           start-command: npm start -- -p 3000

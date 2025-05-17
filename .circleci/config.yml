@@ -73,6 +73,11 @@ jobs:
                   "startServerReadyPattern": "started server",
                   "numberOfRuns": 3
                 },
+                "settings": {
+                  "extraHeaders": {
+                    "Authorization": "Bearer '"$VERCEL_TOKEN"'"
+                  }
+                }
                 "upload": {
                   "target": "temporary-public-storage"
                 }

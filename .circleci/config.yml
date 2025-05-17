@@ -74,7 +74,7 @@ jobs:
                   "numberOfRuns": 3,
                   "settings": {
                     "extraHeaders": {
-                      "Authorization": "Bearer '"$VERCEL_TOKEN"'"
+                      "x-vercel-protection-bypass: "'"$VERCEL_AUTOMATION_BYPASS_SECRET"'"
                     }
                   }
                 },

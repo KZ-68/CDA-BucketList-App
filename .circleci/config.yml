@@ -68,9 +68,7 @@ jobs:
             echo '{
               "ci": {
                 "collect": {
-                  "url": ["http://localhost:3000"],
-                  "startServerCommand": "npm run start",
-                  "startServerReadyPattern": "started server",
+                  "url": [$TEST_BASE_URL],
                   "numberOfRuns": 3
                 },
                 "upload": {

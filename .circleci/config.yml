@@ -19,7 +19,18 @@ jobs:
       - checkout
       - node/install:
           node-version: << parameters.node-version >>
-      - node/install-packages
+      - restore_cache:
+          keys:
+            - npm-deps-v1-{{ checksum "package-lock.json" }}
+            - npm-deps-v1-
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - ~/.npm
+            - node_modules
+          key: npm-deps-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Install Xvfb
           command: |

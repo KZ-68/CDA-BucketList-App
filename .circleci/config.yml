@@ -68,16 +68,10 @@ jobs:
             echo '{
               "ci": {
                 "collect": {
-                  "url": ["'"$TEST_BASE_URL"'"],
+                  "url": ["http://localhost:3000"],
                   "startServerCommand": "npm run start",
                   "startServerReadyPattern": "started server",
-                  "numberOfRuns": 3,
-                  "settings": {
-                    "maxWaitForFcp": 15000,
-                    "extraHeaders": {
-                      "x-vercel-protection-bypass": "'"$VERCEL_AUTOMATION_BYPASS_SECRET"'"
-                    }
-                  }
+                  "numberOfRuns": 3
                 },
                 "upload": {
                   "target": "temporary-public-storage"

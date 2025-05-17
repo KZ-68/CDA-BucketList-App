@@ -71,13 +71,13 @@ jobs:
                   "url": ["'"$TEST_BASE_URL"'"],
                   "startServerCommand": "npm run start",
                   "startServerReadyPattern": "started server",
-                  "numberOfRuns": 3
-                },
-                "settings": {
-                  "extraHeaders": {
-                    "Authorization": "Bearer '"$VERCEL_TOKEN"'"
+                  "numberOfRuns": 3,
+                  "settings": {
+                    "extraHeaders": {
+                      "Authorization": "Bearer '"$VERCEL_TOKEN"'"
+                    }
                   }
-                }
+                },
                 "upload": {
                   "target": "temporary-public-storage"
                 }

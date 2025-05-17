@@ -73,6 +73,7 @@ jobs:
                   "startServerReadyPattern": "started server",
                   "numberOfRuns": 3,
                   "settings": {
+                    "maxWaitForFcp": 15000,
                     "extraHeaders": {
                       "x-vercel-protection-bypass": "'"$VERCEL_AUTOMATION_BYPASS_SECRET"'"
                     }

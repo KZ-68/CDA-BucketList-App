@@ -93,10 +93,6 @@ jobs:
   vercel-deployment:
     docker:
       - image: cimg/base:stable
-    environment:
-      VERCEL_TOKEN: $VERCEL_TOKEN
-      VERCEL_ORG_ID: $VERCEL_ORG_ID
-      VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
     steps:
       - checkout
       - node/install

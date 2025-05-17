@@ -69,6 +69,8 @@ jobs:
               "ci": {
                 "collect": {
                   "url": ["'"$TEST_BASE_URL"'"],
+                  "startServerCommand": "npm run start",
+                  "startServerReadyPattern": "started server",
                   "numberOfRuns": 3
                 },
                 "upload": {

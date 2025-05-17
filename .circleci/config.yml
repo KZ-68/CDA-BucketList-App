@@ -68,7 +68,7 @@ jobs:
             echo '{
               "ci": {
                 "collect": {
-                  "url": [$TEST_BASE_URL],
+                  "url": ["'"$TEST_BASE_URL"'"],
                   "numberOfRuns": 3
                 },
                 "upload": {

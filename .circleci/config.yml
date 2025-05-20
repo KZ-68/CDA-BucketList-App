@@ -68,9 +68,6 @@ jobs:
             echo '{
               "ci": {
                 "collect": {
-                  "settings": {
-                    "skipAudits": ["redirects-http"],
-                  },
                   "url": ["http://localhost:3000"],
                   "startServerCommand": "npm run start",
                   "startServerReadyPattern": "started server",

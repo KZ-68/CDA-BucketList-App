@@ -149,6 +149,8 @@ jobs:
             git merge origin/dev --no-edit
             git push origin test/circleci
   pull-request:
+    docker:
+      - image: cimg/base:stable
     steps:
       - run:
           name: Create Pull Request

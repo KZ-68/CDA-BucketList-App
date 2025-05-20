@@ -148,6 +148,20 @@ jobs:
             git checkout test/circleci
             git merge origin/dev --no-edit
             git push origin test/circleci
+  pull-request:
+    steps:
+      - run:
+          name: Create Pull Request
+          command: |
+            curl -X POST -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/KZ-68/CDA-BucketList-App/pulls \
+              -d '{
+                "title": "PR from develop to main (circleci)",
+                "head": "test/circleci",
+                "base": "main",
+                "body": "PR from develop to main (circleci)"
+              }'
 workflows:
   build-and-test:
     jobs:
@@ -167,3 +181,10 @@ workflows:
             branches:
               only:
                 - dev
+      - pull-request:
+          requires:
+            - merge-to-test
+          filters:
+            branches:
+              only:
+                - test/circleci

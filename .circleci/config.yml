@@ -184,8 +184,6 @@ workflows:
               only:
                 - dev
       - pull-request:
-          requires:
-            - merge-to-test
           filters:
             branches:
               only:

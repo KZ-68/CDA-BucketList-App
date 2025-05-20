@@ -15,8 +15,14 @@
     "test:a11y": "dotenv -e .env.test -- jest -i __tests__/a11y",
     "prisma-db-push:test": "dotenv -e .env.test -- npx prisma db push",
     "prisma-db-push:dev": "dotenv -e .env.development -- npx prisma db push",
+    "prisma-generate:test": "dotenv -e .env.test -- npx prisma generate",
+    "prisma-generate:dev": "dotenv -e .env.development -- npx prisma generate",
     "prisma-studio:test": "dotenv -e .env.test -- npx prisma studio",
-    "prisma-studio:dev": "dotenv -e .env.development -- npx prisma studio"
+    "prisma-studio:dev": "dotenv -e .env.development -- npx prisma studio",
+    "build:test": "dotenv -e .env.test -- next build",
+    "build:dev": "dotenv -e .env.development -- next build",
+    "start:test": "dotenv -e .env.test -- next start",
+    "start:dev": "dotenv -e .env.development -- next start"
   },
   "prisma": {
     "seed": "node prisma/seed.js",

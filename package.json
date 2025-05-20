@@ -15,8 +15,14 @@
     "test:a11y": "dotenv -e .env.test -- jest -i __tests__/a11y",
     "prisma-db-push:test": "dotenv -e .env.test -- npx prisma db push",
     "prisma-db-push:dev": "dotenv -e .env.development -- npx prisma db push",
+    "prisma-generate:test": "dotenv -e .env.test -- npx prisma generate",
+    "prisma-generate:dev": "dotenv -e .env.development -- npx prisma generate",
     "prisma-studio:test": "dotenv -e .env.test -- npx prisma studio",
-    "prisma-studio:dev": "dotenv -e .env.development -- npx prisma studio"
+    "prisma-studio:dev": "dotenv -e .env.development -- npx prisma studio",
+    "build:test": "dotenv -e .env.test -- next build",
+    "build:dev": "dotenv -e .env.development -- next build",
+    "start:test": "dotenv -e .env.test -- next start",
+    "start:dev": "dotenv -e .env.development -- next start"
   },
   "prisma": {
     "seed": "node prisma/seed.js",
@@ -44,8 +50,8 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.3.0",
-    "type-check": "^0.4.0",
     "swr": "^2.3.3",
+    "type-check": "^0.4.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -67,6 +73,7 @@
     "eslint-config-next": "15.1.6",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-html-reporter": "^4.1.0",
     "node-mocks-http": "^1.16.2",
     "postcss": "^8",
     "prisma": "^6.6.0",

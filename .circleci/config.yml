@@ -92,24 +92,10 @@ jobs:
           path: reports/html
           destination: jest-html-report
       - cypress/run-tests:
-          name: Run Cypress e2e tests
-          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
+          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run --record
           start-command: npm start -- -p 3000
-          post-steps:
-            - run: ls
-            - store_test_results:
-                path: results
-            - store_artifacts:
-                path: cypress/screenshots
       - cypress/run-tests:
-          name: Run Cypress components tests
-          cypress-command: npx cypress run --component
-          post-steps:
-            - run: ls
-            - store_test_results:
-                path: results
-            - store_artifacts:
-                path: cypress/screenshots
+          cypress-command: npx cypress run --component --record
   merge-to-test:
     docker:
       - image: cimg/base:stable
@@ -127,8 +113,10 @@ jobs:
           name: Set database URL based to branch
           command: |
             if [ "$CIRCLE_BRANCH" == "dev" ]; then
-              echo 'export DATABASE_URL="$DATABASE_URL_TEST"' >> "$BASH_ENV"
-            fi            
+              echo "DATABASE_URL=$DATABASE_URL_TEST" >> .env
+            else
+              echo "DATABASE_URL=$DATABASE_URL_TEST" >> .env
+            fi
       - run:
           name: Pull Vercel Environment Information
           command: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
@@ -142,8 +130,8 @@ jobs:
       - run:
           name: Setup Git
           command: |
-            git config --global user.email "$GIT_EMAIL"
-            git config --global user.name "$GIT_NAME"
+            git config --global user.email "zitnik.kevin@gmail.com"
+            git config --global user.name "KZ-68"
             git remote set-url origin https://${GH_TOKEN}@github.com/KZ-68/CDA-BucketList-App.git
       - run:
           name: Merge dev into test/circleci
@@ -163,10 +151,10 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/KZ-68/CDA-BucketList-App/pulls \
               -d '{
-                "title": "PR from test/circleci to main (circleci)",
+                "title": "PR from develop to main (circleci)",
                 "head": "test/circleci",
                 "base": "main",
-                "body": "PR from test/circleci to main (circleci)"
+                "body": "PR from develop to main (circleci)"
               }'
 workflows:
   build-and-test:

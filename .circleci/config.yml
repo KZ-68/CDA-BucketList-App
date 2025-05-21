@@ -91,23 +91,25 @@ jobs:
       - store_artifacts:
           path: reports/html
           destination: jest-html-report
-      - cypress/run-tests-e2e:
+      - cypress/run-tests:
           name: Run Cypress e2e tests
-          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run --e2e
+          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
           start-command: npm start -- -p 3000
-      - cypress/run-tests-component:
+          post-steps:
+            - run: ls
+            - store_test_results:
+                path: results
+            - store_artifacts:
+                path: cypress/screenshots
+      - cypress/run-tests:
           name: Run Cypress components tests
           cypress-command: npx cypress run --component
-      - run:
-          name: Save Cypress artifacts (Screenshots, Videos)
-          command: |
-            mkdir -p ~/cypress-artifacts/screenshots
-            mkdir -p ~/cypress-artifacts/videos
-            cp -r cypress/screenshots ~/cypress-artifacts/screenshots || true
-            cp -r cypress/videos ~/cypress-artifacts/videos || true
-      - store_artifacts:
-          path: ~/cypress-artifacts
-          destination: cypress-artifacts
+          post-steps:
+            - run: ls
+            - store_test_results:
+                path: results
+            - store_artifacts:
+                path: cypress/screenshots
   merge-to-test:
     docker:
       - image: cimg/base:stable

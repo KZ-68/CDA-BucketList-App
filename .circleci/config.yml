@@ -51,7 +51,7 @@ jobs:
           name: Install wait-on server
           command: npm install wait-on
       - run:
-          name: Remplace index.mjs in react-icons/lib
+          name: Replace index.mjs in react-icons/lib
           command: |
             echo '
               export { IconsManifest } from "./iconsManifest.mjs";
@@ -159,10 +159,10 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/KZ-68/CDA-BucketList-App/pulls \
               -d '{
-                "title": "PR from develop to main (circleci)",
+                "title": "PR from test/circleci to main (circleci)",
                 "head": "test/circleci",
                 "base": "main",
-                "body": "PR from develop to main (circleci)"
+                "body": "PR from test/circleci to main (circleci)"
               }'
 workflows:
   build-and-test:

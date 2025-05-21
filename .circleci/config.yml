@@ -51,6 +51,14 @@ jobs:
           name: Install wait-on server
           command: npm install wait-on
       - run:
+          name: Remplace index.mjs in react-icons/lib
+          command: |
+            echo '
+              export { IconsManifest } from "./iconsManifest.mjs";
+              export { GenIcon, IconBase } from "./iconBase.mjs";
+              export { DefaultContext, IconContext } from "./iconContext.mjs";
+            ' > node_modules/react-icons/lib/index.mjs
+      - run:
           name: Audit npm package
           command: npm audit
       - run:
@@ -94,16 +102,8 @@ jobs:
       - cypress/run-tests:
           cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
           start-command: npm start -- -p 3000
-      - run:
-          name: Save Cypress artifacts (Screenshots, Videos)
-          command: |
-            mkdir -p ~/cypress-artifacts/screenshots
-            mkdir -p ~/cypress-artifacts/videos
-            cp -r cypress/screenshots ~/cypress-artifacts/screenshots || true
-            cp -r cypress/videos ~/cypress-artifacts/videos || true
-      - store_artifacts:
-          path: ~/cypress-artifacts
-          destination: cypress-artifacts
+      - cypress/run-tests:
+          cypress-command: npx cypress run --component
   merge-to-test:
     docker:
       - image: cimg/base:stable

@@ -21,11 +21,15 @@ const EditCollectionPage = () => {
     const [success, setSuccess] = useState(false);
     const [message, setMessage] = useState("");
 
+    const collectionData = fetchCollectionData(params.collectionId);
+
     useEffect(() => {
-        fetchCollectionData(params.collectionId).then(
-            data => (setLabel(data.data.label), setIsPrivate(data.data.isPrivate)), 
-        )
-    }, [params.collectionId, isSignedIn]);
+        if(collectionData) {
+            setLabel(collectionData.data.label)
+            setIsPrivate(collectionData.data.isPrivate)        
+        }
+        
+    }, [params.collectionId, isSignedIn, collectionData]);
 
     const onChangeCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIsPrivate(e.target.checked);

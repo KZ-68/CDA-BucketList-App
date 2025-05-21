@@ -7,6 +7,7 @@ import { HiOutlineChartBarSquare } from "react-icons/hi2";
 import { RiLightbulbFill, RiCompass3Fill } from "react-icons/ri";
 import { LuLayoutList } from "react-icons/lu";
 import { redirect } from 'next/navigation';
+import useSWR from "swr";
 
 interface Collection {
   label: string;
@@ -21,37 +22,33 @@ const Home = () => {
   if(isSignedIn === false) {
     redirect("/login");
   }
+
+  const fetcher = (url:string) => fetch(url).then((res) => res.json());
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collections, setCollections] = useState<Collection[]>([]);
   const [totalCollections, setTotalCollections] = useState<number>(0);
   const [totalGoals, setTotalGoals] = useState<number>(0);
   const [totalAccomplishedGoals, setTotalAccomplishedGoals] = useState<number>(0);
 
+  const { data: userData, error } = useSWR(`/api/collections/user/${userId}`, fetcher);
   useEffect(() => { 
     const fetchCollections = async () => {
-      try {
-        const response = await fetch(`/api/collections/user/${userId}`);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setCollections(data.data);
-        setTotalCollections(data.totalCollections); // Nombre total de collections
-        setTotalGoals(data.totalGoals); // Nombre total de goals
-        setTotalAccomplishedGoals(data.totalAccomplishedGoals); // Nombre total de goals accomplis
-
-      } catch (error) {
-        console.error("Erreur lors de la récupération des collections :", error);
+      if(userData) {
+        setCollections(userData.data);
+        setTotalCollections(userData.totalCollections); // Nombre total de collections
+        setTotalGoals(userData.totalGoals); // Nombre total de goals
+        setTotalAccomplishedGoals(userData.totalAccomplishedGoals); // Nombre total de goals accomplis
       }
+
+      if(error) console.error("Erreur lors de la récupération des infos utilisateur :", error);
+     
     };
 
     fetchCollections();
-  }, [userId]); // L'effet se relance uniquement si `userId` change
+  }, [userId, userData, error]);
 
   const completionRate = totalGoals > 0 ? Math.round((totalAccomplishedGoals / totalGoals) * 100) : 0;
-
 
   return (
     <>

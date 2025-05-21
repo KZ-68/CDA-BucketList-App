@@ -1,8 +1,11 @@
-const FetchAllCollectionsService = async ()  => {
-    const res = await fetch(`/api/collections/all`, {cache: 'force-cache'});
-    const data = await res.json();
+import useSWR from "swr";
 
-    return data;
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
+
+const FetchAllCollectionsService = ()  => {
+  const { data: dataCollection } = useSWR('/api/collections/all', fetcher);
+
+  return dataCollection;
 }
 
 export default FetchAllCollectionsService;

@@ -1,28 +1,190 @@
 version: 2.1
 orbs:
   node: circleci/node@7.1.0
+  browser-tools: circleci/browser-tools@1.5.3
+  cypress: cypress-io/cypress@4.1.0
+executors:
+  docker:
+    docker:
+      - image: cimg/base:stable
 jobs:
   build-and-test:
-    docker:
-      - image: "cimg/base:stable"
+    parameters:
+        os:
+          type: executor
+        node-version:
+          type: string
+    executor: << parameters.os >>
     steps:
       - checkout
-      - setup_remote_docker
-      - node/install
-      - node/install-packages
+      - node/install:
+          node-version: << parameters.node-version >>
+      - restore_cache:
+          keys:
+            - npm-deps-v1-{{ checksum "package-lock.json" }}
+            - npm-deps-v1-
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - ~/.npm
+            - node_modules
+          key: npm-deps-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Xvfb
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Check Chrome install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      - run:
+          name: Install lighthouse-ci
+          command: npm install -g @lhci/cli@0.14.x
+      - cypress/install
+      - run:
+          name: Install wait-on server
+          command: npm install wait-on
+      - run:
+          name: Audit npm package
+          command: npm audit
       - run:
           name: Run Linter
           command: npm run lint
       - run:
           name: Run type-check
           command: npm run type-check
+      - run: 
+          name: Run Test Build with Bundle Analyzer
+          command: npm run analyze
       - run:
-          name: Run tests
-          command: npm run test
+          name: Run lighthouse-ci
+          command: |
+            echo '{
+              "ci": {
+                "collect": {
+                  "url": ["http://localhost:3000"],
+                  "startServerCommand": "npm run start",
+                  "startServerReadyPattern": "started server",
+                  "numberOfRuns": 3
+                },
+                "upload": {
+                  "target": "temporary-public-storage"
+                }
+              }
+            }' > /tmp/lhci-config.json
+            lhci autorun --config=/tmp/lhci-config.json
+      - store_artifacts:
+          path: .next/analyze
+          destination: bundle-report
+      - run:
+          name: Run jest test a11y
+          command: npm run test:a11y
+      - run:
+          name: Run jest tests build
+          command: npm run test:build
+      - store_artifacts:
+          path: reports/html
+          destination: jest-html-report
+      - cypress/run-tests:
+          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
+          start-command: npm start -- -p 3000
+      - run:
+          name: Save Cypress artifacts (Screenshots, Videos)
+          command: |
+            mkdir -p ~/cypress-artifacts/screenshots
+            mkdir -p ~/cypress-artifacts/videos
+            cp -r cypress/screenshots ~/cypress-artifacts/screenshots || true
+            cp -r cypress/videos ~/cypress-artifacts/videos || true
+      - store_artifacts:
+          path: ~/cypress-artifacts
+          destination: cypress-artifacts
+  merge-to-test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - node/install
+      - node/install-packages
+      - run:
+          name: Vercel CLI Installation
+          command: npm install -g vercel@latest
+      - run:
+          name: Create Optimized Build
+          command: npm run build:test
+      - run:
+          name: Set database URL based to branch
+          command: |
+            if [ "$CIRCLE_BRANCH" == "dev" ]; then
+              echo "DATABASE_URL=$DATABASE_URL_TEST" >> .env
+            else
+              echo "DATABASE_URL=$DATABASE_URL_TEST" >> .env
+            fi
+      - run:
+          name: Pull Vercel Environment Information
+          command: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+      - run:
+          name: Build Project Artifacts
+          command: vercel build --token=$VERCEL_TOKEN
+      - run:
+          name: Deploy to Vercel
+          command: |
+            vercel deploy --prebuilt --token=$VERCEL_TOKEN --confirm
+      - run:
+          name: Setup Git
+          command: |
+            git config --global user.email "zitnik.kevin@gmail.com"
+            git config --global user.name "KZ-68"
+            git remote set-url origin https://${GH_TOKEN}@github.com/KZ-68/CDA-BucketList-App.git
+      - run:
+          name: Merge dev into test/circleci
+          command: |
+            git fetch origin
+            git checkout test/circleci
+            git merge origin/dev --no-edit
+            git push origin test/circleci
+  pull-request:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Create Pull Request
+          command: |
+            curl -X POST -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/KZ-68/CDA-BucketList-App/pulls \
+              -d '{
+                "title": "PR from develop to main (circleci)",
+                "head": "test/circleci",
+                "base": "main",
+                "body": "PR from develop to main (circleci)"
+              }'
 workflows:
   build-and-test:
     jobs:
       - build-and-test:
-        matrix:
-            parameters:
-              node-version: [19.x, 20.x, 21.x, 22.x]
+          matrix:
+              parameters:
+                os: [docker]
+                node-version: [19.9.0, 20.19.2, 21.7.3, 22.15.1]
+          filters:
+            branches:
+              only:
+                - dev
+      - merge-to-test:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only:
+                - dev
+      - pull-request:
+          filters:
+            branches:
+              only:
+                - test/circleci

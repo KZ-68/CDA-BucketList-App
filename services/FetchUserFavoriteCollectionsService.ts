@@ -1,16 +1,17 @@
-const FetchUserFavoriteCollectionsService = async (userId: string | null) => {
-    if (!userId) throw new Error("User ID is required");
-    try {
-        const response =await fetch(`/api/user/${userId}/liked-collections`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+import useSWR from "swr";
 
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error("Error when fetching the user favorites collections:", error);
-      }
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
+
+const FetchUserFavoriteCollectionsService = (userId: string | null) => {
+  if (!userId) throw new Error("User ID is required");
+
+  const {data : response, error} = useSWR(`/api/user/${userId}/liked-collections`, fetcher);
+  if (error) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response;
+
 }
 
 export default FetchUserFavoriteCollectionsService;

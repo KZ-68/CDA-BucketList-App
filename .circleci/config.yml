@@ -91,9 +91,13 @@ jobs:
       - store_artifacts:
           path: reports/html
           destination: jest-html-report
-      - cypress/run-tests:
-          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
+      - cypress/run-tests-e2e:
+          name: Run Cypress e2e tests
+          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run --e2e
           start-command: npm start -- -p 3000
+      - cypress/run-tests-component:
+          name: Run Cypress components tests
+          cypress-command: npx cypress run --component
       - run:
           name: Save Cypress artifacts (Screenshots, Videos)
           command: |

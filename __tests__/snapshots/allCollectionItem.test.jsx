@@ -1,8 +1,8 @@
 import renderer from '@testing-library/react';
 import AllCollectionItem from '../../components/AllCollectionItem';
 
-it('Rend correctement', () => {
-  const tree = renderer
+it('Rendering correctly', () => {
+  const component = renderer
     .create(
         <AllCollectionItem
             title={'Test'}
@@ -16,6 +16,6 @@ it('Rend correctement', () => {
         />
     )
     .toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(component).toMatchSnapshot();
 });
 

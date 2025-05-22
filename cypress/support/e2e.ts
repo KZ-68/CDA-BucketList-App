@@ -16,6 +16,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import { addCompareSnapshotCommand } from 'cypress-visual-regression/dist/command'
 
 declare global {
     namespace Cypress {
@@ -24,3 +25,4 @@ declare global {
       }
     }
   }
+addCompareSnapshotCommand();

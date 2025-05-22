@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import { configureVisualRegression } from 'cypress-visual-regression'
 
 export default defineConfig({
   component: {
@@ -11,5 +12,12 @@ export default defineConfig({
 
   e2e: {
     baseUrl: 'http://localhost:3000',
+    screenshotsFolder: './cypress/snapshots/actual',
+    env: {
+      visualRegressionType: 'regression'
+    },
+    setupNodeEvents(on, config) {
+      configureVisualRegression(on)
+    }
   },
 });

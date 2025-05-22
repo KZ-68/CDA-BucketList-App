@@ -70,6 +70,9 @@ jobs:
       - run: 
           name: Run Test Build with Bundle Analyzer
           command: npm run analyze
+      - store_artifacts:
+          path: .next/analyze
+          destination: bundle-report
       - run:
           name: Run lighthouse-ci
           command: |
@@ -87,15 +90,15 @@ jobs:
               }
             }' > /tmp/lhci-config.json
             lhci autorun --config=/tmp/lhci-config.json
-      - store_artifacts:
-          path: .next/analyze
-          destination: bundle-report
       - run:
           name: Run jest test a11y
           command: npm run test:a11y
       - run:
           name: Run jest tests build
           command: npm run test:build
+      - run:
+          name: Run jest non-regression tests
+          command: npm run test:snapshots
       - store_artifacts:
           path: reports/html
           destination: jest-html-report

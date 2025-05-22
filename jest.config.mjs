@@ -115,7 +115,8 @@ const config = {
       "pageTitle": "Test Report",
       "outputPath": "./reports/html/test-report.html",
       "includeFailureMsg": true,
-      "includeConsoleLog": true
+      "includeConsoleLog": true,
+      "includeSuiteFailure": true
     }]
   ],
 

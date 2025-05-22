@@ -1,9 +1,8 @@
-import renderer from '@testing-library/react';
+import { render } from '@testing-library/react';
 import AllCollectionItem from '../../components/AllCollectionItem';
 
 it('Rendering correctly', () => {
-  const component = renderer
-    .create(
+  const { asFragment } = render(
         <AllCollectionItem
             title={'Test'}
             userId={'test1238484'}
@@ -15,7 +14,6 @@ it('Rendering correctly', () => {
             goals={[{label:"Test2", id:"goal84515"}, {label:"Test3", id:"goal484152"}]}
         />
     )
-    .toJSON();
-  expect(component).toMatchSnapshot();
+  expect(asFragment()).toMatchSnapshot(); 
 });
 

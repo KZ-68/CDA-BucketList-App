@@ -121,9 +121,7 @@ jobs:
           name: Set database URL based to branch
           command: |
             if [ "$CIRCLE_BRANCH" == "dev" ]; then
-              echo "DATABASE_URL=$DATABASE_URL_TEST" >> .env
-            else
-              echo "DATABASE_URL=$DATABASE_URL_TEST" >> .env
+              echo "DATABASE_URL=$DATABASE_URL_TEST" >> $BASH_ENV
             fi
       - run:
           name: Pull Vercel Environment Information
@@ -138,8 +136,8 @@ jobs:
       - run:
           name: Setup Git
           command: |
-            git config --global user.email "zitnik.kevin@gmail.com"
-            git config --global user.name "KZ-68"
+            git config --global user.email "$GIT_EMAIL"
+            git config --global user.name "GIT_NAME"
             git remote set-url origin https://${GH_TOKEN}@github.com/KZ-68/CDA-BucketList-App.git
       - run:
           name: Merge dev into test/circleci

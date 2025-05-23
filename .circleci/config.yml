@@ -110,7 +110,7 @@ jobs:
             npm start -- -p 3000 && npm run cypress:visual-regression
       - run:
           name: Save Cypress Image Diff Report HTML file
-          commmand: |
+          command: |
             npx cypress-image-diff-html-report generate
   merge-to-test:
     docker:

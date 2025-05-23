@@ -97,7 +97,7 @@ jobs:
           name: Get coverage report files only
           command: |
             mkdir -p __coverages__/report
-            find __coverages__/Icov-report/ -maxdepth 1 -type f -exec cp {} __coverages__/report/ \;
+            find __coverages__/Icov-report -maxdepth 1 -type f -exec cp {} __coverages__/report/ \;
       - store_artifacts:
           path: __coverages__/report
       - run:

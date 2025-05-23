@@ -13,6 +13,7 @@
     "test": "dotenv -e .env.test -- jest -i",
     "test:snapshots": "dotenv -e .env.test -- jest -i __tests__/snapshots",
     "test:build": "dotenv -e .env.test -- jest -i __tests__/build",
+    "test:build-coverage": "dotenv -e .env.test -- jest --coverage -i __tests__/build",
     "test:a11y": "dotenv -e .env.test -- jest -i __tests__/a11y",
     "prisma-db-push:test": "dotenv -e .env.test -- npx prisma db push",
     "prisma-db-push:dev": "dotenv -e .env.development -- npx prisma db push",

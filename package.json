@@ -11,6 +11,7 @@
     "analyze": "npx cross-env ANALYZE=true npm run build",
     "postinstall": "prisma generate",
     "test": "dotenv -e .env.test -- jest -i",
+    "test:snapshots": "dotenv -e .env.test -- jest -i __tests__/snapshots",
     "test:build": "dotenv -e .env.test -- jest -i __tests__/build",
     "test:a11y": "dotenv -e .env.test -- jest -i __tests__/a11y",
     "prisma-db-push:test": "dotenv -e .env.test -- npx prisma db push",
@@ -22,7 +23,9 @@
     "build:test": "dotenv -e .env.test -- next build",
     "build:dev": "dotenv -e .env.development -- next build",
     "start:test": "dotenv -e .env.test -- next start",
-    "start:dev": "dotenv -e .env.development -- next start"
+    "start:dev": "dotenv -e .env.development -- next start",
+    "cypress:e2e": "npx cypress run --spec 'cypress/e2e/*'",
+    "cypress:visual-regression": "npx cypress run --spec 'cypress/e2e/integration/progress/progress-page.cy.ts'"
   },
   "prisma": {
     "seed": "node prisma/seed.js",
@@ -69,6 +72,8 @@
     "@types/react-dom": "^19",
     "babel-jest": "^29.7.0",
     "cypress": "^14.3.2",
+    "cypress-image-diff-html-report": "^2.2.0",
+    "cypress-image-diff-js": "^2.4.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "jest": "^29.7.0",

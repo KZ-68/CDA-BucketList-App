@@ -35,6 +35,7 @@
 //     }
 //   }
 // }
+import compareSnapshotCommand from 'cypress-image-diff-js/command';
 
 Cypress.Commands.add("loginAsFakeUser", () => {
     cy.window().then((win) => {
@@ -52,3 +53,5 @@ Cypress.Commands.add("loginAsFakeUser", () => {
       );
     });
 });
+
+compareSnapshotCommand();

@@ -22,7 +22,9 @@
     "build:test": "dotenv -e .env.test -- next build",
     "build:dev": "dotenv -e .env.development -- next build",
     "start:test": "dotenv -e .env.test -- next start",
-    "start:dev": "dotenv -e .env.development -- next start"
+    "start:dev": "dotenv -e .env.development -- next start",
+    "cypress:e2e": "npx cypress run --spec 'cypress/e2e/*'",
+    "cypress:visual-regression": "npx cypress run --spec 'cypress/e2e/integration/progress/progress-page.cy.ts'"
   },
   "prisma": {
     "seed": "node prisma/seed.js",

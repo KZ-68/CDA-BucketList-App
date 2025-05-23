@@ -113,7 +113,7 @@ jobs:
           command: |
             npx cypress-image-diff-html-report generate
       - store_artifacts:
-          paths: cypress-image-diff-html-report
+          path: cypress-image-diff-html-report
           destination: artifacts
       - store_artifacts:
           path: cypress-image-diff-screenshots

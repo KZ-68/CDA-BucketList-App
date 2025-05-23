@@ -112,6 +112,9 @@ jobs:
           name: Save Cypress Image Diff Report HTML file
           command: |
             npx cypress-image-diff-html-report generate
+      - store_artifacts:
+          path: cypress-image-diff-html-report
+          destination: artifacts
   merge-to-test:
     docker:
       - image: cimg/base:stable

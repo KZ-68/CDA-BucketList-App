@@ -10,5 +10,7 @@ describe('Cypress Progress Page Visual Testing', () => {
       cy.get("[class='cl-formButtonPrimary cl-button 🔒️ cl-internal-9c635s']").click({multiple:true, force:true});
     })
     cy.get("[href='/progress']").click({multiple:true, force:true})
+    cy.wait(3000);
+    cy.compareSnapshot({name:'progress-page', testThreshold:0.1});
   })
 })

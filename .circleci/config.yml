@@ -103,10 +103,18 @@ jobs:
           path: reports/html
           destination: jest-html-report
       - cypress/run-tests:
-          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
+          cypress-command: npx wait-on@latest http://localhost:3000 && npm run cypress:e2e
           start-command: npm start -- -p 3000
       - cypress/run-tests:
           cypress-command: npx cypress run --component
+      - run:
+          name: Run Cypress visual-regression test
+          command: |
+            npm start -- -p 3000 && npm run cypress:visual-regression
+      - run:
+          name: Save Cypress Image Diff Report HTML file
+          commmand: |
+            npx cypress-image-diff-html-report generate
   merge-to-test:
     docker:
       - image: cimg/base:stable
@@ -140,7 +148,7 @@ jobs:
           name: Setup Git
           command: |
             git config --global user.email "$GIT_EMAIL"
-            git config --global user.name "$GIT_NAME"
+            git config --global user.name "GIT_NAME"
             git remote set-url origin https://${GH_TOKEN}@github.com/KZ-68/CDA-BucketList-App.git
       - run:
           name: Merge dev into test/circleci

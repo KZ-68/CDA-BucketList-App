@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import percent from "@/lib/math";
 
 type Props = {
     params: Promise<{ userId: string }>
@@ -138,7 +139,7 @@ export async function GET(request: NextRequest, { params }: Props) {
             categoryName: category.label,
             goalsCompleted: category.goals.length,
             totalGoals: category._count.goals,
-            progress: (category.goals.length * 100 / category._count.goals).toFixed(0)
+            progress: percent(category.goals.length, category._count.goals, 0)
         }));
 
         const goalsGlobalProgression = totalGoals - totalAccomplishedGoals;

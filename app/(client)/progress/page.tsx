@@ -8,6 +8,7 @@ import { TbStarsFilled } from "react-icons/tb";
 import { ImStatsBars2 } from "react-icons/im";
 import GlobalProgress from '@/components/GlobalProgress';
 import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
+import percent from '@/lib/math';
 
 interface CategoriesProgress {
   categoryId: string;
@@ -39,11 +40,11 @@ const ProgressPage = () => {
       setLastGoalAccomplishedLabel(userProgressData.lastGoalAccomplished[0].label)
       setTotalGoals(userProgressData.totalGoals)
       setTotalAccomplishedGoals(userProgressData.totalAccomplishedGoals)
-      setTotalGoalsPercent((userProgressData.totalAccomplishedGoals * 100 / userProgressData.totalGoals).toFixed(2))
+      setTotalGoalsPercent(percent(userProgressData.totalAccomplishedGoals, userProgressData.totalGoals, 2))
       setGoalSuggestion(userProgressData.goalSuggestion[0].label)
-      setCollectionNotStarted((userProgressData.collectionsNotStarted * 100 / userProgressData.totalCollections).toFixed(0))
-      setCollectionCompleted((userProgressData.collectionsCompleted * 100 / userProgressData.totalCollections).toFixed(0))
-      setCollectionInProgress((userProgressData.collectionsInProgress * 100 / userProgressData.totalCollections).toFixed(0))
+      setCollectionNotStarted(percent(userProgressData.collectionsNotStarted, userProgressData.totalCollections, 0))
+      setCollectionCompleted(percent(userProgressData.collectionsCompleted, userProgressData.totalCollections, 0))
+      setCollectionInProgress(percent(userProgressData.collectionsInProgress, userProgressData.totalCollections, 0))
       setCategoriesProgress(userProgressData.categoriesStats)
     }
         

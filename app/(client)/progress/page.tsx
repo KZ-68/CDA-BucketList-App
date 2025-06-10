@@ -7,7 +7,6 @@ import {  useUser } from "@clerk/nextjs";
 import { TbStarsFilled } from "react-icons/tb";
 import { ImStatsBars2 } from "react-icons/im";
 import GlobalProgress from '@/components/GlobalProgress';
-import { redirect } from 'next/navigation';
 import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
 
 interface CategoriesProgress {
@@ -19,11 +18,9 @@ interface CategoriesProgress {
 }
 
 const ProgressPage = () => {
-  const { isSignedIn, user } = useUser();
+  const { user } = useUser();
   const userId = user ? user.id : null;
-  if(isSignedIn === false) {
-    redirect('/login');
-  }
+
 
   const [lastGoalAccomplishedLabel, setLastGoalAccomplishedLabel] = useState("");
   const [totalGoals, setTotalGoals] = useState(0);

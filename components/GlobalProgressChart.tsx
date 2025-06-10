@@ -4,6 +4,7 @@ import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Context } from "vm";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import ChartJsDataFactory from "../model/ChartJsDataFactory";
 
 ChartJS.register(ArcElement, Legend, ChartDataLabels);
 
@@ -18,28 +19,28 @@ const GlobalProgressChart:React.FC<GlobalProgressChartProps> = (
 ) => {
 
   const data = [
-    {
-      label: "Not started",
-      value: parseFloat(notStarted),
-      unit: '%',
-      color: "#d0bcd4",
-      cutout: `70%`,
-    },
-    {
-      label: "In progress",
-      value: parseFloat(inProgress),
-      unit: '%',
-      color: "#30c4e4",
-      cutout: `70%`,
-    },
-    {
-      label: "Completed",
-      value: parseFloat(completed),
-      unit: "%",
-      color: "#c8ecac",
-      cutout: `70%`,
-    },
-  ]
+    new ChartJsDataFactory(
+      "Not started",
+      parseFloat(notStarted),
+      '%',
+      "#d0bcd4",
+      `70%`,
+    ),
+    new ChartJsDataFactory(
+     "In progress",
+      parseFloat(inProgress),
+      '%',
+      "#30c4e4",
+      `70%`,
+    ),
+    new ChartJsDataFactory(
+      "Completed",
+      parseFloat(completed),
+      "%",
+      "#c8ecac",
+      `70%`,
+    ),
+  ];
 
   const options = {
     responsive: true,

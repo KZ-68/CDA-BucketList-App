@@ -1,6 +1,4 @@
 'use client';
-import { useUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import FetchAllGoalsService from '@/services/FetchAllGoalsService';
 
@@ -12,10 +10,7 @@ interface Goal {
 }
 
 const GoalsPage = () => {
-  const { isSignedIn } = useUser();
-  if(isSignedIn === false) {
-    redirect("/login");
-  }
+   
   
   const [goals, setGoals] = useState<Goal[]>([]);
 

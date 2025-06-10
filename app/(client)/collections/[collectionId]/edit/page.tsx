@@ -2,16 +2,14 @@
 import React, { useEffect, useState } from 'react'
 import { CheckCircle2, XCircleIcon } from 'lucide-react';
 import { editCollection } from "@/components/editCollection";
-import { redirect, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import fetchCollectionData from '@/services/FetchCollectionService';
 
 const EditCollectionPage = () => {
     const params = useParams();
     const { isSignedIn } = useUser();
-    if(isSignedIn === false) {
-        redirect("/login");
-    }
+     
     
     const [label, setLabel] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);

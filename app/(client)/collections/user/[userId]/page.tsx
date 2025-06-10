@@ -1,6 +1,6 @@
 'use client';
 import { useAuth } from '@clerk/nextjs';
-import { redirect, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import fetchUserCollectionsData from '@/services/FetchUserCollectionService'
 import CollectionItem from '@/components/CollectionItem';
@@ -36,7 +36,7 @@ const CollectionsPage = ()  => {
   const userCollections = fetchUserCollectionsData(params.userId)
 
   useEffect(() => {
-    if (isSignedIn === false) redirect("/login");
+     
     if(userCollections){
       setCollections(userCollections.data || [])      
     }

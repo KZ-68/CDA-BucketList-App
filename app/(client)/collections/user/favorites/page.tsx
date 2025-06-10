@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from "@clerk/nextjs";
 import PageTitle from "@/components/PageTitle";
-import { redirect } from 'next/navigation';
 import fetchCollectionsLiked from '@/services/FetchUserFavoriteCollectionsService'
 import FetchAllCollectionsService from '@/services/FetchAllCollectionsService';
 import { GoalType } from '@/types/types';
@@ -38,7 +37,7 @@ const CollectionsPage = () => {
     const datalikedCollections = fetchCollectionsLiked(userId ? userId : null);
 
     useEffect(() => {
-        if (isSignedIn === false) redirect("/login");
+         
         
         if(datalikedCollections) {
             setLikedCollections(datalikedCollections.data.map((like: {collectionId : string}) => like.collectionId));

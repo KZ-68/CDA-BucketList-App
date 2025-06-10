@@ -6,7 +6,6 @@ import {  useUser } from "@clerk/nextjs";
 import { HiOutlineChartBarSquare } from "react-icons/hi2";
 import { RiLightbulbFill, RiCompass3Fill } from "react-icons/ri";
 import { LuLayoutList } from "react-icons/lu";
-import { redirect } from 'next/navigation';
 import useSWR from "swr";
 
 interface Collection {
@@ -17,11 +16,9 @@ interface Collection {
 }
 
 const Home = () => {
-  const { isSignedIn , user } = useUser();
+  const { user } = useUser();
   const userId = user ? user.id : null;
-  if(isSignedIn === false) {
-    redirect("/login");
-  }
+   
 
   const fetcher = (url:string) => fetch(url).then((res) => res.json());
 

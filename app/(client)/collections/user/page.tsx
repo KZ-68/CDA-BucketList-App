@@ -5,7 +5,6 @@ import CollectionItem from "@/components/CollectionItem";
 import PageTitle from "@/components/PageTitle";
 import { LuPlus } from "react-icons/lu";
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import fetchAllUserCollectionsData from '@/services/FetchAllUserCollectionsService'
 
 interface Collection {
@@ -35,7 +34,7 @@ const CollectionsPage = () => {
     const collectionsUser = fetchAllUserCollectionsData()
 
     useEffect(() => {
-      if (isSignedIn === false) redirect("/login");
+       
       if (collectionsUser) {
         setCollections(collectionsUser.data || [])
       }
